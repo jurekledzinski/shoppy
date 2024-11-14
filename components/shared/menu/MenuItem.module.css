@@ -1,0 +1,12 @@
+.menuItem {
+  width: 100%;
+  padding: 0.25rem 0.5rem;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  background-color: transparent;
+  transition: 0.3s ease-in;
+}
+
+.menuItem:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
