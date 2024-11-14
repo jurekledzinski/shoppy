@@ -1,0 +1,18 @@
+.themeButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 16px;
+  height: 16px;
+  background-color: transparent;
+  border: initial;
+  cursor: pointer;
+}
+
+.light {
+  color: var(--color-text-bg-light);
+}
+
+.dark {
+  color: var(--color-text-bg-dark);
+}

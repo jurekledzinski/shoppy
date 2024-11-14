@@ -1,5 +1,11 @@
 'use client';
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import {
+  createContext,
+  useContext,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 type ThemeContext = {
   mode: string;
@@ -23,10 +29,11 @@ export const useTheme = () => {
 };
 
 const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  const [theme, setTheme] = useState({ mode: 'light' });
+  const [theme, setTheme] = useState({ mode: '' });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const themeLocal = JSON.parse(localStorage.getItem('mode')!) || 'light';
+    document.documentElement.setAttribute('data-theme', themeLocal);
     setTheme({ mode: themeLocal });
   }, []);
 
@@ -35,6 +42,8 @@ const ThemeProvider = ({ children }: ThemeProviderProps) => {
       ...theme,
       onChange: (mode: string) => {
         setTheme({ mode });
+        localStorage.setItem('mode', JSON.stringify(mode));
+        document.documentElement.setAttribute('data-theme', mode);
       },
     }),
     [theme]
