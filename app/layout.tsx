@@ -1,4 +1,5 @@
 import ThemeProvider from '@/store/theme';
+import AsideProvider from '@/store/aside';
 import '@styles/globals.css';
 import type { Metadata } from 'next';
 import {
@@ -7,6 +8,8 @@ import {
   CartButton,
   MenuButton,
   ThemeButton,
+  Aside,
+  Backdrop,
 } from '@/components/shared';
 
 export const metadata: Metadata = {
@@ -22,15 +25,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ThemeProvider>
-        <body>
-          <Header>
-            <ThemeButton />
-            <CartButton />
-            <MenuButton />
-          </Header>
-          {children}
-          <Footer />
-        </body>
+        <AsideProvider>
+          <body>
+            <Header>
+              <ThemeButton />
+              <CartButton />
+              <MenuButton />
+            </Header>
+            {children}
+            <Footer />
+            <Aside />
+            <Backdrop />
+          </body>
+        </AsideProvider>
       </ThemeProvider>
     </html>
   );
