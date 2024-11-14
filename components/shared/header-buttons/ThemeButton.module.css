@@ -8,11 +8,3 @@
   border: initial;
   cursor: pointer;
 }
-
-.light {
-  color: var(--color-text-bg-light);
-}
-
-.dark {
-  color: var(--color-text-bg-dark);
-}

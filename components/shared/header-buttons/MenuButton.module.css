@@ -1,0 +1,11 @@
+.menuButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 16px;
+  height: 16px;
+  font-size: 0.9rem;
+  background-color: transparent;
+  border: initial;
+  cursor: pointer;
+}

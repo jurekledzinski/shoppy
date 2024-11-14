@@ -9,7 +9,7 @@ const Header = ({ children }: HeaderProps) => {
         <h2 className={styles.logo}>
           <Link href="/">Shoppy</Link>
         </h2>
-        <div>{children}</div>
+        <div className={styles.actionsButtons}>{children}</div>
       </nav>
     </header>
   );

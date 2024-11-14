@@ -1,7 +1,13 @@
 import ThemeProvider from '@/store/theme';
 import '@styles/globals.css';
 import type { Metadata } from 'next';
-import { Footer, Header, ThemeButton } from '@/components/shared';
+import {
+  Footer,
+  Header,
+  CartButton,
+  MenuButton,
+  ThemeButton,
+} from '@/components/shared';
 
 export const metadata: Metadata = {
   title: 'Shoppy',
@@ -19,6 +25,8 @@ export default function RootLayout({
         <body>
           <Header>
             <ThemeButton />
+            <CartButton />
+            <MenuButton />
           </Header>
           {children}
           <Footer />

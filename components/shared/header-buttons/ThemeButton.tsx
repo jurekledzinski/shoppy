@@ -6,13 +6,10 @@ import styles from './ThemeButton.module.css';
 
 const ThemeButton = () => {
   const theme = useTheme();
-  const isLight = theme && theme.mode === 'light';
 
   return (
     <button
-      className={`${styles.themeButton} ${
-        isLight ? styles.light : styles.dark
-      }`}
+      className={styles.themeButton}
       onClick={() => {
         if (theme && theme.onChange && theme.mode === 'light') {
           return theme.onChange('dark');

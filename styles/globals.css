@@ -67,3 +67,7 @@ a:link:active,
 a:visited:active {
   color: var(--color-text-primary);
 }
+
+button {
+  color: var(--color-text-primary);
+}

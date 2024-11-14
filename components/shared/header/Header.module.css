@@ -26,3 +26,8 @@
 .logo::first-letter {
   color: var(--color-primary);
 }
+
+.actionsButtons {
+  display: flex;
+  gap: 0.5rem;
+}
