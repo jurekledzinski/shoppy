@@ -1,10 +1,58 @@
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+}
+
+:root {
+  /* Primary */
+  --color-primary: #1976d2;
+  --color-primary-light: #1976d2;
+
+  --color-primary-light-hover: #1565c0;
+
+  /* Secondary */
+  /* --color-secondary: #e74c3c;
+  --color-secondary-light: #ec7063;
+  --color-secondary-dark: #943126; */
+
+  /* Text */
+  --color-text-primary: #555555;
+  --color-text-bg-light: #555555;
+  --color-text-bg-dark: white;
+
+  /* Feedback */
+  --color-success: #28a745;
+  --color-error: #dc3545;
+  --color-warning: #ffc107;
+  --color-info: #17a2b8;
+
+  --background-color: #ffffff;
+  --background-color-header: #ffffff;
+  --background-color-footer: #444444;
+  --background-color-card: #a7a7a729;
+}
+
+[data-theme='dark'] {
+  --color-primary-dark: #2196f3;
+  --color-primary-dark-hover: #1769aa;
+
+  --color-text-primary: #ffffff;
+  --color-text-bg-light: #555555;
+  --color-text-bg-dark: white;
+
+  --background-color: #333333;
+  --background-color-header: #444444;
+  --background-color-footer: #444444;
+  --background-color-card: #a7a7a729;
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100vh;
+  background-color: var(--background-color);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
