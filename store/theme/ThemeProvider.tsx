@@ -6,17 +6,9 @@ import {
   useMemo,
   useState,
 } from 'react';
+import { ThemeContextType, ThemeProviderProps } from './types';
 
-type ThemeContext = {
-  mode: string;
-  onChange?: (mode: string) => void;
-};
-
-type ThemeProviderProps = {
-  children: React.ReactNode;
-};
-
-export const ThemeContext = createContext<ThemeContext>({ mode: 'light' });
+export const ThemeContext = createContext<ThemeContextType>({ mode: 'light' });
 
 export const useTheme = () => {
   const theme = useContext(ThemeContext);
@@ -29,7 +21,7 @@ export const useTheme = () => {
 };
 
 const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  const [theme, setTheme] = useState({ mode: '' });
+  const [theme, setTheme] = useState({ mode: 'light' });
 
   useLayoutEffect(() => {
     const themeLocal = JSON.parse(localStorage.getItem('mode')!) || 'light';
