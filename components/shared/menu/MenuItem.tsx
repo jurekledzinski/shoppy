@@ -2,9 +2,12 @@
 import styles from './MenuItem.module.css';
 import { MenuItemProps } from './types';
 
-const MenuItem = ({ children, className }: MenuItemProps) => {
+const MenuItem = ({ children, className, onClick }: MenuItemProps) => {
   return (
-    <li className={[styles.menuItem, className].filter(Boolean).join(' ')}>
+    <li
+      className={[styles.menuItem, className].filter(Boolean).join(' ')}
+      onClick={onClick}
+    >
       {children}
     </li>
   );
