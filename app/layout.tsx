@@ -11,6 +11,18 @@ import {
   Aside,
   Backdrop,
 } from '@/components/shared';
+import { Oswald, Roboto } from 'next/font/google';
+
+const oswald = Oswald({
+  variable: '--font-oswald',
+  subsets: ['latin'],
+});
+
+const roboto = Roboto({
+  variable: '--font-roboto',
+  weight: ['300', '400', '500'],
+  subsets: ['latin'],
+});
 
 export const metadata: Metadata = {
   title: 'Shoppy',
@@ -23,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={[oswald.variable, roboto.variable].join(' ')}>
       <ThemeProvider>
         <AsideProvider>
           <body>
