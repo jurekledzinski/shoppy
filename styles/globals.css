@@ -17,6 +17,7 @@
 
   /* Text */
   --color-text-primary: #555555;
+  --color-text-bg-dark: white;
 
   /* Feedback */
   --color-success: #28a745;
@@ -40,6 +41,7 @@
   --color-primary-light-hover: #1769aa;
 
   --color-text-primary: #ffffff;
+  --color-text-bg-dark: white;
 
   --background-color: #333333;
   --background-color-aside: #444444;
