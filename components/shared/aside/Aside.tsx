@@ -1,5 +1,6 @@
 'use client';
 import Cart from '../cart';
+import Link from 'next/link';
 import styles from './Aside.module.css';
 import { Menu, MenuItem } from '../menu';
 import { useAside } from '@/store/aside';
@@ -17,7 +18,11 @@ const Aside = () => {
         <>
           <header className={styles.header}>Welcome</header>
           <Menu>
-            <MenuItem>Home</MenuItem>
+            <MenuItem className={styles.menuItem}>
+              <Link href="/" className={styles.link}>
+                Home
+              </Link>
+            </MenuItem>
             <MenuItem>Contact</MenuItem>
             <MenuItem>Sign In</MenuItem>
             <MenuItem>Sign Up</MenuItem>

@@ -4,4 +4,5 @@ export type MenuProps = {
 
 export type MenuItemProps = {
   children: React.ReactNode;
+  className?: string;
 };
