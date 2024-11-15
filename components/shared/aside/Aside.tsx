@@ -1,7 +1,7 @@
 'use client';
+import Cart from '../cart';
 import styles from './Aside.module.css';
 import { Menu, MenuItem } from '../menu';
-import Cart from '../cart';
 import { useAside } from '@/store/aside';
 
 const Aside = () => {
@@ -15,7 +15,7 @@ const Aside = () => {
     >
       {context.type === 'menu' ? (
         <>
-          <header>Welcome</header>
+          <header className={styles.header}>Welcome</header>
           <Menu>
             <MenuItem>Home</MenuItem>
             <MenuItem>Contact</MenuItem>
@@ -25,24 +25,24 @@ const Aside = () => {
         </>
       ) : context.type === 'cart' ? (
         <>
-          <header>Shopping cart</header>
+          <header className={styles.header}>Shopping cart</header>
           <Cart />
         </>
       ) : context.type === 'contact' ? (
         <>
-          <header>Contact</header>
+          <header className={styles.header}>Contact</header>
         </>
       ) : context.type === 'login' ? (
         <>
-          <header>Sign In</header>
+          <header className={styles.header}>Sign In</header>
         </>
       ) : context.type === 'register' ? (
         <>
-          <header>Sign Up</header>
+          <header className={styles.header}>Sign Up</header>
         </>
       ) : context.type === 'change-password' ? (
         <>
-          <header>Change password</header>
+          <header className={styles.header}>Change password</header>
         </>
       ) : null}
     </aside>
@@ -50,6 +50,3 @@ const Aside = () => {
 };
 
 export default Aside;
-
-// type: 'cart'
-// type: 'menu'
