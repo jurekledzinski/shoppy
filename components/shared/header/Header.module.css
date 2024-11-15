@@ -21,6 +21,7 @@
 .logo {
   text-transform: uppercase;
   font-weight: 500;
+  font-family: var(--font-oswald);
 }
 
 .logo::first-letter {
