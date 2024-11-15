@@ -1,4 +1,11 @@
-export type AsideType = 'cart' | 'menu' | null;
+export type AsideType =
+  | 'cart'
+  | 'menu'
+  | 'contact'
+  | 'login'
+  | 'register'
+  | 'change-password'
+  | null;
 
 export type AsideState = {
   type: AsideType;
