@@ -4,6 +4,7 @@ import Link from 'next/link';
 import styles from './Aside.module.css';
 import { Menu, MenuItem } from '../menu';
 import { useAside } from '@/store/aside';
+import { ContactForm } from '@/components/pages';
 
 const Aside = () => {
   const context = useAside();
@@ -90,6 +91,7 @@ const Aside = () => {
       ) : context.type === 'contact' ? (
         <>
           <header className={styles.header}>Contact</header>
+          <ContactForm />
         </>
       ) : context.type === 'login' ? (
         <>
