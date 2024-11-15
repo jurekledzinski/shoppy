@@ -23,9 +23,63 @@ const Aside = () => {
                 Home
               </Link>
             </MenuItem>
-            <MenuItem>Contact</MenuItem>
-            <MenuItem>Sign In</MenuItem>
-            <MenuItem>Sign Up</MenuItem>
+            <MenuItem
+              onClick={() => {
+                const actionElement = context.type;
+                const stateOpen = context.value;
+
+                if (actionElement !== 'contact' && stateOpen) {
+                  context.onChange(actionElement, !stateOpen);
+
+                  const idTimeout = setTimeout(() => {
+                    context.onChange('contact', true);
+                    clearTimeout(idTimeout);
+                  }, 1000);
+
+                  return;
+                }
+              }}
+            >
+              Contact
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                const actionElement = context.type;
+                const stateOpen = context.value;
+
+                if (actionElement !== 'login' && stateOpen) {
+                  context.onChange(actionElement, !stateOpen);
+
+                  const idTimeout = setTimeout(() => {
+                    context.onChange('login', true);
+                    clearTimeout(idTimeout);
+                  }, 1000);
+
+                  return;
+                }
+              }}
+            >
+              Sign In
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                const actionElement = context.type;
+                const stateOpen = context.value;
+
+                if (actionElement !== 'register' && stateOpen) {
+                  context.onChange(actionElement, !stateOpen);
+
+                  const idTimeout = setTimeout(() => {
+                    context.onChange('register', true);
+                    clearTimeout(idTimeout);
+                  }, 1000);
+
+                  return;
+                }
+              }}
+            >
+              Sign Up
+            </MenuItem>
           </Menu>
         </>
       ) : context.type === 'cart' ? (
