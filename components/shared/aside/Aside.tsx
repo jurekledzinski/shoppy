@@ -1,12 +1,12 @@
 'use client';
-import Cart from '../cart';
+import { Cart } from '../cart';
 import Link from 'next/link';
 import styles from './Aside.module.css';
 import { Menu, MenuItem } from '../menu';
 import { useAside } from '@/store/aside';
 import { ContactForm } from '@/components/pages';
 
-const Aside = () => {
+export const Aside = () => {
   const context = useAside();
 
   return (
@@ -109,5 +109,3 @@ const Aside = () => {
     </aside>
   );
 };
-
-export default Aside;
