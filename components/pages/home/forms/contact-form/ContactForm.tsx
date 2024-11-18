@@ -63,7 +63,12 @@ export const ContactForm = () => {
 
       {state?.message && <AlertError>{state.message}</AlertError>}
 
-      <Button className={styles.button} type="submit" text="Submit">
+      <Button
+        className={styles.button}
+        disabled={isPending}
+        type="submit"
+        text="Submit"
+      >
         {isPending && <Loader />}
       </Button>
     </form>
