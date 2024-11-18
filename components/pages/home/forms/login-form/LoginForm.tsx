@@ -27,6 +27,7 @@ export const LoginForm = () => {
       <FieldInput
         autoComplete="username"
         label="Email"
+        placeholder="Email"
         type="email"
         {...methods.register('email', {
           required: { message: 'Email is required', value: true },
@@ -42,6 +43,7 @@ export const LoginForm = () => {
       <FieldInput
         autoComplete="current-password"
         label="Password"
+        placeholder="Password"
         type="password"
         {...methods.register('password', {
           required: { message: 'Password is required', value: true },

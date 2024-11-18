@@ -27,6 +27,7 @@ export const RegisterForm = () => {
       <FieldInput
         autoComplete="username"
         label="Name"
+        placeholder="Name"
         type="text"
         {...methods.register('name', {
           required: { message: 'Name is required', value: true },
@@ -38,6 +39,7 @@ export const RegisterForm = () => {
       <FieldInput
         autoComplete="username"
         label="Email"
+        placeholder="Email"
         type="email"
         {...methods.register('email', {
           required: { message: 'Email is required', value: true },
@@ -53,6 +55,7 @@ export const RegisterForm = () => {
       <FieldInput
         autoComplete="current-password"
         label="Password"
+        placeholder="Password"
         type="password"
         {...methods.register('password', {
           required: { message: 'Password is required', value: true },
@@ -66,6 +69,7 @@ export const RegisterForm = () => {
       <FieldInput
         autoComplete="current-password"
         label="Confirm password"
+        placeholder="Confirm password"
         type="password"
         {...methods.register('confirmPassword', {
           required: { message: 'Confirm password is required', value: true },

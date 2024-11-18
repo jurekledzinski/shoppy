@@ -28,6 +28,7 @@ export const ForgetPasswordForm = () => {
       <FieldInput
         autoComplete="username"
         label="Email"
+        placeholder="Email"
         type="email"
         {...methods.register('email', {
           required: { message: 'Email is required', value: true },
