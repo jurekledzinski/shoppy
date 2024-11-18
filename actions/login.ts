@@ -1,5 +1,5 @@
 'use server';
-export const login = async (formData: FormData) => {
+export const login = async (prevState: unknown, formData: FormData) => {
   const body = Object.fromEntries(formData);
   console.log('login data action', body);
 
