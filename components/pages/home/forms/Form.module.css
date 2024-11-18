@@ -15,4 +15,5 @@
   padding: 0.5rem !important;
   color: var(--color-text-bg-dark);
   text-align: center;
+  cursor: pointer;
 }
