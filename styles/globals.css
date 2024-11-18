@@ -84,6 +84,7 @@ a:visited:active {
 }
 
 button {
+  border-radius: 2px;
   color: var(--color-text-primary);
   font-family: var(--font-oswald);
 }
