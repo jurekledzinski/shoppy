@@ -1,5 +1,5 @@
 'use server';
-export const registser = async (formData: FormData) => {
+export const registser = async (prevState: unknown, formData: FormData) => {
   const body = Object.fromEntries(formData);
   console.log('action register data', body);
 
@@ -11,4 +11,6 @@ export const registser = async (formData: FormData) => {
   if (!res.ok) {
     return { message: 'Something went wrong, please try later' };
   }
+
+  return { message: 'Something went wrong, please try later' };
 };
