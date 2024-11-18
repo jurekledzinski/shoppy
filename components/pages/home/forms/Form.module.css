@@ -17,6 +17,11 @@
   color: var(--color-text-bg-dark);
   text-transform: uppercase;
   cursor: pointer;
+  transition: 0.3s linear;
+}
+
+.button:hover {
+  background-color: var(--color-primary-hover);
 }
 
 .info {
@@ -31,4 +36,9 @@
   background-color: transparent;
   color: var(--color-primary);
   cursor: pointer;
+  transition: 0.3s linear;
+}
+
+.info:nth-child(1):hover {
+  color: var(--color-primary-hover);
 }
