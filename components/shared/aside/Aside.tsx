@@ -1,10 +1,16 @@
 'use client';
-import { Cart } from '../cart';
 import Link from 'next/link';
 import styles from './Aside.module.css';
+import { Cart } from '../cart';
 import { Menu, MenuItem } from '../menu';
 import { useAside } from '@/store/aside';
-import { ContactForm, ForgetPasswordForm, LoginForm } from '@/components/pages';
+
+import {
+  ContactForm,
+  ForgetPasswordForm,
+  LoginForm,
+  RegisterForm,
+} from '@/components/pages';
 
 export const Aside = () => {
   const context = useAside();
@@ -101,6 +107,7 @@ export const Aside = () => {
       ) : context.type === 'register' ? (
         <>
           <header className={styles.header}>Sign Up</header>
+          <RegisterForm />
         </>
       ) : context.type === 'change-password' ? (
         <>
