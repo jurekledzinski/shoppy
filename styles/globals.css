@@ -29,9 +29,10 @@
   --background-color-aside: #ffffff;
   --background-color-header: #ffffff;
   --background-color-footer: #444444;
-
   --background-color-menu-item-hover: #a7a7a73b;
 
+  --color-border-input: #cccccc;
+  --color-border-loader: #dddddd;
   --color-box-shadow-bottom: rgba(0, 0, 0, 0.16);
 }
 
@@ -47,9 +48,10 @@
   --background-color-aside: #444444;
   --background-color-header: #444444;
   --background-color-footer: #444444;
-
   --background-color-menu-item-hover: #a7a7a73b;
 
+  --color-border-input: #757575;
+  --color-border-loader: #dddddd;
   --color-box-shadow-bottom: rgba(255, 255, 255, 0.5);
 }
 
@@ -87,4 +89,29 @@ button {
 input:focus-visible,
 textarea:focus-visible {
   outline-color: var(--color-primary);
+  background-color: var(--background-color);
+  font-family: var(--font-roboto);
+}
+
+input,
+textarea {
+  background-color: var(--background-color);
+  color: var(--color-text-primary);
+  font-family: var(--font-roboto);
+  caret-color: var(--color-text-primary);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--color-text-primary);
+  -webkit-box-shadow: 0 0 0px 1000px var(--background-color) inset;
+  transition: background-color 5000s ease-in-out 0s;
+  font-family: var(--font-roboto);
 }
