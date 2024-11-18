@@ -4,7 +4,7 @@ import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAside } from '@/store/aside';
 
-const CartButton = () => {
+export const CartButton = () => {
   const context = useAside();
 
   return (
@@ -33,5 +33,3 @@ const CartButton = () => {
     </button>
   );
 };
-
-export default CartButton;

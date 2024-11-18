@@ -4,7 +4,7 @@ import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { useTheme } from '@/store/theme';
 import styles from './ThemeButton.module.css';
 
-const ThemeButton = () => {
+export const ThemeButton = () => {
   const theme = useTheme();
 
   return (
@@ -25,5 +25,3 @@ const ThemeButton = () => {
     </button>
   );
 };
-
-export default ThemeButton;

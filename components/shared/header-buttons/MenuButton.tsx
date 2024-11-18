@@ -4,7 +4,7 @@ import styles from './MenuButton.module.css';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const MenuButton = () => {
+export const MenuButton = () => {
   const context = useAside();
 
   return (
@@ -31,5 +31,3 @@ const MenuButton = () => {
     </button>
   );
 };
-
-export default MenuButton;
