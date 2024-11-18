@@ -2,7 +2,7 @@ import Link from 'next/link';
 import styles from './Header.module.css';
 import { HeaderProps } from './types';
 
-const Header = ({ children }: HeaderProps) => {
+export const Header = ({ children }: HeaderProps) => {
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>
@@ -14,5 +14,3 @@ const Header = ({ children }: HeaderProps) => {
     </header>
   );
 };
-
-export default Header;
