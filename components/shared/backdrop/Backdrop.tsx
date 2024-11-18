@@ -4,7 +4,7 @@ import { useAside } from '@/store/aside';
 import { useRef } from 'react';
 import './Backdrop.css';
 
-const Backdrop = () => {
+export const Backdrop = () => {
   const context = useAside();
   const nodeRef = useRef(null);
 
@@ -27,5 +27,3 @@ const Backdrop = () => {
     </>
   );
 };
-
-export default Backdrop;
