@@ -1,0 +1,13 @@
+.button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: initial;
+  margin: initial;
+  border: none;
+}
+
+.text {
+  display: block;
+  min-width: 2rem;
+}

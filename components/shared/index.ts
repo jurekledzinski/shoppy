@@ -5,7 +5,7 @@ export * from './aside';
 export * from './menu';
 export * from './backdrop';
 export * from './cart';
-export * from './buttons';
+export * from './button';
 export * from './loader';
 export * from './message';
 export * from './alert';
