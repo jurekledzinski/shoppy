@@ -11,6 +11,4 @@ export const registser = async (prevState: unknown, formData: FormData) => {
   if (!res.ok) {
     return { message: 'Something went wrong, please try later' };
   }
-
-  return { message: 'Something went wrong, please try later' };
 };

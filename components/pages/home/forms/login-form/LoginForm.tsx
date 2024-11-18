@@ -10,8 +10,10 @@ import {
 import { login } from '@/actions';
 import { useActionState } from 'react';
 import { useLoginForm } from '@/hooks';
+import { useAside } from '@/store/aside';
 
 export const LoginForm = () => {
+  const context = useAside();
   const [state, formAction, isPending] = useActionState(login, {
     message: '',
   });
@@ -56,10 +58,59 @@ export const LoginForm = () => {
         className={styles.button}
         disabled={isPending}
         type="submit"
-        text="Submit"
+        text="Sign In"
       >
         {isPending && <Loader />}
       </Button>
+
+      <span className={styles.info}>
+        Not registered?{' '}
+        <button
+          className={styles.info}
+          onClick={(e) => {
+            e.preventDefault();
+            const actionElement = context.type;
+            const stateOpen = context.value;
+
+            if (actionElement !== 'register' && stateOpen) {
+              context.onChange(actionElement, !stateOpen);
+
+              const idTimeout = setTimeout(() => {
+                context.onChange('register', true);
+                clearTimeout(idTimeout);
+              }, 1000);
+
+              return;
+            }
+          }}
+        >
+          Sign up here
+        </button>
+      </span>
+      <span className={styles.info}>
+        Forget password?{' '}
+        <button
+          className={styles.info}
+          onClick={(e) => {
+            e.preventDefault();
+            const actionElement = context.type;
+            const stateOpen = context.value;
+
+            if (actionElement !== 'forget-password' && stateOpen) {
+              context.onChange(actionElement, !stateOpen);
+
+              const idTimeout = setTimeout(() => {
+                context.onChange('forget-password', true);
+                clearTimeout(idTimeout);
+              }, 1000);
+
+              return;
+            }
+          }}
+        >
+          Click here
+        </button>
+      </span>
     </form>
   );
 };

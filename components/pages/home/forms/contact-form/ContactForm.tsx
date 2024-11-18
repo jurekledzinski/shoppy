@@ -67,7 +67,7 @@ export const ContactForm = () => {
         className={styles.button}
         disabled={isPending}
         type="submit"
-        text="Submit"
+        text="Send message"
       >
         {isPending && <Loader />}
       </Button>

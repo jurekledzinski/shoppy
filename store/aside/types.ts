@@ -4,7 +4,7 @@ export type AsideType =
   | 'contact'
   | 'login'
   | 'register'
-  | 'change-password'
+  | 'forget-password'
   | null;
 
 export type AsideState = {

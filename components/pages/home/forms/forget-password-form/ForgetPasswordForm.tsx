@@ -46,7 +46,7 @@ export const ForgetPasswordForm = () => {
         className={styles.button}
         disabled={isPending}
         type="submit"
-        text="Submit"
+        text="Change password"
       >
         {isPending && <Loader />}
       </Button>

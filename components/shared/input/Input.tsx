@@ -6,5 +6,6 @@ export const Input = ({ className, ...props }: InputProps) => (
   <input
     {...props}
     className={[className, styles.input].filter(Boolean).join(' ')}
+    id={props.name}
   />
 );

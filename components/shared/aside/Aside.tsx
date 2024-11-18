@@ -109,7 +109,7 @@ export const Aside = () => {
           <header className={styles.header}>Sign Up</header>
           <RegisterForm />
         </>
-      ) : context.type === 'change-password' ? (
+      ) : context.type === 'forget-password' ? (
         <>
           <header className={styles.header}>Forget password</header>
           <ForgetPasswordForm />

@@ -10,8 +10,10 @@ import {
 import { registser } from '@/actions';
 import { useActionState } from 'react';
 import { useRegisterForm } from '@/hooks';
+import { useAside } from '@/store/aside';
 
 export const RegisterForm = () => {
+  const context = useAside();
   const [state, formAction, isPending] = useActionState(registser, {
     message: '',
   });
@@ -80,10 +82,35 @@ export const RegisterForm = () => {
         className={styles.button}
         disabled={isPending}
         type="submit"
-        text="Submit"
+        text="Sign Up"
       >
         {isPending && <Loader />}
       </Button>
+
+      <span className={styles.info}>
+        Already registered?{' '}
+        <button
+          className={styles.info}
+          onClick={(e) => {
+            e.preventDefault();
+            const actionElement = context.type;
+            const stateOpen = context.value;
+
+            if (actionElement !== 'login' && stateOpen) {
+              context.onChange(actionElement, !stateOpen);
+
+              const idTimeout = setTimeout(() => {
+                context.onChange('login', true);
+                clearTimeout(idTimeout);
+              }, 1000);
+
+              return;
+            }
+          }}
+        >
+          Sign in here
+        </button>
+      </span>
     </form>
   );
 };
