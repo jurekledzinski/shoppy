@@ -2,7 +2,7 @@
 import styles from './MenuItem.module.css';
 import { MenuItemProps } from './types';
 
-const MenuItem = ({ children, className, onClick }: MenuItemProps) => {
+export const MenuItem = ({ children, className, onClick }: MenuItemProps) => {
   return (
     <li
       className={[styles.menuItem, className].filter(Boolean).join(' ')}
@@ -12,5 +12,3 @@ const MenuItem = ({ children, className, onClick }: MenuItemProps) => {
     </li>
   );
 };
-
-export default MenuItem;
