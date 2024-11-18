@@ -4,7 +4,7 @@ import Link from 'next/link';
 import styles from './Aside.module.css';
 import { Menu, MenuItem } from '../menu';
 import { useAside } from '@/store/aside';
-import { ContactForm } from '@/components/pages';
+import { ContactForm, ForgetPasswordForm } from '@/components/pages';
 
 export const Aside = () => {
   const context = useAside();
@@ -103,7 +103,9 @@ export const Aside = () => {
         </>
       ) : context.type === 'change-password' ? (
         <>
-          <header className={styles.header}>Change password</header>
+          <header className={styles.header}>
+            <ForgetPasswordForm />
+          </header>
         </>
       ) : null}
     </aside>

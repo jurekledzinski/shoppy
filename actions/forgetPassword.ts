@@ -1,5 +1,8 @@
 'use server';
-export const forgetPassword = async (formData: FormData) => {
+export const forgetPassword = async (
+  prevState: unknown,
+  formData: FormData
+) => {
   const body = Object.fromEntries(formData);
   console.log('action forget password data', body);
 

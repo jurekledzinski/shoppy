@@ -7,12 +7,12 @@ import {
   FieldInput,
   Loader,
 } from '@/components/shared';
-import { contact } from '@/actions';
+import { forgetPassword } from '@/actions';
 import { useActionState } from 'react';
 import { useForgetPasswordForm } from '@/hooks';
 
 export const ForgetPasswordForm = () => {
-  const [state, formAction, isPending] = useActionState(contact, {
+  const [state, formAction, isPending] = useActionState(forgetPassword, {
     message: '',
   });
 
