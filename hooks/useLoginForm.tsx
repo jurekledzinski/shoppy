@@ -5,10 +5,9 @@ import { LoginFormInputs } from '@/components/pages';
 
 type UseLoginFormProps = {
   formAction: (payload: FormData) => void;
-  isPending: boolean;
 };
 
-export const useLoginForm = ({ formAction, isPending }: UseLoginFormProps) => {
+export const useLoginForm = ({ formAction }: UseLoginFormProps) => {
   const methods = useForm<LoginFormInputs>({
     defaultValues: {
       email: '',
@@ -25,12 +24,6 @@ export const useLoginForm = ({ formAction, isPending }: UseLoginFormProps) => {
       formAction(formData);
     });
   };
-
-  useEffect(() => {
-    if (methods.formState.isSubmitSuccessful && !isPending) {
-      methods.reset({ email: '', password: '' });
-    }
-  }, [isPending, methods]);
 
   return {
     methods,

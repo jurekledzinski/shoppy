@@ -1,17 +1,13 @@
 'use client';
-import { startTransition, useEffect } from 'react';
+import { startTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { RegisterFormInputs } from '@/components/pages';
 
 type UseRegisterFormProps = {
   formAction: (payload: FormData) => void;
-  isPending: boolean;
 };
 
-export const useRegisterForm = ({
-  formAction,
-  isPending,
-}: UseRegisterFormProps) => {
+export const useRegisterForm = ({ formAction }: UseRegisterFormProps) => {
   const methods = useForm<RegisterFormInputs>({
     defaultValues: {
       confirmPassword: '',
@@ -31,12 +27,6 @@ export const useRegisterForm = ({
       formAction(formData);
     });
   };
-
-  useEffect(() => {
-    if (methods.formState.isSubmitSuccessful && !isPending) {
-      methods.reset({ email: '', name: '', password: '' });
-    }
-  }, [isPending, methods]);
 
   return {
     methods,
