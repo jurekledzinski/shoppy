@@ -1,5 +1,6 @@
 import ThemeProvider from '@/store/theme';
 import AsideProvider from '@/store/aside';
+import UserProvider from '@/store/user';
 import type { Metadata } from 'next';
 import { Oswald, Roboto } from 'next/font/google';
 import { ToastContainer } from 'react-toastify';
@@ -39,14 +40,16 @@ export default function RootLayout({
     <html lang="en" className={[oswald.variable, roboto.variable].join(' ')}>
       <ThemeProvider>
         <AsideProvider>
-          <body>
-            {header}
-            {children}
-            {footer}
-            {aside}
-            {backdrop}
-            <ToastContainer position="top-right" autoClose={1500} />
-          </body>
+          <UserProvider>
+            <body>
+              {header}
+              {children}
+              {footer}
+              {aside}
+              {backdrop}
+              <ToastContainer position="top-right" autoClose={1500} />
+            </body>
+          </UserProvider>
         </AsideProvider>
       </ThemeProvider>
     </html>
