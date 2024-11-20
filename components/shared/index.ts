@@ -15,3 +15,4 @@ export * from './input';
 export * from './textarea';
 export * from './field-input';
 export * from './field-textarea';
+export * from './question-redirect';
