@@ -13,9 +13,19 @@ export const MenuPanel = ({
     <>
       <header className={styles.header}>Welcome</header>
       <Menu>
-        <MenuItem className={styles.menuItem}>
+        <MenuItem className={styles.menuItemPanel}>
           <Link href="/" className={styles.link}>
             Home
+          </Link>
+        </MenuItem>
+        <MenuItem className={styles.menuItemPanel}>
+          <Link href={`/orders/:id`} className={styles.link}>
+            Orders
+          </Link>
+        </MenuItem>
+        <MenuItem className={styles.menuItemPanel}>
+          <Link href={`/profile/:id`} className={styles.link}>
+            Profile
           </Link>
         </MenuItem>
         <MenuItem onClick={onRedirectContact}>Contact</MenuItem>

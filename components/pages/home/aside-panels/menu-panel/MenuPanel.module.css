@@ -9,7 +9,7 @@
   font-family: var(--font-oswald);
 }
 
-.menuItem:first-child {
+.menuItemPanel {
   padding: initial;
 }
 
