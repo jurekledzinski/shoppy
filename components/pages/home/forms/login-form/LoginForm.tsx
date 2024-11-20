@@ -6,38 +6,18 @@ import {
   ErrorMessage,
   FieldInput,
   Loader,
-  QuestionRedirect,
 } from '@/components/shared';
-import { login } from '@/actions';
-import { useActionState } from 'react';
-import { useLoginForm, useResetForm } from '@/hooks';
-import { useAside } from '@/store/aside';
-import { toast } from 'react-toastify';
-import { controlAside } from '@/helpers';
 
-export const LoginForm = () => {
-  const context = useAside();
-  const [state, formAction, isPending] = useActionState(login, {
-    message: '',
-    success: false,
-  });
+import { LoginFormProps } from './types';
 
-  const { methods, onSubmit } = useLoginForm({ formAction });
+export const LoginForm = ({
+  methods,
+  onSubmit,
+  state,
+  isPending,
+}: LoginFormProps) => {
   const { formState } = methods;
   const { errors } = formState;
-
-  useResetForm({
-    isPending,
-    isSuccess: state.success,
-    methods,
-    defaultValues: { email: '', password: '' },
-    onSuccess: () => {
-      const theme = JSON.parse(localStorage.getItem('mode')!) || 'light';
-      toast.success('Login successful', { theme });
-      const actionElement = context.type;
-      context.onChange(actionElement, false);
-    },
-  });
 
   return (
     <form className={styles.form} onSubmit={onSubmit}>
@@ -83,28 +63,6 @@ export const LoginForm = () => {
       >
         {isPending && <Loader />}
       </Button>
-
-      <QuestionRedirect
-        buttonText="Sign up here"
-        question="Not registered?"
-        onClick={(e) => {
-          e.preventDefault();
-          const actionElement = context.type;
-          const stateOpen = context.value;
-          controlAside(context, 'register', actionElement, stateOpen);
-        }}
-      />
-
-      <QuestionRedirect
-        buttonText="Click here"
-        question="Forget password?"
-        onClick={(e) => {
-          e.preventDefault();
-          const actionElement = context.type;
-          const stateOpen = context.value;
-          controlAside(context, 'forget-password', actionElement, stateOpen);
-        }}
-      />
     </form>
   );
 };

@@ -10,7 +10,7 @@ export const QuestionRedirect = ({
   return (
     <span className={styles.info}>
       {question}{' '}
-      <button className={styles.info} onClick={onClick}>
+      <button className={styles.button} onClick={onClick}>
         {buttonText}
       </button>
     </span>

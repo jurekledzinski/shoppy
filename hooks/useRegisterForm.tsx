@@ -2,12 +2,21 @@
 import { startTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { RegisterFormInputs } from '@/components/pages';
+import { useResetForm } from './useResetForm';
 
 type UseRegisterFormProps = {
   formAction: (payload: FormData) => void;
+  isPending: boolean;
+  isSuccess: boolean;
+  onSuccess: () => void;
 };
 
-export const useRegisterForm = ({ formAction }: UseRegisterFormProps) => {
+export const useRegisterForm = ({
+  formAction,
+  isPending,
+  isSuccess,
+  onSuccess,
+}: UseRegisterFormProps) => {
   const methods = useForm<RegisterFormInputs>({
     defaultValues: {
       confirmPassword: '',
@@ -28,8 +37,16 @@ export const useRegisterForm = ({ formAction }: UseRegisterFormProps) => {
     });
   };
 
-  return {
+  useResetForm({
+    isPending,
+    isSuccess,
     methods,
-    onSubmit: methods.handleSubmit(onSubmit),
+    defaultValues: { email: '', name: '', password: '', confirmPassword: '' },
+    onSuccess,
+  });
+
+  return {
+    methodsRegister: methods,
+    onSubmitRegister: methods.handleSubmit(onSubmit),
   };
 };

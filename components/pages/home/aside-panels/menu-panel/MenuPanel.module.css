@@ -1,18 +1,3 @@
-.aside {
-  position: absolute;
-  top: 0;
-  right: -15.625rem;
-  width: 15.625rem;
-  height: 100%;
-  background-color: var(--background-color-aside);
-  z-index: 3;
-  transition: right 0.5s linear;
-}
-
-.show {
-  right: 0px;
-}
-
 .header {
   height: 3.125rem;
   display: flex;
@@ -34,11 +19,4 @@
   padding: 0.5rem 1rem;
   color: var(--color-text-primary);
   text-decoration: none;
-}
-
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  margin: 0 1rem;
 }

@@ -3,16 +3,17 @@
   font-size: 0.6rem;
 }
 
-.info:nth-child(1) {
+.button {
   padding: initial;
   margin: initial;
   border: none;
   background-color: transparent;
   color: var(--color-primary);
   cursor: pointer;
+  font-size: 0.6rem;
   transition: 0.3s linear;
 }
 
-.info:nth-child(1):hover {
+.button:hover {
   color: var(--color-primary-hover);
 }

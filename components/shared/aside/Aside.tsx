@@ -1,20 +1,54 @@
 'use client';
-import Link from 'next/link';
 import styles from './Aside.module.css';
 import { Cart } from '../cart';
-import { Menu, MenuItem } from '../menu';
 import { useAside } from '@/store/aside';
-
-import {
-  ContactForm,
-  ForgetPasswordForm,
-  LoginForm,
-  RegisterForm,
-} from '@/components/pages';
+import { login, register } from '@/actions';
+import { toast } from 'react-toastify';
+import { ContactForm, ForgetPasswordForm } from '@/components/pages';
 import { controlAside } from '@/helpers';
+import { useActionState } from 'react';
+import { useLoginForm, useRegisterForm } from '@/hooks';
+import { LoginPanel, MenuPanel, RegisterPanel } from '@/components/pages';
 
 export const Aside = () => {
   const context = useAside();
+  const actionElement = context.type;
+  const stateOpen = context.value;
+
+  const [stateLogin, formActionLogin, isPendingLogin] = useActionState(login, {
+    message: '',
+    success: false,
+  });
+
+  const [stateRegister, formActionRegister, isPendingRegister] = useActionState(
+    register,
+    {
+      message: '',
+      success: false,
+    }
+  );
+
+  const { methodsLogin, onSubmitLogin } = useLoginForm({
+    formAction: formActionLogin,
+    isPending: isPendingLogin,
+    isSuccess: stateLogin.success,
+    onSuccess: () => {
+      const theme = JSON.parse(localStorage.getItem('mode')!) || 'light';
+      toast.success('Login successful', { theme });
+      context.onChange(actionElement, false);
+    },
+  });
+
+  const { methodsRegister, onSubmitRegister } = useRegisterForm({
+    formAction: formActionRegister,
+    isPending: isPendingRegister,
+    isSuccess: stateRegister.success,
+    onSuccess: () => {
+      const theme = JSON.parse(localStorage.getItem('mode')!) || 'light';
+      toast.success('Register successful', { theme });
+      context.onChange(actionElement, false);
+    },
+  });
 
   return (
     <aside
@@ -23,43 +57,17 @@ export const Aside = () => {
       }`}
     >
       {context.type === 'menu' ? (
-        <>
-          <header className={styles.header}>Welcome</header>
-          <Menu>
-            <MenuItem className={styles.menuItem}>
-              <Link href="/" className={styles.link}>
-                Home
-              </Link>
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                const actionElement = context.type;
-                const stateOpen = context.value;
-                controlAside(context, 'contact', actionElement, stateOpen);
-              }}
-            >
-              Contact
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                const actionElement = context.type;
-                const stateOpen = context.value;
-                controlAside(context, 'login', actionElement, stateOpen);
-              }}
-            >
-              Sign In
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                const actionElement = context.type;
-                const stateOpen = context.value;
-                controlAside(context, 'register', actionElement, stateOpen);
-              }}
-            >
-              Sign Up
-            </MenuItem>
-          </Menu>
-        </>
+        <MenuPanel
+          onRedirectContact={() => {
+            controlAside(context, 'contact', actionElement, stateOpen);
+          }}
+          onRedirectLogin={() => {
+            controlAside(context, 'login', actionElement, stateOpen);
+          }}
+          onRedirectRegister={() => {
+            controlAside(context, 'register', actionElement, stateOpen);
+          }}
+        />
       ) : context.type === 'cart' ? (
         <>
           <header className={styles.header}>Shopping cart</header>
@@ -71,15 +79,33 @@ export const Aside = () => {
           <ContactForm />
         </>
       ) : context.type === 'login' ? (
-        <>
-          <header className={styles.header}>Sign In</header>
-          <LoginForm />
-        </>
+        <LoginPanel
+          context={context}
+          isPending={isPendingLogin}
+          methods={methodsLogin}
+          onSubmit={onSubmitLogin}
+          state={stateLogin}
+          onRedirectForgetPassword={(e) => {
+            e.preventDefault();
+            controlAside(context, 'forget-password', actionElement, stateOpen);
+          }}
+          onRedirectRegister={(e) => {
+            e.preventDefault();
+            controlAside(context, 'register', actionElement, stateOpen);
+          }}
+        />
       ) : context.type === 'register' ? (
-        <>
-          <header className={styles.header}>Sign Up</header>
-          <RegisterForm />
-        </>
+        <RegisterPanel
+          context={context}
+          isPending={isPendingRegister}
+          methods={methodsRegister}
+          onSubmit={onSubmitRegister}
+          state={stateRegister}
+          onRedirectLogin={(e) => {
+            e.preventDefault();
+            controlAside(context, 'login', actionElement, stateOpen);
+          }}
+        />
       ) : context.type === 'forget-password' ? (
         <>
           <header className={styles.header}>Forget password</header>

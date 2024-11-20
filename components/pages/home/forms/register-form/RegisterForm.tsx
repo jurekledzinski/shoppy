@@ -1,42 +1,20 @@
 'use client';
 import styles from '../Form.module.css';
-import { registser } from '@/actions';
-import { toast } from 'react-toastify';
-import { useActionState } from 'react';
-import { useAside } from '@/store/aside';
-import { useRegisterForm, useResetForm } from '@/hooks';
 import {
   AlertError,
   Button,
   ErrorMessage,
   FieldInput,
   Loader,
-  QuestionRedirect,
 } from '@/components/shared';
-import { controlAside } from '@/helpers';
+import { RegisterFormProps } from './types';
 
-export const RegisterForm = () => {
-  const context = useAside();
-  const [state, formAction, isPending] = useActionState(registser, {
-    message: '',
-    success: false,
-  });
-
-  const { methods, onSubmit } = useRegisterForm({ formAction });
-
-  useResetForm({
-    isPending,
-    isSuccess: state.success,
-    methods,
-    defaultValues: { email: '', name: '', password: '', confirmPassword: '' },
-    onSuccess: () => {
-      const theme = JSON.parse(localStorage.getItem('mode')!) || 'light';
-      toast.success('Register successful', { theme });
-      const actionElement = context.type;
-      context.onChange(actionElement, false);
-    },
-  });
-
+export const RegisterForm = ({
+  isPending,
+  methods,
+  onSubmit,
+  state,
+}: RegisterFormProps) => {
   const { formState } = methods;
   const { errors } = formState;
 
@@ -110,17 +88,6 @@ export const RegisterForm = () => {
       >
         {isPending && <Loader />}
       </Button>
-
-      <QuestionRedirect
-        buttonText="Sign in here"
-        question=" Already registered?"
-        onClick={(e) => {
-          e.preventDefault();
-          const actionElement = context.type;
-          const stateOpen = context.value;
-          controlAside(context, 'login', actionElement, stateOpen);
-        }}
-      />
     </form>
   );
 };

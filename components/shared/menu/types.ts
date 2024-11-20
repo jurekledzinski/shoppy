@@ -1,3 +1,5 @@
+import { MouseEventHandler } from 'react';
+
 export type MenuProps = {
   children: React.ReactNode;
 };
@@ -5,5 +7,5 @@ export type MenuProps = {
 export type MenuItemProps = {
   children: React.ReactNode;
   className?: string;
-  onClick?: () => void;
+  onClick?: MouseEventHandler<HTMLLIElement>;
 };

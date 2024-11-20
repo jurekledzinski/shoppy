@@ -2,7 +2,7 @@
 import { UserSchema } from '@/models';
 import { actionTryCatch } from '@/helpers';
 
-export const registser = actionTryCatch(
+export const register = actionTryCatch(
   async (prevState: unknown, formData: FormData) => {
     const body = Object.fromEntries(formData);
 

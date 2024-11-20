@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-type State = {
+export type State = {
   message: string;
   success: boolean;
   body?: { email: string; id: string; token: string };
