@@ -20,7 +20,8 @@ export const Backdrop = () => {
         <div
           className="backdrop"
           onClick={() => {
-            context.onChange(null, false);
+            const actionElement = context.type;
+            context.onChange(actionElement, false);
           }}
         />
       </CSSTransition>
