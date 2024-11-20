@@ -1,24 +1,42 @@
 'use client';
 import styles from '../Form.module.css';
+import { registser } from '@/actions';
+import { toast } from 'react-toastify';
+import { useActionState } from 'react';
+import { useAside } from '@/store/aside';
+import { useRegisterForm, useResetForm } from '@/hooks';
 import {
   AlertError,
   Button,
   ErrorMessage,
   FieldInput,
   Loader,
+  QuestionRedirect,
 } from '@/components/shared';
-import { registser } from '@/actions';
-import { useActionState } from 'react';
-import { useRegisterForm } from '@/hooks';
-import { useAside } from '@/store/aside';
+import { controlAside } from '@/helpers';
 
 export const RegisterForm = () => {
   const context = useAside();
   const [state, formAction, isPending] = useActionState(registser, {
     message: '',
+    success: false,
   });
 
-  const { methods, onSubmit } = useRegisterForm({ formAction, isPending });
+  const { methods, onSubmit } = useRegisterForm({ formAction });
+
+  useResetForm({
+    isPending,
+    isSuccess: state.success,
+    methods,
+    defaultValues: { email: '', name: '', password: '', confirmPassword: '' },
+    onSuccess: () => {
+      const theme = JSON.parse(localStorage.getItem('mode')!) || 'light';
+      toast.success('Register successful', { theme });
+      const actionElement = context.type;
+      context.onChange(actionElement, false);
+    },
+  });
+
   const { formState } = methods;
   const { errors } = formState;
 
@@ -80,7 +98,9 @@ export const RegisterForm = () => {
         <ErrorMessage>{errors.confirmPassword.message}</ErrorMessage>
       )}
 
-      {state?.message && <AlertError>{state.message}</AlertError>}
+      {!state.success && state.message && (
+        <AlertError>{state.message}</AlertError>
+      )}
 
       <Button
         className={styles.button}
@@ -91,30 +111,16 @@ export const RegisterForm = () => {
         {isPending && <Loader />}
       </Button>
 
-      <span className={styles.info}>
-        Already registered?{' '}
-        <button
-          className={styles.info}
-          onClick={(e) => {
-            e.preventDefault();
-            const actionElement = context.type;
-            const stateOpen = context.value;
-
-            if (actionElement !== 'login' && stateOpen) {
-              context.onChange(actionElement, !stateOpen);
-
-              const idTimeout = setTimeout(() => {
-                context.onChange('login', true);
-                clearTimeout(idTimeout);
-              }, 1000);
-
-              return;
-            }
-          }}
-        >
-          Sign in here
-        </button>
-      </span>
+      <QuestionRedirect
+        buttonText="Sign in here"
+        question=" Already registered?"
+        onClick={(e) => {
+          e.preventDefault();
+          const actionElement = context.type;
+          const stateOpen = context.value;
+          controlAside(context, 'login', actionElement, stateOpen);
+        }}
+      />
     </form>
   );
 };
