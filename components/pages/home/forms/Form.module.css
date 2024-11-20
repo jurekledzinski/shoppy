@@ -23,22 +23,3 @@
 .button:hover {
   background-color: var(--color-primary-hover);
 }
-
-.info {
-  color: var(--color-text-primary);
-  font-size: 0.6rem;
-}
-
-.info:nth-child(1) {
-  padding: initial;
-  margin: initial;
-  border: none;
-  background-color: transparent;
-  color: var(--color-primary);
-  cursor: pointer;
-  transition: 0.3s linear;
-}
-
-.info:nth-child(1):hover {
-  color: var(--color-primary-hover);
-}
