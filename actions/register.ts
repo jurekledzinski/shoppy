@@ -1,14 +1,23 @@
 'use server';
-export const registser = async (prevState: unknown, formData: FormData) => {
-  const body = Object.fromEntries(formData);
-  console.log('action register data', body);
+import { UserSchema } from '@/models';
+import { actionTryCatch } from '@/helpers';
 
-  const res = await fetch('http://localhost:3000/api/v1/register', {
-    body: JSON.stringify(body),
-    method: 'POST',
-  });
+export const registser = actionTryCatch(
+  async (prevState: unknown, formData: FormData) => {
+    const body = Object.fromEntries(formData);
 
-  if (!res.ok) {
-    return { message: 'Something went wrong, please try later' };
+    const parsedData = UserSchema.parse(body);
+
+    const res = await fetch('http://localhost:3000/api/v1/register', {
+      body: JSON.stringify(parsedData),
+      method: 'POST',
+      cache: 'no-store',
+    });
+
+    if (!res.ok) {
+      throw new Error(res.statusText);
+    }
+
+    return { message: 'Register successful', success: true };
   }
-};
+);
