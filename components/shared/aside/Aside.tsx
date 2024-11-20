@@ -68,6 +68,9 @@ export const Aside = () => {
           onRedirectRegister={() => {
             controlAside(context, 'register', actionElement, stateOpen);
           }}
+          onCloseAside={() => {
+            context.onChange(actionElement, false);
+          }}
         />
       ) : context.type === 'cart' ? (
         <>
