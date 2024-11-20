@@ -1,19 +1,10 @@
 import ThemeProvider from '@/store/theme';
 import AsideProvider from '@/store/aside';
-import '@styles/globals.css';
 import type { Metadata } from 'next';
-import {
-  Footer,
-  Header,
-  CartButton,
-  MenuButton,
-  ThemeButton,
-  Aside,
-  Backdrop,
-} from '@/components/shared';
 import { Oswald, Roboto } from 'next/font/google';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import '@styles/globals.css';
 
 const oswald = Oswald({
   variable: '--font-oswald',
@@ -33,28 +24,28 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  header,
+  footer,
+  aside,
+  backdrop,
 }: Readonly<{
   children: React.ReactNode;
+  header: React.ReactNode;
+  footer: React.ReactNode;
+  aside: React.ReactNode;
+  backdrop: React.ReactNode;
 }>) {
   return (
     <html lang="en" className={[oswald.variable, roboto.variable].join(' ')}>
       <ThemeProvider>
         <AsideProvider>
           <body>
-            <Header>
-              <ThemeButton />
-              <CartButton />
-              <MenuButton />
-            </Header>
+            {header}
             {children}
-            <Footer />
-            <Aside />
-            <Backdrop />
-            <ToastContainer
-              position="top-right"
-              theme="dark"
-              autoClose={1500}
-            />
+            {footer}
+            {aside}
+            {backdrop}
+            <ToastContainer position="top-right" autoClose={1500} />
           </body>
         </AsideProvider>
       </ThemeProvider>
