@@ -12,6 +12,8 @@ import {
   Backdrop,
 } from '@/components/shared';
 import { Oswald, Roboto } from 'next/font/google';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const oswald = Oswald({
   variable: '--font-oswald',
@@ -48,6 +50,11 @@ export default function RootLayout({
             <Footer />
             <Aside />
             <Backdrop />
+            <ToastContainer
+              position="top-right"
+              theme="dark"
+              autoClose={1500}
+            />
           </body>
         </AsideProvider>
       </ThemeProvider>
