@@ -24,7 +24,10 @@
       "@components/*": ["components/*"],
       "@styles/*": ["styles/*"],
       "@actions/*": ["actions/*"],
-      "@hooks/*": ["hooks/*"]
+      "@helpers/*": ["helpers/*"],
+      "@hooks/*": ["hooks/*"],
+      "@db/*": ["db/*"],
+      "@models/*": ["models/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
