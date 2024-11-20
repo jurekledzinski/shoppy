@@ -6,14 +6,18 @@ import { login, register } from '@/actions';
 import { toast } from 'react-toastify';
 import { ContactForm, ForgetPasswordForm } from '@/components/pages';
 import { controlAside } from '@/helpers';
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
 import { useLoginForm, useRegisterForm } from '@/hooks';
 import { LoginPanel, MenuPanel, RegisterPanel } from '@/components/pages';
+import { useUser } from '@/store/user';
 
 export const Aside = () => {
+  const user = useUser();
   const context = useAside();
   const actionElement = context.type;
   const stateOpen = context.value;
+  const userId = user.payload?.id ?? '';
+  const userName = user.payload?.name ?? '';
 
   const [stateLogin, formActionLogin, isPendingLogin] = useActionState(login, {
     message: '',
@@ -50,6 +54,13 @@ export const Aside = () => {
     },
   });
 
+  useEffect(() => {
+    if (stateLogin.body) {
+      const body = stateLogin.body ? stateLogin.body : null;
+      user.onChange && user.onChange(body);
+    }
+  }, [stateLogin.body]);
+
   return (
     <aside
       className={`${styles.aside} ${
@@ -58,7 +69,15 @@ export const Aside = () => {
     >
       {context.type === 'menu' ? (
         <MenuPanel
-          userId={'123'}
+          onCloseAside={() => {
+            context.onChange(actionElement, false);
+          }}
+          onLogout={() => {
+            user.onChange && user.onChange(null);
+            context.onChange(actionElement, false);
+            const theme = JSON.parse(localStorage.getItem('mode')!) || 'light';
+            toast.success('Logout successful', { theme });
+          }}
           onRedirectContact={() => {
             controlAside(context, 'contact', actionElement, stateOpen);
           }}
@@ -68,9 +87,7 @@ export const Aside = () => {
           onRedirectRegister={() => {
             controlAside(context, 'register', actionElement, stateOpen);
           }}
-          onCloseAside={() => {
-            context.onChange(actionElement, false);
-          }}
+          user={{ id: userId, name: userName }}
         />
       ) : context.type === 'cart' ? (
         <>

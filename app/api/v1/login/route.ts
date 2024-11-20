@@ -1,6 +1,6 @@
 import 'server-only';
 import { errorMessage } from '@/helpers';
-import { UserLogin } from '@/models';
+import { UserLogin, UserRegister } from '@/models';
 import { type NextRequest } from 'next/server';
 import {
   getCollectionDb,
@@ -12,7 +12,7 @@ import {
 export const POST = connectDB(async (request: NextRequest) => {
   const body = (await request.json()) as UserLogin;
 
-  const collection = getCollectionDb<UserLogin>('users');
+  const collection = getCollectionDb<UserRegister>('users');
 
   if (!collection) return errorMessage(500);
 
@@ -28,6 +28,6 @@ export const POST = connectDB(async (request: NextRequest) => {
 
   return Response.json({
     success: true,
-    payload: { email: user.email, id: user._id, token },
+    payload: { email: user.email, id: user._id, name: user.name, auth: token },
   });
 });

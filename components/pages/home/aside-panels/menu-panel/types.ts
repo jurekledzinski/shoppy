@@ -4,6 +4,7 @@ export type MenuPanelProps = {
   onRedirectContact?: MouseEventHandler<HTMLLIElement>;
   onRedirectLogin?: MouseEventHandler<HTMLLIElement>;
   onRedirectRegister?: MouseEventHandler<HTMLLIElement>;
+  onLogout: () => void;
   onCloseAside: () => void;
-  userId: string;
+  user: { id: string; name: string };
 };

@@ -25,16 +25,23 @@ const UserProvider = ({ children }: UserProviderProps) => {
   const value = useMemo(
     () => ({
       payload: user,
-      onchange: (data: UserTypes) => {
-        setUser(data);
-        localStorage.setItem('user', JSON.stringify(data));
-      },
     }),
     [user]
   );
 
   return (
-    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+    <ThemeContext.Provider
+      value={{
+        ...value,
+        onChange: (data) => {
+          setUser(data);
+          if (data) localStorage.setItem('user', JSON.stringify(data));
+          else localStorage.removeItem('user');
+        },
+      }}
+    >
+      {children}
+    </ThemeContext.Provider>
   );
 };
 

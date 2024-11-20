@@ -3,7 +3,7 @@ import { z } from 'zod';
 export type State = {
   message: string;
   success: boolean;
-  body?: { email: string; id: string; token: string };
+  body?: { email: string; id: string; name: string; auth: string };
 };
 
 export const actionTryCatch = (

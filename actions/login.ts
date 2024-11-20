@@ -23,7 +23,7 @@ export const login = actionTryCatch(
     return {
       message: 'Login successful',
       success: true,
-      body: data,
+      body: data.payload,
     };
   }
 );

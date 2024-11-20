@@ -18,7 +18,6 @@ export const UserSchema = z.object({
 });
 
 export const LoginUserSchema = UserSchema.pick({
-  _id: true,
   email: true,
   password: true,
 });
