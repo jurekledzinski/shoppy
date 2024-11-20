@@ -1,8 +1,33 @@
+import 'server-only';
+import { errorMessage } from '@/helpers';
+import { UserLogin } from '@/models';
 import { type NextRequest } from 'next/server';
+import {
+  getCollectionDb,
+  connectDB,
+  comparePasswords,
+  createToken,
+} from '@/lib';
 
-export const POST = async (request: NextRequest) => {
-  const data = await request.json();
+export const POST = connectDB(async (request: NextRequest) => {
+  const body = (await request.json()) as UserLogin;
 
-  console.log('data api login body', data);
-  return Response.json({ message: 'Success login' });
-};
+  const collection = getCollectionDb<UserLogin>('users');
+
+  if (!collection) return errorMessage(500);
+
+  const user = await collection.findOne({ email: body.email });
+
+  if (!user) return errorMessage(409, 'Incorrect credentials');
+
+  const isMatch = comparePasswords(body.password, user.password);
+
+  if (!isMatch) return errorMessage(409, 'Incorrect credentials');
+
+  const token = createToken(user._id);
+
+  return Response.json({
+    success: true,
+    payload: { email: user.email, id: user._id, token },
+  });
+});
