@@ -1,4 +1,5 @@
 export type AsideType =
+  | string
   | 'cart'
   | 'menu'
   | 'contact'
