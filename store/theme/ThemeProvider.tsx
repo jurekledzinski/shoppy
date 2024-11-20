@@ -1,11 +1,5 @@
 'use client';
-import {
-  createContext,
-  useContext,
-  useLayoutEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { ThemeContextType, ThemeProviderProps } from './types';
 
 export const ThemeContext = createContext<ThemeContextType>({ mode: 'light' });
@@ -23,7 +17,7 @@ export const useTheme = () => {
 const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [theme, setTheme] = useState({ mode: 'light' });
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const themeLocal = JSON.parse(localStorage.getItem('mode')!) || 'light';
     document.documentElement.setAttribute('data-theme', themeLocal);
     setTheme({ mode: themeLocal });
