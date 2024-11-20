@@ -11,6 +11,7 @@ import {
   LoginForm,
   RegisterForm,
 } from '@/components/pages';
+import { controlAside } from '@/helpers';
 
 export const Aside = () => {
   const context = useAside();
@@ -34,17 +35,7 @@ export const Aside = () => {
               onClick={() => {
                 const actionElement = context.type;
                 const stateOpen = context.value;
-
-                if (actionElement !== 'contact' && stateOpen) {
-                  context.onChange(actionElement, !stateOpen);
-
-                  const idTimeout = setTimeout(() => {
-                    context.onChange('contact', true);
-                    clearTimeout(idTimeout);
-                  }, 1000);
-
-                  return;
-                }
+                controlAside(context, 'contact', actionElement, stateOpen);
               }}
             >
               Contact
@@ -53,17 +44,7 @@ export const Aside = () => {
               onClick={() => {
                 const actionElement = context.type;
                 const stateOpen = context.value;
-
-                if (actionElement !== 'login' && stateOpen) {
-                  context.onChange(actionElement, !stateOpen);
-
-                  const idTimeout = setTimeout(() => {
-                    context.onChange('login', true);
-                    clearTimeout(idTimeout);
-                  }, 1000);
-
-                  return;
-                }
+                controlAside(context, 'login', actionElement, stateOpen);
               }}
             >
               Sign In
@@ -72,17 +53,7 @@ export const Aside = () => {
               onClick={() => {
                 const actionElement = context.type;
                 const stateOpen = context.value;
-
-                if (actionElement !== 'register' && stateOpen) {
-                  context.onChange(actionElement, !stateOpen);
-
-                  const idTimeout = setTimeout(() => {
-                    context.onChange('register', true);
-                    clearTimeout(idTimeout);
-                  }, 1000);
-
-                  return;
-                }
+                controlAside(context, 'register', actionElement, stateOpen);
               }}
             >
               Sign Up
