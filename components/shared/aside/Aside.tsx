@@ -58,6 +58,7 @@ export const Aside = () => {
     >
       {context.type === 'menu' ? (
         <MenuPanel
+          userId={'123'}
           onRedirectContact={() => {
             controlAside(context, 'contact', actionElement, stateOpen);
           }}

@@ -8,6 +8,7 @@ export const MenuPanel = ({
   onRedirectContact,
   onRedirectLogin,
   onRedirectRegister,
+  userId,
 }: MenuPanelProps) => {
   return (
     <>
@@ -19,12 +20,12 @@ export const MenuPanel = ({
           </Link>
         </MenuItem>
         <MenuItem className={styles.menuItemPanel}>
-          <Link href={`/orders/:id`} className={styles.link}>
+          <Link href={`/orders/${userId}`} className={styles.link}>
             Orders
           </Link>
         </MenuItem>
         <MenuItem className={styles.menuItemPanel}>
-          <Link href={`/profile/:id`} className={styles.link}>
+          <Link href={`/profile/${userId}`} className={styles.link}>
             Profile
           </Link>
         </MenuItem>
