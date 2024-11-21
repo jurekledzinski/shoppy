@@ -1,4 +1,3 @@
-'use server';
 import { LoginUserSchema } from '@/models';
 import { actionTryCatch } from '@/helpers';
 
@@ -8,10 +7,12 @@ export const login = actionTryCatch(
 
     const parsedData = LoginUserSchema.parse(body);
 
-    const res = await fetch('http://localhost:3000/api/v1/login', {
+    const res = await fetch('api/v1/login', {
       body: JSON.stringify(parsedData),
       method: 'POST',
       cache: 'no-store',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
     });
 
     if (!res.ok) {

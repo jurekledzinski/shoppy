@@ -1,4 +1,3 @@
-'use server';
 import { UserSchema } from '@/models';
 import { actionTryCatch } from '@/helpers';
 
@@ -8,10 +7,12 @@ export const register = actionTryCatch(
 
     const parsedData = UserSchema.parse(body);
 
-    const res = await fetch('http://localhost:3000/api/v1/register', {
+    const res = await fetch('/api/v1/register', {
       body: JSON.stringify(parsedData),
       method: 'POST',
       cache: 'no-store',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
     });
 
     if (!res.ok) {
