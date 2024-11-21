@@ -16,6 +16,7 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@types/bcrypt": "^5.0.2",
     "bcrypt": "^5.1.1",
+    "jose": "^5.9.6",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.10.0",
     "next": "15.0.3",
