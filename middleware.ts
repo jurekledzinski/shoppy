@@ -1,14 +1,18 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import jwt from 'jsonwebtoken';
+import { jwtVerify } from 'jose';
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get('auth');
 
   try {
     if (token) {
-      jwt.verify(token.value, process.env.JWT_SECRET_ACCESS!);
+      const secretKey = new TextEncoder().encode(
+        process.env.JWT_SECRET_ACCESS!
+      );
+
+      await jwtVerify(token.value, secretKey);
     }
 
     if (
@@ -21,7 +25,8 @@ export function middleware(request: NextRequest) {
     }
 
     return NextResponse.next();
-  } catch {
+  } catch (err) {
+    console.log('ee', err);
     const url = request.nextUrl.clone();
     url.pathname = '/';
     return NextResponse.redirect(url);
