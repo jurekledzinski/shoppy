@@ -8,14 +8,14 @@ type UseLoginFormProps = {
   formAction: (payload: FormData) => void;
   isPending: boolean;
   isSuccess: boolean;
-  onSuccess: () => void;
+  onSuccessAction: () => void;
 };
 
 export const useLoginForm = ({
   formAction,
   isPending,
   isSuccess,
-  onSuccess,
+  onSuccessAction,
 }: UseLoginFormProps) => {
   const methods = useForm<LoginFormInputs>({
     defaultValues: {
@@ -39,7 +39,7 @@ export const useLoginForm = ({
     isSuccess,
     methods,
     defaultValues: { email: '', password: '' },
-    onSuccess,
+    onSuccessAction,
   });
 
   return {

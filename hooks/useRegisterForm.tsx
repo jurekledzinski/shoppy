@@ -8,14 +8,14 @@ type UseRegisterFormProps = {
   formAction: (payload: FormData) => void;
   isPending: boolean;
   isSuccess: boolean;
-  onSuccess: () => void;
+  onSuccessAction: () => void;
 };
 
 export const useRegisterForm = ({
   formAction,
   isPending,
   isSuccess,
-  onSuccess,
+  onSuccessAction,
 }: UseRegisterFormProps) => {
   const methods = useForm<RegisterFormInputs>({
     defaultValues: {
@@ -42,7 +42,7 @@ export const useRegisterForm = ({
     isSuccess,
     methods,
     defaultValues: { email: '', name: '', password: '', confirmPassword: '' },
-    onSuccess,
+    onSuccessAction,
   });
 
   return {
