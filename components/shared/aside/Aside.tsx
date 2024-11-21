@@ -2,11 +2,11 @@
 import styles from './Aside.module.css';
 import { Cart } from '../cart';
 import { useAside } from '@/store/aside';
-import { login, register } from '@/actions';
+import { login, register, logout } from '@/actions';
 import { toast } from 'react-toastify';
 import { ContactForm, ForgetPasswordForm } from '@/components/pages';
 import { controlAside } from '@/helpers';
-import { useActionState, useEffect } from 'react';
+import { startTransition, useActionState, useEffect } from 'react';
 import { useLoginForm, useRegisterForm } from '@/hooks';
 import { LoginPanel, MenuPanel, RegisterPanel } from '@/components/pages';
 import { useUser } from '@/store/user';
@@ -19,10 +19,28 @@ export const Aside = () => {
   const userId = user.payload?.id ?? '';
   const userName = user.payload?.name ?? '';
 
-  const [stateLogin, formActionLogin, isPendingLogin] = useActionState(login, {
+  const logoutUser = useActionState(logout, {
     message: '',
     success: false,
   });
+
+  const [stateLogin, formActionLogin, isPendingLogin] = useActionState(
+    async (state: unknown, payload: FormData | null) => {
+      if (payload === null) {
+        return {
+          message: '',
+          success: false,
+        };
+      }
+
+      const response = await login(state, payload);
+      return response;
+    },
+    {
+      message: '',
+      success: false,
+    }
+  );
 
   const [stateRegister, formActionRegister, isPendingRegister] = useActionState(
     register,
@@ -36,7 +54,7 @@ export const Aside = () => {
     formAction: formActionLogin,
     isPending: isPendingLogin,
     isSuccess: stateLogin.success,
-    onSuccess: () => {
+    onSuccessAction: () => {
       const theme = JSON.parse(localStorage.getItem('mode')!) || 'light';
       toast.success('Login successful', { theme });
       context.onChange(actionElement, false);
@@ -47,7 +65,7 @@ export const Aside = () => {
     formAction: formActionRegister,
     isPending: isPendingRegister,
     isSuccess: stateRegister.success,
-    onSuccess: () => {
+    onSuccessAction: () => {
       const theme = JSON.parse(localStorage.getItem('mode')!) || 'light';
       toast.success('Register successful', { theme });
       context.onChange(actionElement, false);
@@ -55,11 +73,14 @@ export const Aside = () => {
   });
 
   useEffect(() => {
-    if (stateLogin.body) {
-      const body = stateLogin.body ? stateLogin.body : null;
-      user.onChange && user.onChange(body);
+    if (stateLogin.body && user.onChange) {
+      const body = stateLogin.body ?? null;
+      user.onChange(body);
     }
-  }, [stateLogin.body]);
+    if (!stateLogin.body && user.onChange) {
+      user.onChange(null);
+    }
+  }, [stateLogin, user]);
 
   return (
     <aside
@@ -73,10 +94,18 @@ export const Aside = () => {
             context.onChange(actionElement, false);
           }}
           onLogout={() => {
-            user.onChange && user.onChange(null);
-            context.onChange(actionElement, false);
+            startTransition(() => {
+              formActionLogin(null);
+            });
+
+            startTransition(() => {
+              const formData = new FormData();
+              logoutUser[1](formData);
+            });
+
             const theme = JSON.parse(localStorage.getItem('mode')!) || 'light';
             toast.success('Logout successful', { theme });
+            context.onChange(actionElement, false);
           }}
           onRedirectContact={() => {
             controlAside(context, 'contact', actionElement, stateOpen);
