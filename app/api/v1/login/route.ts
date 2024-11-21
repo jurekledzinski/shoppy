@@ -1,7 +1,7 @@
 import 'server-only';
 import { errorMessage } from '@/helpers';
 import { UserLogin, UserRegister } from '@/models';
-import { type NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import {
   getCollectionDb,
   connectDB,
@@ -9,8 +9,8 @@ import {
   createToken,
 } from '@/lib';
 
-export const POST = connectDB(async (request: NextRequest) => {
-  const body = (await request.json()) as UserLogin;
+export const POST = connectDB(async (req: NextRequest) => {
+  const body = (await req.json()) as UserLogin;
 
   const collection = getCollectionDb<UserRegister>('users');
 
@@ -26,8 +26,18 @@ export const POST = connectDB(async (request: NextRequest) => {
 
   const token = createToken(user._id);
 
-  return Response.json({
+  const response = NextResponse.json({
     success: true,
-    payload: { email: user.email, id: user._id, name: user.name, auth: token },
+    payload: { email: user.email, id: user._id, name: user.name },
   });
+
+  response.cookies.set('auth', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 3600,
+    path: '/',
+    sameSite: 'strict',
+  });
+
+  return response;
 });
