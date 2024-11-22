@@ -2,7 +2,6 @@ export type UserTypes = {
   id: string;
   email: string;
   name: string;
-  auth: string;
 } | null;
 
 export type UserContextType = {
