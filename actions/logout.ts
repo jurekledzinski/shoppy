@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation';
 import { actionTryCatch } from '@/helpers';
 
 export const logout = actionTryCatch(async () => {
@@ -13,5 +14,5 @@ export const logout = actionTryCatch(async () => {
     throw new Error(res.statusText);
   }
 
-  return { message: 'Logout successful', success: true };
+  redirect('/');
 });
