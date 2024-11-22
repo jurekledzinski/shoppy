@@ -7,6 +7,11 @@ type useActionStateAndResetProps = {
   fnAction: (prevState: unknown, formData: FormData) => Promise<State>;
 };
 
+const initialState: State = {
+  message: '',
+  success: false,
+};
+
 export const useActionStateAndReset = ({
   onResetAction,
   fnAction,
@@ -20,18 +25,19 @@ export const useActionStateAndReset = ({
         } as State;
       }
 
-      const response = await fnAction(state, payload);
-      return response;
+      try {
+        const response = await fnAction(state, payload);
+        return response;
+      } catch {
+        return { message: 'An error occurred', success: false } as State;
+      }
     },
-    {
-      message: '',
-      success: false,
-    }
+    initialState
   );
 
-  const resetStateAction = () => {
+  const resetStateAction = (formData?: FormData) => {
     startTransition(() => {
-      formAction(null);
+      formAction(formData || null);
       if (onResetAction) onResetAction();
     });
   };
