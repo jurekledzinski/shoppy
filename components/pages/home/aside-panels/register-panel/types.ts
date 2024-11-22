@@ -8,7 +8,7 @@ export type RegisterPanelProps = {
   context: AsideState;
   isPending: boolean;
   methods: UseFormReturn<RegisterFormInputs, unknown, undefined>;
-  onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
+  onSubmitAction: (e?: React.BaseSyntheticEvent) => Promise<void>;
   onRedirectLogin: MouseEventHandler<HTMLButtonElement>;
   state: State;
 };

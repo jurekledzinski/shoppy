@@ -8,7 +8,7 @@ export const LoginPanel = ({
   context,
   isPending,
   methods,
-  onSubmit,
+  onSubmitAction,
   state,
   onRedirectForgetPassword,
   onRedirectRegister,
@@ -19,7 +19,7 @@ export const LoginPanel = ({
       <LoginForm
         context={context}
         methods={methods}
-        onSubmit={onSubmit}
+        onSubmitAction={onSubmitAction}
         state={state}
         isPending={isPending}
       />

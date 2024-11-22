@@ -9,7 +9,7 @@ export const RegisterPanel = ({
   context,
   isPending,
   methods,
-  onSubmit,
+  onSubmitAction,
   state,
 }: RegisterPanelProps) => {
   return (
@@ -19,7 +19,7 @@ export const RegisterPanel = ({
         context={context}
         isPending={isPending}
         methods={methods}
-        onSubmit={onSubmit}
+        onSubmitAction={onSubmitAction}
         state={state}
       />
 

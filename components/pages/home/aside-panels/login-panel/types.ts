@@ -8,7 +8,7 @@ export type LoginPanelProps = {
   context: AsideState;
   isPending: boolean;
   methods: UseFormReturn<LoginFormInputs, unknown, undefined>;
-  onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
+  onSubmitAction: (e?: React.BaseSyntheticEvent) => Promise<void>;
   onRedirectRegister: MouseEventHandler<HTMLButtonElement>;
   onRedirectForgetPassword: MouseEventHandler<HTMLButtonElement>;
   state: State;

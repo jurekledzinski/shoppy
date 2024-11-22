@@ -12,14 +12,14 @@ import { RegisterFormProps } from './types';
 export const RegisterForm = ({
   isPending,
   methods,
-  onSubmit,
+  onSubmitAction,
   state,
 }: RegisterFormProps) => {
   const { formState } = methods;
   const { errors } = formState;
 
   return (
-    <form className={styles.form} onSubmit={onSubmit}>
+    <form className={styles.form} onSubmit={onSubmitAction}>
       <FieldInput
         autoComplete="username"
         label="Name"

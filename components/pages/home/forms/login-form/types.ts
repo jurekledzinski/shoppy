@@ -10,7 +10,7 @@ export type LoginFormInputs = {
 export type LoginFormProps = {
   context: AsideState;
   methods: UseFormReturn<LoginFormInputs, unknown, undefined>;
-  onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
+  onSubmitAction: (e?: React.BaseSyntheticEvent) => Promise<void>;
   state: State;
   isPending: boolean;
 };

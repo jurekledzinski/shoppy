@@ -12,7 +12,7 @@ import { LoginFormProps } from './types';
 
 export const LoginForm = ({
   methods,
-  onSubmit,
+  onSubmitAction,
   state,
   isPending,
 }: LoginFormProps) => {
@@ -20,7 +20,7 @@ export const LoginForm = ({
   const { errors } = formState;
 
   return (
-    <form className={styles.form} onSubmit={onSubmit}>
+    <form className={styles.form} onSubmit={onSubmitAction}>
       <FieldInput
         autoComplete="username"
         label="Email"
