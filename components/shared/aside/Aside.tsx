@@ -1,15 +1,21 @@
 'use client';
 import styles from './Aside.module.css';
 import { Cart } from '../cart';
-import { useAside } from '@/store/aside';
-import { login, register, logout } from '@/actions';
-import { toast } from 'react-toastify';
 import { ContactForm, ForgetPasswordForm } from '@/components/pages';
 import { controlAside } from '@/helpers';
-import { useActionState, useEffect } from 'react';
-import { useActionStateAndReset, useLoginForm, useRegisterForm } from '@/hooks';
+import { login, logout, register } from '@/actions';
 import { LoginPanel, MenuPanel, RegisterPanel } from '@/components/pages';
+import { setDefaultCloseAside } from './helpers';
+import { useActionState } from 'react';
+import { useAside } from '@/store/aside';
 import { useUser } from '@/store/user';
+
+import {
+  useActionStateAndReset,
+  useLoadUser,
+  useLoginForm,
+  useRegisterForm,
+} from '@/hooks';
 
 export const Aside = () => {
   const user = useUser();
@@ -43,30 +49,19 @@ export const Aside = () => {
     formAction: actionLogin.formAction,
     isPending: actionLogin.isPending,
     isSuccess: actionLogin.state.success,
-    onSuccessAction: () => {
-      const theme = JSON.parse(localStorage.getItem('mode')!) || 'light';
-      toast.success('Login successful', { theme });
-      context.onChange(actionElement, false);
-    },
+    onSuccessAction: () =>
+      setDefaultCloseAside(context, 'Login successful', actionElement),
   });
 
   const { methodsRegister, onSubmitRegister } = useRegisterForm({
     formAction: formActionRegister,
     isPending: isPendingRegister,
     isSuccess: stateRegister.success,
-    onSuccessAction: () => {
-      const theme = JSON.parse(localStorage.getItem('mode')!) || 'light';
-      toast.success('Register successful', { theme });
-      context.onChange(actionElement, false);
-    },
+    onSuccessAction: () =>
+      setDefaultCloseAside(context, 'Register successful', actionElement),
   });
 
-  useEffect(() => {
-    if (actionLogin.state.body && user.onChange) {
-      const body = actionLogin.state.body ?? null;
-      user.onChange(body);
-    }
-  }, [actionLogin.state, user]);
+  useLoadUser({ body: actionLogin.state.body, onChange: user.onChange });
 
   return (
     <aside
@@ -81,11 +76,8 @@ export const Aside = () => {
           }}
           onLogout={() => {
             resetStateActionLogin();
-            resetStateActionLogout();
-
-            const theme = JSON.parse(localStorage.getItem('mode')!) || 'light';
-            toast.success('Logout successful', { theme });
-            context.onChange(actionElement, false);
+            resetStateActionLogout(new FormData());
+            setDefaultCloseAside(context, 'Logout successful', actionElement);
           }}
           onRedirectContact={() => {
             controlAside(context, 'contact', actionElement, stateOpen);
