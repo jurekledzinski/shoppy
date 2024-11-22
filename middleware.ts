@@ -6,6 +6,12 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get('auth');
 
+  //   if (!token) {
+  //     const url = request.nextUrl.clone();
+  //     url.pathname = '/';
+  //     return NextResponse.redirect(url);
+  //   }
+
   try {
     if (token) {
       const secretKey = new TextEncoder().encode(
