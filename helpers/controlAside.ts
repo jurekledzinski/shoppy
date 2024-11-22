@@ -17,5 +17,7 @@ export const controlAside = (
     return;
   }
 
-  context.onChange(currentElement, !stateOpen);
+  if (currentElement === 'menu' || currentElement === 'cart') {
+    context.onChange(currentElement, !stateOpen);
+  }
 };
