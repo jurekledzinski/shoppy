@@ -6,8 +6,8 @@ import { login, register, logout } from '@/actions';
 import { toast } from 'react-toastify';
 import { ContactForm, ForgetPasswordForm } from '@/components/pages';
 import { controlAside } from '@/helpers';
-import { startTransition, useActionState, useEffect } from 'react';
-import { useLoginForm, useRegisterForm } from '@/hooks';
+import { useActionState, useEffect } from 'react';
+import { useActionStateAndReset, useLoginForm, useRegisterForm } from '@/hooks';
 import { LoginPanel, MenuPanel, RegisterPanel } from '@/components/pages';
 import { useUser } from '@/store/user';
 
@@ -19,28 +19,17 @@ export const Aside = () => {
   const userId = user.payload?.id ?? '';
   const userName = user.payload?.name ?? '';
 
-  const logoutUser = useActionState(logout, {
-    message: '',
-    success: false,
+  const { resetStateAction: resetStateActionLogout } = useActionStateAndReset({
+    fnAction: logout,
   });
 
-  const [stateLogin, formActionLogin, isPendingLogin] = useActionState(
-    async (state: unknown, payload: FormData | null) => {
-      if (payload === null) {
-        return {
-          message: '',
-          success: false,
-        };
-      }
-
-      const response = await login(state, payload);
-      return response;
-    },
-    {
-      message: '',
-      success: false,
-    }
-  );
+  const { action: actionLogin, resetStateAction: resetStateActionLogin } =
+    useActionStateAndReset({
+      fnAction: login,
+      onResetAction: () => {
+        if (user.onChange) user.onChange(null);
+      },
+    });
 
   const [stateRegister, formActionRegister, isPendingRegister] = useActionState(
     register,
@@ -51,9 +40,9 @@ export const Aside = () => {
   );
 
   const { methodsLogin, onSubmitLogin } = useLoginForm({
-    formAction: formActionLogin,
-    isPending: isPendingLogin,
-    isSuccess: stateLogin.success,
+    formAction: actionLogin.formAction,
+    isPending: actionLogin.isPending,
+    isSuccess: actionLogin.state.success,
     onSuccessAction: () => {
       const theme = JSON.parse(localStorage.getItem('mode')!) || 'light';
       toast.success('Login successful', { theme });
@@ -73,14 +62,11 @@ export const Aside = () => {
   });
 
   useEffect(() => {
-    if (stateLogin.body && user.onChange) {
-      const body = stateLogin.body ?? null;
+    if (actionLogin.state.body && user.onChange) {
+      const body = actionLogin.state.body ?? null;
       user.onChange(body);
     }
-    if (!stateLogin.body && user.onChange) {
-      user.onChange(null);
-    }
-  }, [stateLogin, user]);
+  }, [actionLogin.state, user]);
 
   return (
     <aside
@@ -94,14 +80,8 @@ export const Aside = () => {
             context.onChange(actionElement, false);
           }}
           onLogout={() => {
-            startTransition(() => {
-              formActionLogin(null);
-            });
-
-            startTransition(() => {
-              const formData = new FormData();
-              logoutUser[1](formData);
-            });
+            resetStateActionLogin();
+            resetStateActionLogout();
 
             const theme = JSON.parse(localStorage.getItem('mode')!) || 'light';
             toast.success('Logout successful', { theme });
@@ -131,10 +111,10 @@ export const Aside = () => {
       ) : context.type === 'login' ? (
         <LoginPanel
           context={context}
-          isPending={isPendingLogin}
+          isPending={actionLogin.isPending}
           methods={methodsLogin}
-          onSubmit={onSubmitLogin}
-          state={stateLogin}
+          onSubmitAction={onSubmitLogin}
+          state={actionLogin.state}
           onRedirectForgetPassword={(e) => {
             e.preventDefault();
             controlAside(context, 'forget-password', actionElement, stateOpen);
@@ -149,7 +129,7 @@ export const Aside = () => {
           context={context}
           isPending={isPendingRegister}
           methods={methodsRegister}
-          onSubmit={onSubmitRegister}
+          onSubmitAction={onSubmitRegister}
           state={stateRegister}
           onRedirectLogin={(e) => {
             e.preventDefault();
