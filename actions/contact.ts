@@ -1,16 +1,24 @@
-'use server';
+import { ContactEmailSchema } from '@/models';
+import { actionTryCatch } from '@/helpers';
 
-// import { redirect } from 'next/navigation';
+export const contact = actionTryCatch(
+  async (prevState: unknown, formData: FormData) => {
+    const body = Object.fromEntries(formData);
 
-export const contact = async (prevState: unknown, formData: FormData) => {
-  const body = Object.fromEntries(formData);
+    const parsedData = ContactEmailSchema.parse(body);
 
-  const res = await fetch('http://localhost:3000/api/v1/contact', {
-    body: JSON.stringify(body),
-    method: 'POST',
-  });
+    const res = await fetch('/api/v1/contact', {
+      body: JSON.stringify(parsedData),
+      method: 'POST',
+      cache: 'no-store',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
+    });
 
-  if (!res.ok) {
-    return { message: 'Something went wrong, please try later' };
+    if (!res.ok) {
+      throw new Error(res.statusText);
+    }
+
+    return { message: 'Message send successfully', success: true };
   }
-};
+);

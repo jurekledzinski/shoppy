@@ -1,4 +1,5 @@
 'use client';
+
 import styles from '../Form.module.css';
 import {
   AlertError,
@@ -8,21 +9,19 @@ import {
   FieldTextarea,
   Loader,
 } from '@/components/shared';
-import { contact } from '@/actions';
-import { useActionState } from 'react';
-import { useContactForm } from '@/hooks';
+import { ContactFormProps } from './types';
 
-export const ContactForm = () => {
-  const [state, formAction, isPending] = useActionState(contact, {
-    message: '',
-  });
-
-  const { methods, onSubmit } = useContactForm({ formAction, isPending });
+export const ContactForm = ({
+  isPending,
+  methods,
+  onSubmitAction,
+  state,
+}: ContactFormProps) => {
   const { formState } = methods;
   const { errors } = formState;
 
   return (
-    <form className={styles.form} onSubmit={onSubmit}>
+    <form className={styles.form} onSubmit={onSubmitAction}>
       <FieldInput
         autoComplete="username"
         label="Name"
@@ -64,7 +63,9 @@ export const ContactForm = () => {
 
       {errors.message && <ErrorMessage>{errors.message.message}</ErrorMessage>}
 
-      {state?.message && <AlertError>{state.message}</AlertError>}
+      {!state.success && state.message && (
+        <AlertError>{state.message}</AlertError>
+      )}
 
       <Button
         className={styles.button}

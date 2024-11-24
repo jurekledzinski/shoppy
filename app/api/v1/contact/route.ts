@@ -1,25 +1,59 @@
+import 'server-only';
+
+import nodemailer from 'nodemailer';
+import fs from 'fs';
+import path from 'path';
+import Handlebars from 'handlebars';
+import juice from 'juice';
 import { type NextRequest } from 'next/server';
-// import { redirect } from 'next/navigation'
+import { ContactEmail } from '@/models';
+import { errorMessage } from '@/helpers';
 
 export const POST = async (request: NextRequest) => {
-  //   console.log('contact api request', request);
-  //   console.log('contact api response', response);
-  //   const searchParams = request.nextUrl.searchParams;
-  //   const query = searchParams.get('query');
-  //   // query is "hello" for /api/search?query=hello
-  //   res body -----------
-  //   const res = await request.json();
-  //   return Response.json({ res });
-  //  req body formData ---------
-  //   const formData = await request.formData();
-  //   const name = formData.get('name');
-  //   const email = formData.get('email');
-  //   return Response.json({ name, email });
-  // redirect ---------
-  // redirect('https://nextjs.org/')
+  const data = (await request.json()) as ContactEmail;
 
-  const data = await request.json();
+  const templatePath = path.join(process.cwd(), 'templates/contactEmail.hbs');
+  const templateContent = fs.readFileSync(templatePath, 'utf-8');
+  const template = Handlebars.compile(templateContent);
+  const currentYear = new Date().getFullYear();
+  const date = new Date().toLocaleString();
+  const htmlContent = template({
+    name: data.name,
+    email: data.email,
+    message: data.message,
+    currentYear,
+    date,
+  });
 
-  console.log('data api contact body', data);
-  return Response.json({ message: 'Success contact' });
+  const cssPath = path.join(process.cwd(), 'templates/contactEmail.css');
+  const cssContent = fs.readFileSync(cssPath, 'utf-8');
+
+  const htmlWithCss = juice.inlineContent(htmlContent, cssContent);
+
+  const transporter = nodemailer.createTransport({
+    host: process.env.HOST_EMAIL,
+    port: process.env.PORT_PROVIDER_EMAIL,
+    secure: true,
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.PASSWORD_USER,
+    },
+    tls: {
+      rejectUnauthorized: false,
+    },
+  } as nodemailer.TransportOptions);
+
+  const mailOptions = {
+    from: `Shoopy shop <${process.env.EMAIL_USER}>`,
+    to: process.env.EMAIL_SENDTO,
+    subject: 'Contact email',
+    html: htmlWithCss,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    return Response.json({ success: true });
+  } catch {
+    return errorMessage(500, 'Internal server error');
+  }
 };
