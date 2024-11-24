@@ -22,6 +22,12 @@ export const LoginUserSchema = UserSchema.pick({
   password: true,
 });
 
+export const ForgetPasswordSchema = UserSchema.pick({
+  email: true,
+});
+
+export const ResetPasswordSchema = UserSchema.pick({ password: true });
+
 export const ChangeUserPasswordSchema = UserSchema.pick({ password: true });
 export const UpdateUserProfileSchema = UserSchema.pick({
   name: true,
@@ -30,3 +36,7 @@ export const UpdateUserProfileSchema = UserSchema.pick({
 
 export type UserRegister = z.infer<typeof UserSchema>;
 export type UserLogin = z.infer<typeof LoginUserSchema>;
+export type UserForgetPassword = z.infer<typeof ForgetPasswordSchema>;
+export type UserResetPassword = z.infer<typeof ResetPasswordSchema> & {
+  token?: string;
+};
