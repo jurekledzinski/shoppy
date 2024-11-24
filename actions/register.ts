@@ -7,7 +7,7 @@ export const register = actionTryCatch(
 
     const parsedData = UserSchema.parse(body);
 
-    const res = await fetch('api/v1/register', {
+    const res = await fetch('/api/v1/register', {
       body: JSON.stringify(parsedData),
       method: 'POST',
       cache: 'no-store',

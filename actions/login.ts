@@ -7,7 +7,7 @@ export const login = actionTryCatch(
 
     const parsedData = LoginUserSchema.parse(body);
 
-    const res = await fetch('api/v1/login', {
+    const res = await fetch('/api/v1/login', {
       body: JSON.stringify(parsedData),
       method: 'POST',
       cache: 'no-store',
