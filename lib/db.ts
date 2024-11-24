@@ -1,6 +1,7 @@
 import 'server-only';
 import type { NextRequest, NextResponse } from 'next/server';
 import { MongoClient } from 'mongodb';
+import { errorMessage, transformMessage } from '@/helpers';
 
 if (!process.env.ATLAS_URL) {
   throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
@@ -33,8 +34,9 @@ const connectDB = (
       await client.connect();
       return await fn(req, res);
     } catch (err) {
-      console.log('err ----', err);
-      return { message: 'Something went wrong,please try later' };
+      const error = err as Error;
+      const message = transformMessage(error.name);
+      return errorMessage(500, message);
     }
   };
 };
