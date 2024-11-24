@@ -5,8 +5,8 @@ import { Menu, MenuItem } from '@/components/shared';
 import { MenuPanelProps } from './types';
 
 export const MenuPanel = ({
-  onCloseAside,
-  onLogout,
+  onCloseAsideAction,
+  onLogoutAction,
   onRedirectContact,
   onRedirectLogin,
   onRedirectRegister,
@@ -17,7 +17,7 @@ export const MenuPanel = ({
       <header className={styles.header}>Welcome {user.name ?? ''}</header>
       <Menu>
         <MenuItem className={styles.menuItemPanel}>
-          <Link href="/" className={styles.link} onClick={onCloseAside}>
+          <Link href="/" className={styles.link} onClick={onCloseAsideAction}>
             Home
           </Link>
         </MenuItem>
@@ -26,7 +26,7 @@ export const MenuPanel = ({
             <Link
               href={`/orders/${user.id}`}
               className={styles.link}
-              onClick={onCloseAside}
+              onClick={onCloseAsideAction}
             >
               Orders
             </Link>
@@ -37,7 +37,7 @@ export const MenuPanel = ({
             <Link
               href={`/profile/${user.id}`}
               className={styles.link}
-              onClick={onCloseAside}
+              onClick={onCloseAsideAction}
             >
               Profile
             </Link>
@@ -46,7 +46,7 @@ export const MenuPanel = ({
         <MenuItem onClick={onRedirectContact}>Contact</MenuItem>
         {!user.id && <MenuItem onClick={onRedirectLogin}>Sign In</MenuItem>}
         {!user.id && <MenuItem onClick={onRedirectRegister}>Sign Up</MenuItem>}
-        {user.id && <MenuItem onClick={onLogout}>Logout</MenuItem>}
+        {user.id && <MenuItem onClick={onLogoutAction}>Logout</MenuItem>}
       </Menu>
     </>
   );
