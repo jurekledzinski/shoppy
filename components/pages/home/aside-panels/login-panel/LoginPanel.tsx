@@ -5,7 +5,6 @@ import { LoginPanelProps } from './types';
 import styles from './LoginPanel.module.css';
 
 export const LoginPanel = ({
-  context,
   isPending,
   methods,
   onSubmitAction,
@@ -17,7 +16,6 @@ export const LoginPanel = ({
     <>
       <header className={styles.header}>Sign In</header>
       <LoginForm
-        context={context}
         methods={methods}
         onSubmitAction={onSubmitAction}
         state={state}

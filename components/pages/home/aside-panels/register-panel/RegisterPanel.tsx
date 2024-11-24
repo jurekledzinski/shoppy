@@ -6,7 +6,6 @@ import { RegisterPanelProps } from './types';
 
 export const RegisterPanel = ({
   onRedirectLogin,
-  context,
   isPending,
   methods,
   onSubmitAction,
@@ -16,7 +15,6 @@ export const RegisterPanel = ({
     <>
       <header className={styles.header}>Sign Up</header>
       <RegisterForm
-        context={context}
         isPending={isPending}
         methods={methods}
         onSubmitAction={onSubmitAction}
