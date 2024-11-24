@@ -11,10 +11,8 @@
   --color-primary-light: #1976d2;
   --color-primary-light-hover: #1565c0;
 
-  /* Secondary */
-  /* --color-secondary: #e74c3c;
-  --color-secondary-light: #ec7063;
-  --color-secondary-dark: #943126; */
+  --color-secondary: #555555;
+  --color-secondary-hover: #efefef;
 
   /* Text */
   --color-text-primary: #555555;
@@ -43,6 +41,9 @@
   --color-primary-hover: #1469bd;
   --color-primary-light: #2196f3;
   --color-primary-light-hover: #1769aa;
+
+  --color-secondary: #cccccc;
+  --color-secondary-hover: #555555;
 
   --color-text-primary: #ffffff;
   --color-text-bg-dark: white;
@@ -125,4 +126,30 @@ select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px var(--background-color) inset;
   transition: background-color 5000s ease-in-out 0s;
   font-family: var(--font-roboto);
+}
+
+::-moz-scrollbar {
+  scrollbar-color: #555555 #f1f1f1;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 100vh;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar {
+  background-color: transparent;
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 1px solid transparent;
+  border-radius: 100vh;
+  background-clip: padding-box;
+  background-color: var(--color-primary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  border-width: 0;
 }
