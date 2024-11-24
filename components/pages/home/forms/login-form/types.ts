@@ -1,5 +1,4 @@
 import { State } from '@/helpers';
-import { AsideState } from '@/store/aside';
 import { UseFormReturn } from 'react-hook-form';
 
 export type LoginFormInputs = {
@@ -8,7 +7,6 @@ export type LoginFormInputs = {
 };
 
 export type LoginFormProps = {
-  context: AsideState;
   methods: UseFormReturn<LoginFormInputs, unknown, undefined>;
   onSubmitAction: (e?: React.BaseSyntheticEvent) => Promise<void>;
   state: State;

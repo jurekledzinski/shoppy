@@ -6,6 +6,7 @@ export type AsideType =
   | 'login'
   | 'register'
   | 'forget-password'
+  | 'reset_password'
   | null;
 
 export type AsideState = {
