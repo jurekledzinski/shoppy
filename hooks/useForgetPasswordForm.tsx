@@ -1,16 +1,21 @@
 'use client';
-import { startTransition, useEffect } from 'react';
+import { startTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { ForgetPasswordInputs } from '@/components/pages';
+import { useResetForm } from './useResetForm';
 
 type UseForgetPasswordFormProps = {
   formAction: (payload: FormData) => void;
   isPending: boolean;
+  isSuccess: boolean;
+  onSuccessAction: () => void;
 };
 
 export const useForgetPasswordForm = ({
   formAction,
   isPending,
+  isSuccess,
+  onSuccessAction,
 }: UseForgetPasswordFormProps) => {
   const methods = useForm<ForgetPasswordInputs>({
     defaultValues: {
@@ -27,14 +32,16 @@ export const useForgetPasswordForm = ({
     });
   };
 
-  useEffect(() => {
-    if (methods.formState.isSubmitSuccessful && !isPending) {
-      methods.reset({ email: '' });
-    }
-  }, [isPending, methods]);
+  useResetForm({
+    isPending,
+    isSuccess,
+    methods,
+    defaultValues: { email: '' },
+    onSuccessAction,
+  });
 
   return {
-    methods,
-    onSubmit: methods.handleSubmit(onSubmit),
+    methodsForgetPassword: methods,
+    onSubmitForgetPassword: methods.handleSubmit(onSubmit),
   };
 };

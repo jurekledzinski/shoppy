@@ -7,24 +7,20 @@ import {
   FieldInput,
   Loader,
 } from '@/components/shared';
-import { forgetPassword } from '@/actions';
-import { useActionState } from 'react';
-import { useForgetPasswordForm } from '@/hooks';
 
-export const ForgetPasswordForm = () => {
-  const [state, formAction, isPending] = useActionState(forgetPassword, {
-    message: '',
-  });
+import { ForgetPasswordFormProps } from './types';
 
-  const { methods, onSubmit } = useForgetPasswordForm({
-    formAction,
-    isPending,
-  });
+export const ForgetPasswordForm = ({
+  isPending,
+  methods,
+  onSubmitAction,
+  state,
+}: ForgetPasswordFormProps) => {
   const { formState } = methods;
   const { errors } = formState;
 
   return (
-    <form className={styles.form} onSubmit={onSubmit}>
+    <form className={styles.form} onSubmit={onSubmitAction}>
       <FieldInput
         autoComplete="username"
         label="Email"
@@ -41,7 +37,9 @@ export const ForgetPasswordForm = () => {
 
       {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
 
-      {state?.message && <AlertError>{state.message}</AlertError>}
+      {!state.success && state.message && (
+        <AlertError>{state.message}</AlertError>
+      )}
 
       <Button
         className={styles.button}

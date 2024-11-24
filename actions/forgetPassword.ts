@@ -1,17 +1,24 @@
-'use server';
-export const forgetPassword = async (
-  prevState: unknown,
-  formData: FormData
-) => {
-  const body = Object.fromEntries(formData);
-  console.log('action forget password data', body);
+import { actionTryCatch } from '@/helpers';
+import { ForgetPasswordSchema } from '@/models';
 
-  const res = await fetch('http://localhost:3000/api/v1/forget_password', {
-    body: JSON.stringify(body),
-    method: 'POST',
-  });
+export const forgetPassword = actionTryCatch(
+  async (prevState: unknown, formData: FormData) => {
+    const body = Object.fromEntries(formData);
 
-  if (!res.ok) {
-    return { message: 'Something went wrong, please try later' };
+    const parsedData = ForgetPasswordSchema.parse(body);
+
+    const res = await fetch('/api/v1/forget_password', {
+      body: JSON.stringify(parsedData),
+      method: 'POST',
+    });
+
+    if (!res.ok) {
+      throw new Error(res.statusText);
+    }
+
+    return {
+      message: 'Request send successfully, please check your email',
+      success: true,
+    };
   }
-};
+);
