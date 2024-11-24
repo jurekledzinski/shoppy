@@ -5,3 +5,5 @@ export * from './useRegisterForm';
 export * from './useResetForm';
 export * from './useActionStateAndReset';
 export * from './useLoadUser';
+export * from './useResetPasswordForm';
+export * from './useLoadResetPasswordForm';
