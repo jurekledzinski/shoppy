@@ -8,16 +8,17 @@ export const cartReducer = (state: CartState, action: CartAction) => {
     case 'ADD_ITEM':
       if (!state.cart) return state;
 
-      const indexProduct = state.cart.products.findIndex(
+      const indexAddProduct = state.cart.products.findIndex(
         (product) => product._id === action.payload._id
       );
 
       let udpatedProducts: Cart['products'];
 
-      if (indexProduct >= 0) {
+      if (indexAddProduct >= 0) {
         udpatedProducts = cloneDeep(state.cart.products);
-        udpatedProducts[indexProduct].quantity += 1;
+        udpatedProducts[indexAddProduct].quantity += 1;
       } else {
+        // here when add first time when add to cart must be quantity: 1 property in payload too
         udpatedProducts = [...cloneDeep(state.cart.products), action.payload];
       }
 
