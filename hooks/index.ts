@@ -7,3 +7,5 @@ export * from './useActionStateAndReset';
 export * from './useLoadUser';
 export * from './useResetPasswordForm';
 export * from './useLoadResetPasswordForm';
+export * from './useUpdateProfileForm';
+export * from './useChangePasswordForm';
