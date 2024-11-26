@@ -21,7 +21,7 @@ export const ContactForm = ({
   const { errors } = formState;
 
   return (
-    <form className={styles.form} onSubmit={onSubmitAction}>
+    <form onSubmit={onSubmitAction}>
       <FieldInput
         autoComplete="username"
         label="Name"

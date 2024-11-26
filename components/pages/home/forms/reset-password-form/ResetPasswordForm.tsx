@@ -21,7 +21,7 @@ export const ResetPasswordForm = ({
   const { errors } = formState;
 
   return (
-    <form className={styles.form} onSubmit={onSubmitAction}>
+    <form onSubmit={onSubmitAction}>
       <FieldInput
         autoComplete="current-password"
         label="Password"
