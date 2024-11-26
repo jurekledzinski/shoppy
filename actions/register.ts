@@ -12,7 +12,6 @@ export const register = actionTryCatch(
       method: 'POST',
       cache: 'no-store',
       headers: { 'Content-Type': 'application/json' },
-      credentials: 'same-origin',
     });
 
     if (!res.ok) {

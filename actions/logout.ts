@@ -1,3 +1,4 @@
+'use client';
 import { redirect } from 'next/navigation';
 import { actionTryCatch } from '@/helpers';
 
@@ -7,7 +8,6 @@ export const logout = actionTryCatch(async () => {
     method: 'POST',
     cache: 'no-store',
     headers: { 'Content-Type': 'application/json' },
-    credentials: 'same-origin',
   });
 
   if (!res.ok) {
