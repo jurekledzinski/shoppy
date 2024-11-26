@@ -128,6 +128,17 @@ select:-webkit-autofill:focus {
   font-family: var(--font-roboto);
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0 1rem;
+}
+
+form:focus-visible {
+  outline: initial;
+}
+
 ::-moz-scrollbar {
   scrollbar-color: #555555 #f1f1f1;
   scrollbar-width: thin;
