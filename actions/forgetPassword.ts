@@ -10,6 +10,8 @@ export const forgetPassword = actionTryCatch(
     const res = await fetch('/api/v1/forget_password', {
       body: JSON.stringify(parsedData),
       method: 'POST',
+      cache: 'no-store',
+      headers: { 'Content-Type': 'application/json' },
     });
 
     if (!res.ok) {
