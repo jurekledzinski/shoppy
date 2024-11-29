@@ -5,7 +5,6 @@
 }
 
 :root {
-  /* Primary */
   --color-primary: #1976d2;
   --color-primary-hover: #1469bd;
   --color-primary-light: #1976d2;
@@ -14,12 +13,13 @@
   --color-secondary: #555555;
   --color-secondary-hover: #efefef;
 
-  /* Text */
+  --color-negative: #dc3545;
+  --color-negative-hover: #c33140;
+
   --color-text-primary: #555555;
   --color-text-bg-dark: white;
   --color-text-placeholder: #555555;
 
-  /* Feedback */
   --color-success: #28a745;
   --color-error: #dc3545;
   --color-warning: #ffc107;
@@ -30,6 +30,7 @@
   --background-color-header: #ffffff;
   --background-color-footer: #444444;
   --background-color-menu-item-hover: #a7a7a73b;
+  --background-pagination-slider-button: #555555;
 
   --color-border-input: #cccccc;
   --color-border-loader: #dddddd;
@@ -45,15 +46,24 @@
   --color-secondary: #cccccc;
   --color-secondary-hover: #555555;
 
+  --color-negative: #dc3545;
+  --color-negative-hover: #c33140;
+
   --color-text-primary: #ffffff;
   --color-text-bg-dark: white;
   --color-text-placeholder: #bbbbbb;
+
+  --color-success: #28a745;
+  --color-error: #dc3545;
+  --color-warning: #ffc107;
+  --color-info: #17a2b8;
 
   --background-color: #333333;
   --background-color-aside: #444444;
   --background-color-header: #444444;
   --background-color-footer: #444444;
   --background-color-menu-item-hover: #a7a7a73b;
+  --background-pagination-slider-button: #ffffff;
 
   --color-border-input: #757575;
   --color-border-loader: #dddddd;
@@ -163,4 +173,8 @@ form:focus-visible {
 
 ::-webkit-scrollbar-thumb:hover {
   border-width: 0;
+}
+
+.pagination-button.is-active {
+  background: var(--background-pagination-slider-button) !important;
 }
