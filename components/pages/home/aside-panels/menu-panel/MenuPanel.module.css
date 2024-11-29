@@ -9,8 +9,8 @@
   font-family: var(--font-oswald);
 }
 
-.menuItemPanel {
-  padding: initial;
+.menuItemLink {
+  padding: initial !important;
 }
 
 .link {

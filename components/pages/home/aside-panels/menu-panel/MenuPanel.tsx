@@ -16,13 +16,13 @@ export const MenuPanel = ({
     <>
       <header className={styles.header}>Welcome {user.name ?? ''}</header>
       <Menu>
-        <MenuItem className={styles.menuItemPanel}>
+        <MenuItem className={styles.menuItemLink}>
           <Link href="/" className={styles.link} onClick={onCloseAsideAction}>
             Home
           </Link>
         </MenuItem>
         {user.id && (
-          <MenuItem className={styles.menuItemPanel}>
+          <MenuItem className={styles.menuItemLink}>
             <Link
               href={`/orders/${user.id}`}
               className={styles.link}
@@ -33,7 +33,7 @@ export const MenuPanel = ({
           </MenuItem>
         )}
         {user.id && (
-          <MenuItem className={styles.menuItemPanel}>
+          <MenuItem className={styles.menuItemLink}>
             <Link
               href={`/profile/${user.id}`}
               className={styles.link}
