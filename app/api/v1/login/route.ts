@@ -20,7 +20,7 @@ export const POST = connectDB(async (req: NextRequest) => {
 
   if (!user) return errorMessage(409, 'Incorrect credentials');
 
-  const isMatch = comparePasswords(body.password, user.password);
+  const isMatch = await comparePasswords(body.password, user.password);
 
   if (!isMatch) return errorMessage(409, 'Incorrect credentials');
 
