@@ -18,13 +18,16 @@ export const PATCH = connectDB(async (request: NextRequest) => {
 
   if (!collection) return errorMessage(500);
 
-  const result = await collection.updateOne(
+  const user = await collection.findOne<UserRegister>({
+    _id: new ObjectId(decoded._id),
+  });
+
+  if (!user) return errorMessage(409, 'Incorrect credentials');
+
+  await collection.updateOne(
     { _id: new ObjectId(decoded._id) },
     { $set: { email: body.email, name: body.name } }
   );
 
-  console.log('result', result);
-
-  console.log('cookie api update profile', cookie);
   return Response.json({ success: true });
 });
