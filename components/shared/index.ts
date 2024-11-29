@@ -16,3 +16,5 @@ export * from './textarea';
 export * from './field-input';
 export * from './field-textarea';
 export * from './question-redirect';
+export * from './modal';
+export * from './basic-slider';
