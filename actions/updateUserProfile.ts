@@ -10,9 +10,7 @@ export const updateUserProfile = actionTryCatch(
     const res = await fetch('/api/v1/update_user_profile', {
       body: JSON.stringify(parsedData),
       method: 'PATCH',
-      cache: 'no-store',
       headers: { 'Content-Type': 'application/json' },
-      next: { tags: ['update-profile'] },
     });
 
     if (!res.ok) {
