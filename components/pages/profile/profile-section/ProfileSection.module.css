@@ -1,4 +1,5 @@
 .section {
+  position: relative;
   flex: 1;
   padding: 1rem;
   margin: 0 auto;
@@ -27,4 +28,8 @@
   background-color: var(--color-error);
   color: var(--color-text-bg-dark);
   cursor: pointer;
+}
+
+.modalDeleteText {
+  font-size: 14px;
 }

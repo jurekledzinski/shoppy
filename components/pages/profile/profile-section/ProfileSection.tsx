@@ -1,18 +1,27 @@
 'use client';
-import { startTransition, useActionState } from 'react';
+import styles from './ProfileSection.module.css';
+import stylesButton from '@styles/buttons.module.css';
 import { ChangePasswordForm, UpdateProfileForm } from '../forms';
+import { ProfileSectionProps } from './types';
 import { showToast } from '@/helpers';
+import { startTransition, useActionState } from 'react';
 import { useChangePasswordForm, useUpdateProfileForm } from '@/hooks';
+import { useRouter } from 'next/navigation';
+
 import {
   changeUserPassword,
   updateUserProfile,
   deleteUserAccount,
 } from '@/actions';
-import styles from './ProfileSection.module.css';
-import { AlertError, Button, Loader } from '@/components/shared';
-import { ProfileSectionProps } from './types';
+import {
+  AlertError,
+  ModalContainer as ModalUserDelete,
+} from '@/components/shared';
+import { useUser } from '@/store/user';
 
 export const ProfileSection = ({ user }: ProfileSectionProps) => {
+  const router = useRouter();
+  const userStore = useUser();
   const [stateDeleteAccount, formActionDeleteAccount, isPendingDeleteAccount] =
     useActionState(deleteUserAccount, {
       message: '',
@@ -81,21 +90,28 @@ export const ProfileSection = ({ user }: ProfileSectionProps) => {
         Delete user account
       </header>
 
-      <Button
-        className={styles.button}
-        disabled={isPendingDeleteAccount}
-        type="button"
-        text="Delete account"
-        onClick={(e) => {
+      <ModalUserDelete
+        isPending={isPendingDeleteAccount}
+        isSuccess={stateDeleteAccount.success}
+        classButton={stylesButton.buttonDelete}
+        onConfirm={(e) => {
           e.preventDefault();
           const formData = new FormData();
           startTransition(() => {
             formActionDeleteAccount(formData);
           });
         }}
+        title="Delete user account"
+        onSuccess={() => {
+          userStore.onChange && userStore.onChange(null);
+          showToast(stateDeleteAccount.message);
+          router.replace('/');
+        }}
       >
-        {isPendingDeleteAccount && <Loader />}
-      </Button>
+        <p className={styles.modalDeleteText}>
+          Are you sure you want delete your account?
+        </p>
+      </ModalUserDelete>
 
       {!stateDeleteAccount.success && stateDeleteAccount.message && (
         <AlertError>{stateDeleteAccount.message}</AlertError>
