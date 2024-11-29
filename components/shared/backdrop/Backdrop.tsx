@@ -1,28 +1,30 @@
 'use client';
 import { CSSTransition } from 'react-transition-group';
-import { useAside } from '@/store/aside';
 import { useRef } from 'react';
-import './Backdrop.css';
+import styles from './Backdrop.module.css';
+import { BackdropProps } from './types';
 
-export const Backdrop = () => {
-  const context = useAside();
+export const Backdrop = ({ onClick, show }: BackdropProps) => {
   const nodeRef = useRef(null);
 
   return (
     <>
       <CSSTransition
         nodeRef={nodeRef}
-        in={context.value}
+        in={show}
         timeout={300}
-        classNames="backdrop"
+        classNames={{
+          enter: styles.backdropEnter,
+          enterActive: styles.backdropEnterActive,
+          exit: styles.backdropExit,
+          exitActive: styles.backdropExitActive,
+        }}
         unmountOnExit
       >
         <div
-          className="backdrop"
-          onClick={() => {
-            const actionElement = context.type;
-            context.onChange(actionElement, false);
-          }}
+          ref={nodeRef}
+          className={styles.backdropElement}
+          onClick={onClick}
         />
       </CSSTransition>
     </>

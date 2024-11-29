@@ -1,4 +1,4 @@
-.backdrop {
+.backdropElement {
   position: fixed;
   top: 0;
   left: 0;
@@ -9,23 +9,23 @@
   transition: 0.3s linear;
 }
 
-.backdrop-enter {
+.backdropEnter {
   opacity: 0;
   background-color: rgba(0, 0, 0, 0);
 }
 
-.backdrop-enter-active {
+.backdropEnterActive {
   opacity: 1;
   background-color: rgba(0, 0, 0, 0.5);
   transition: 0.3s linear;
 }
 
-.backdrop-exit {
+.backdropExit {
   opacity: 1;
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.backdrop-exit-active {
+.backdropExitActive {
   opacity: 0;
   background-color: rgba(0, 0, 0, 0);
   transition: 0.3s linear;
