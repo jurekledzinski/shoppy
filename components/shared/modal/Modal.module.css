@@ -1,0 +1,59 @@
+.modalElement {
+  position: absolute;
+  width: min(calc(100% - 2rem), 500px);
+  background-color: var(--background-color);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transform-origin: center;
+  z-index: 2;
+}
+
+.modalEnter {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.9);
+}
+
+.modalEnterActive {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.modalExit {
+  opacity: 1;
+}
+
+.modalExitActive {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.9);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.75rem 0.75rem;
+  background-color: var(--color-negative);
+}
+
+.title {
+  color: var(--color-text-bg-dark);
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.body {
+  padding: 1rem 0.75rem 0;
+  color: var(--color-text-primary);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 0.75rem;
+}
