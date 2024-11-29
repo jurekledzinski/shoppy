@@ -13,19 +13,15 @@ const Profile = async (props: { params: Params }) => {
   const params = await props.params;
   const url = `${protocol}://${host}/api/v1/get_user?id=${params.id}`;
   const response = await fetch(url, {
-    cache: 'force-cache',
     headers: {
       Cookie: `auth=${userSession?.value}`,
     },
-    next: { tags: ['update-profile'] },
   });
 
   const userData = (await response.json()) as {
     payload: Omit<UserRegister, 'password'>;
     success: boolean;
   };
-
-  console.log('userData page profile', userData);
 
   return <ProfileSection user={response.ok ? userData.payload : null} />;
 };
