@@ -28,13 +28,10 @@ export const PATCH = connectDB(async (request: NextRequest) => {
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(body.password, salt);
 
-  const result = await collection.updateOne(
+  await collection.updateOne(
     { _id: new ObjectId(decoded._id) },
     { $set: { password: hash } }
   );
 
-  console.log('result api change password', result);
-
-  console.log('cookie api change password', cookie);
   return Response.json({ success: true });
 });
