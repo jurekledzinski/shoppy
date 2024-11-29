@@ -157,6 +157,7 @@ export const Aside = () => {
             resetStateActionLogout(new FormData());
             showToast('Logout successful');
             context.onChange(actionElement, false);
+            router.replace('/');
           }}
           onRedirectContact={() => {
             controlAside(context, 'contact', actionElement, stateOpen);
