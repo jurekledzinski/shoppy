@@ -1,5 +1,5 @@
 'use client';
-import styles from '../Form.module.css';
+import stylesButton from '@styles/buttons.module.css';
 import { ResetPasswordFormProps } from './types';
 
 import {
@@ -55,7 +55,7 @@ export const ResetPasswordForm = ({
       )}
 
       <Button
-        className={styles.button}
+        className={stylesButton.buttonConfirm}
         disabled={isPending}
         type="submit"
         text="Change password"
@@ -63,7 +63,7 @@ export const ResetPasswordForm = ({
         {isPending && <Loader />}
       </Button>
       <Button
-        className={styles.buttonCancel}
+        className={stylesButton.buttonCancel}
         disabled={isPending}
         text="Cancel"
         onClick={onCancelAction}
