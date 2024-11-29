@@ -1,0 +1,53 @@
+.buttonConfirm,
+.buttonCancel,
+.buttonDelete {
+  border: none;
+  padding: 0.5rem !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: 0.3s linear;
+}
+
+.buttonConfirm {
+  background-color: var(--color-primary);
+  color: var(--color-text-bg-dark);
+}
+
+.buttonConfirm:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.buttonCancel {
+  background-color: transparent;
+  border: 1px solid var(--color-secondary) !important;
+  color: var(--color-text-primary);
+}
+
+.buttonCancel:hover {
+  background-color: var(--color-secondary-hover);
+}
+
+.buttonModalClose {
+  padding: 1px 6px;
+  margin: 0;
+  font-size: 12px;
+  background-color: transparent;
+  border: 1px solid white !important;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s linear;
+}
+
+.buttonModalClose:hover {
+  background-color: var(--color-secondary-hover);
+  color: var(--color-text-primary);
+}
+
+.buttonDelete {
+  background-color: var(--color-negative);
+  color: var(--color-text-bg-dark);
+}
+
+.buttonDelete:hover {
+  background-color: var(--color-negative-hover);
+}
