@@ -1,0 +1,52 @@
+.tabs {
+  position: relative;
+  height: 100%;
+}
+
+.tabsList {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.tab {
+  display: flex;
+  position: relative;
+  flex: auto;
+  border: initial;
+  border-radius: initial;
+  padding: 0.5rem 1rem;
+  max-width: min-content;
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: pointer;
+  color: #555555;
+}
+
+.tab:first-child {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.tab:last-child {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.active {
+  min-width: max-content;
+  background-color: var(--color-primary);
+  color: var(--color-text-bg-dark);
+}
+
+.tab.active:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.tabsPanel {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.5rem;
+  width: 100%;
+}
