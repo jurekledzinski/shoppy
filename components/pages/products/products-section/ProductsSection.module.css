@@ -1,0 +1,16 @@
+.section {
+  position: relative;
+  flex: 1;
+  padding: 1rem;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 75rem;
+  max-height: 100vh;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.5rem;
+  width: 100%;
+}
