@@ -18,3 +18,8 @@ export * from './field-textarea';
 export * from './question-redirect';
 export * from './modal';
 export * from './basic-slider';
+export * from './tabs';
+export * from './card-brand';
+export * from './card-product';
+export * from './display-onstock';
+export * from './star-rating';
