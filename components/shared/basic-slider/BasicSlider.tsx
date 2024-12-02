@@ -1,11 +1,11 @@
 'use client';
-import { useState } from 'react';
-import { Splide, SplideSlide } from '@splidejs/react-splide';
+import Image from 'next/image';
+import Link from 'next/link';
+import styles from './BasicSlider.module.css';
 import { optionsSlider } from './optionsSlider';
 import { sliderData } from '@/data';
-import Link from 'next/link';
-import Image from 'next/image';
-import styles from './BasicSlider.module.css';
+import { Splide, SplideSlide } from '@splidejs/react-splide';
+import { useState } from 'react';
 import '@splidejs/splide/dist/css/splide.min.css';
 
 export const BasicSlider = () => {
