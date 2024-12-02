@@ -13,3 +13,11 @@
 .slider {
   width: 100%;
 }
+
+.title {
+  margin: 1rem 0;
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+  font-family: var(--font-oswald);
+  font-weight: 400;
+}
