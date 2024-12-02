@@ -1,3 +1,7 @@
 export default function Loading() {
-  return <div>loading ...</div>;
+  return (
+    <div style={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
+      loading ...
+    </div>
+  );
 }
