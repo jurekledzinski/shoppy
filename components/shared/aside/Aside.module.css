@@ -1,16 +1,17 @@
 .aside {
-  position: absolute;
+  position: fixed;
   top: 0;
-  right: -15.625rem;
+  right: 0;
   width: 15.625rem;
   height: 100%;
   background-color: var(--background-color-aside);
   z-index: 3;
-  transition: right 0.3s linear;
+  transform: translateX(15.625rem);
+  transition: transform 0.3s linear;
 }
 
 .show {
-  right: 0px;
+  transform: translateX(0);
 }
 
 .header {
