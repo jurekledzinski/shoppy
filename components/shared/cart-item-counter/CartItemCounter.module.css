@@ -1,0 +1,47 @@
+.wrapper {
+  display: grid;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: 6.25rem;
+  grid-template-areas: 'buttonMinus input buttonPlus';
+  width: 100px;
+}
+
+.input {
+  display: block;
+  grid-area: input;
+  width: 50px;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-bottom: 1px solid var(--color-primary);
+  border-top: 1px solid var(--color-primary);
+  outline: none;
+  text-align: center;
+}
+
+.buttonMinus,
+.buttonPlus {
+  background-color: var(--color-primary);
+  color: var(--color-text-bg-dark);
+  transition: 0.3s linear;
+  cursor: pointer;
+}
+
+.buttonMinus:hover,
+.buttonPlus:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.buttonPlus {
+  padding: 0.5rem 1rem;
+  grid-area: buttonPlus;
+  border-top-left-radius: initial;
+  border-bottom-left-radius: initial;
+}
+
+.buttonMinus {
+  padding: 0.5rem 1rem;
+  grid-area: buttonMinus;
+  border-top-right-radius: initial;
+  border-bottom-right-radius: initial;
+}
