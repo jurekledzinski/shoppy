@@ -25,3 +25,6 @@ export * from './display-onstock';
 export * from './star-rating';
 export * from './breadcrumbs';
 export * from './thumbnails-slider';
+export * from './cart-item-counter';
+export * from './add-to-cart-button';
+export * from './add-to-cart-controller';
