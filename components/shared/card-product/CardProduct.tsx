@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './CardProduct.module.css';
-import { AddToCartButton } from '@/components/pages';
+import { AddToCartController } from '../';
 import { CardProductProps } from './types';
 import { DisplayOnstock } from '../display-onstock';
 import { StarRating } from '../star-rating';
@@ -31,8 +31,7 @@ export const CardProduct = ({ product }: CardProductProps) => {
         <p className={styles.text}>Price: {price}€</p>
       </div>
       <footer className={styles.footer}>
-        <AddToCartButton
-          className={styles.button}
+        <AddToCartController
           data={{
             _id,
             name,
