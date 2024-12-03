@@ -18,7 +18,7 @@ export const POST = connectDB(async (req: NextRequest) => {
 
   const user = await collection.findOne({ email: body.email });
 
-  if (!user) return errorMessage(409, 'Incorrect credentials');
+  if (!user) return errorMessage(409, 'User not found');
 
   const isMatch = await comparePasswords(body.password, user.password);
 
