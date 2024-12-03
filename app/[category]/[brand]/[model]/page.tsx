@@ -23,9 +23,8 @@ const DetailsProduct = async (props: {
   const response = await fetchDetailsProduct(urlGetProduct);
   const data = await response.json();
 
-  console.log('data details product', data);
   return (
-    <DetailsProductSection data={[]}>
+    <DetailsProductSection data={response.ok ? data.payload : null}>
       <Breadcrumbs>
         {breadcrumbs.map((segment, index) => {
           return (
