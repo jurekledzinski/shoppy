@@ -10,7 +10,6 @@
   align-items: center;
   gap: 0.5rem;
   color: var(--color-text-primary);
-  font-size: 14px;
   text-decoration: none;
 }
 
@@ -22,9 +21,21 @@
 
 .text {
   color: var(--color-text-primary);
+  font-size: 12px;
   font-weight: 400;
 }
 
 .active {
   color: var(--color-primary);
+  font-size: 12px;
+}
+
+/* from 575px */
+@media (min-width: 35.938rem) {
+  .text {
+    font-size: 14px;
+  }
+  .active {
+    font-size: 14px;
+  }
 }
