@@ -7,7 +7,7 @@ const paths = {
   detailsProduct: (segments: string[]) => {
     const [category, brand, model, id] = segments;
     return {
-      name: decodeURIComponent(model),
+      name: decodeURIComponent(model.replace(/-/g, ' ')),
       path: `/${category}/${brand}/${model}?id=${id}`,
     };
   },
