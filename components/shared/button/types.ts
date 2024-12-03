@@ -4,7 +4,7 @@ export type ButtonProps = {
   className?: string;
   children?: React.ReactNode;
   disabled?: boolean;
-  text?: string;
+  text?: React.ReactNode;
   type?: 'button' | 'submit' | 'reset' | undefined;
   onClick?: MouseEventHandler<HTMLButtonElement>;
 };
