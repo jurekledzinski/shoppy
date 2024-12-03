@@ -174,3 +174,7 @@ form:focus-visible {
 .pagination-button.is-active {
   background: var(--background-pagination-slider-button) !important;
 }
+
+.splide__track--nav > .splide__list > .splide__slide.is-active {
+  border: none !important;
+}
