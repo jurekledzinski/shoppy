@@ -36,6 +36,7 @@ const DetailsProduct = async (props: {
               {...(index !== breadcrumbs.length - 1 && {
                 icon: faChevronRight,
               })}
+              query={segment.query}
             />
           );
         })}
