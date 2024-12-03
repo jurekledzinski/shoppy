@@ -10,4 +10,45 @@
 
 .container {
   display: grid;
+  gap: 0.5rem;
+  grid-template-areas:
+    'box1 box1'
+    'box2 box2'
+    'box3 box3'
+    'box4 box4';
+}
+
+.boxOne {
+  background-color: lightblue;
+  grid-area: box1;
+}
+
+.boxTwo {
+  background-color: bisque;
+  grid-area: box2;
+}
+
+.boxThree {
+  background-color: brown;
+  grid-area: box3;
+}
+
+.boxFour {
+  background-color: darkmagenta;
+  grid-area: box4;
+}
+
+/* grid-template-areas: 
+"header header header header"
+"main main . sidebar"
+"footer footer footer footer"; */
+
+/* from 575px */
+@media (min-width: 35.938rem) {
+  .container {
+    grid-template-areas:
+      'box1 box2'
+      'box3 box3'
+      'box4 box4';
+  }
 }
