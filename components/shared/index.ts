@@ -24,3 +24,4 @@ export * from './card-product';
 export * from './display-onstock';
 export * from './star-rating';
 export * from './breadcrumbs';
+export * from './thumbnails-slider';
