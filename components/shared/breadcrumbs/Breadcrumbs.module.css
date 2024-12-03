@@ -1,0 +1,21 @@
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text-primary);
+  font-size: 14px;
+  text-decoration: none;
+  font-weight: 300;
+}
+
+.icon {
+  display: block;
+  font-size: 10px;
+  color: var(--color-text-primary);
+}
