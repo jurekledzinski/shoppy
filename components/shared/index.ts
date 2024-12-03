@@ -23,3 +23,4 @@ export * from './card-brand';
 export * from './card-product';
 export * from './display-onstock';
 export * from './star-rating';
+export * from './breadcrumbs';
