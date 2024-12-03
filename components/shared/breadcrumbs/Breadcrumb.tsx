@@ -2,11 +2,12 @@ import Link from 'next/link';
 import styles from './Breadcrumbs.module.css';
 import { BreadcrumbProps } from './types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { BreadcrumbText } from './BreadcrumbText';
 
-export const Breadcrumb = ({ icon, text, path }: BreadcrumbProps) => {
+export const Breadcrumb = ({ icon, text, path, query }: BreadcrumbProps) => {
   return (
-    <Link className={styles.breadcrumb} href={path}>
-      <span>{text}</span>
+    <Link className={styles.breadcrumb} href={query ? `${path}${query}` : path}>
+      <BreadcrumbText path={path} text={text ?? ''} />
       {icon ? (
         <span className={styles.icon}>
           <FontAwesomeIcon icon={icon} />

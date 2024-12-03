@@ -12,11 +12,19 @@
   color: var(--color-text-primary);
   font-size: 14px;
   text-decoration: none;
-  font-weight: 300;
 }
 
 .icon {
   display: block;
   font-size: 10px;
   color: var(--color-text-primary);
+}
+
+.text {
+  color: var(--color-text-primary);
+  font-weight: 400;
+}
+
+.active {
+  color: var(--color-primary);
 }
