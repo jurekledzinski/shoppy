@@ -13,7 +13,7 @@ export const CardProduct = ({ product }: CardProductProps) => {
       <header className={styles.header}>
         <Link
           className={styles.link}
-          href={`/${category}/${brand}/${name}?id=${_id}`}
+          href={`/${category}/${brand}/${encodeURIComponent(name)}?id=${_id}`}
         >
           <Image
             className={styles.image}
