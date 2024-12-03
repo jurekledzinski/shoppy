@@ -21,8 +21,14 @@ export const ChangePasswordForm = ({
 
   return (
     <form className={styles.form} onSubmit={onSubmitAction}>
+      <input
+        type="text"
+        name="username"
+        autoComplete="username"
+        style={{ display: 'none' }}
+      />
       <FieldInput
-        autoComplete="current-password"
+        autoComplete="new-password"
         label="Password"
         placeholder="Password"
         type="password"
@@ -36,7 +42,7 @@ export const ChangePasswordForm = ({
       )}
 
       <FieldInput
-        autoComplete="current-password"
+        autoComplete="new-password"
         label="Confirm password"
         placeholder="Confirm password"
         type="password"
