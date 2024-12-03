@@ -1,16 +1,9 @@
 import styles from '@styles/HomePage.module.css';
 import { BasicSlider } from '@/components/shared';
+import { getDomain } from './_helpers';
 import { TabsCategoriesContainer } from '@/components/pages';
-import { headers } from 'next/headers';
 
 type SearchParams = Promise<{ category: string }>;
-
-const getDomain = async () => {
-  const headersList = await headers();
-  const host = headersList.get('host');
-  const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
-  return `${protocol}://${host}`;
-};
 
 const fetchBrands = async (url: string) => {
   const response = await fetch(url, { cache: 'force-cache' });
