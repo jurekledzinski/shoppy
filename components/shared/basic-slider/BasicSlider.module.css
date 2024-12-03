@@ -88,6 +88,7 @@
   font-weight: 300;
   text-decoration: none;
   transition: 0.3s linear;
+  font-family: var(--font-oswald);
 }
 
 .link:hover {
