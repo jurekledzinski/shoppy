@@ -38,11 +38,6 @@
   grid-area: box4;
 }
 
-/* grid-template-areas: 
-"header header header header"
-"main main . sidebar"
-"footer footer footer footer"; */
-
 /* from 575px */
 @media (min-width: 35.938rem) {
   .container {
