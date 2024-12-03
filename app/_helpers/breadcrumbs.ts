@@ -1,3 +1,5 @@
+type WithQuery = { name: string; path: string; query?: string };
+
 const paths = {
   home: { name: 'Home', path: '/' },
   category: (category: string, brand: string) => ({
@@ -8,7 +10,8 @@ const paths = {
     const [category, brand, model, id] = segments;
     return {
       name: decodeURIComponent(model.replace(/-/g, ' ')),
-      path: `/${category}/${brand}/${model}?id=${id}`,
+      path: `/${category}/${brand}/${model}`,
+      query: `?id=${id}`,
     };
   },
   profileUser: (id: string) => ({
@@ -25,7 +28,7 @@ export const getBreadcrumbsProductsPage = (category: string, brand: string) => {
   return [paths['home'], paths['category'](category, brand)];
 };
 
-export const getBreadcrumbsDetails = (segments: string[]) => {
+export const getBreadcrumbsDetails = (segments: string[]): WithQuery[] => {
   const [category, brand, model, id] = segments;
   return [
     paths['home'],
