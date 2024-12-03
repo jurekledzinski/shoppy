@@ -16,7 +16,7 @@
   flex: auto;
   border: initial;
   border-radius: initial;
-  padding: 0.5rem 1rem;
+  padding: 0.25rem 1rem;
   max-width: min-content;
   overflow: hidden;
   white-space: nowrap;
@@ -49,4 +49,11 @@
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 0.5rem;
   width: 100%;
+}
+
+/* from 575px */
+@media (min-width: 35.938rem) {
+  .tab {
+    padding: 0.5rem 1rem;
+  }
 }
