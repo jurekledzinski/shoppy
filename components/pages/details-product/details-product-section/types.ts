@@ -1,4 +1,4 @@
-export type ProductDetailsSectionProps = {
+export type DetailsProductSectionProps = {
   children: React.ReactNode;
   data: [];
 };

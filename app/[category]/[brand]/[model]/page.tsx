@@ -1,6 +1,6 @@
 import { Breadcrumb, Breadcrumbs } from '@/components/shared';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import { ProductDetailsSection } from '@/components/pages';
+import { DetailsProductSection } from '@/components/pages';
 import { getDomain, getBreadcrumbsDetails } from '@/app/_helpers';
 
 type Params = Promise<{ category: string; brand: string; model: string }>;
@@ -25,7 +25,7 @@ const DetailsProduct = async (props: {
 
   console.log('data details product', data);
   return (
-    <ProductDetailsSection data={[]}>
+    <DetailsProductSection data={[]}>
       <Breadcrumbs>
         {breadcrumbs.map((segment, index) => {
           return (
@@ -41,7 +41,7 @@ const DetailsProduct = async (props: {
           );
         })}
       </Breadcrumbs>
-    </ProductDetailsSection>
+    </DetailsProductSection>
   );
 };
 
