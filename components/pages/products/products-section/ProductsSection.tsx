@@ -3,9 +3,10 @@ import { CardProduct } from '@/components/shared';
 import { omit } from 'lodash';
 import { ProductsSectionProps } from './types';
 
-export const ProductsSection = ({ data }: ProductsSectionProps) => {
+export const ProductsSection = ({ children, data }: ProductsSectionProps) => {
   return (
     <section className={styles.section}>
+      {children}
       <div className={styles.container}>
         {data.map((product) => {
           const filterProduct = omit(product, ['description', 'specification']);

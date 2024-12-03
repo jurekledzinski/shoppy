@@ -19,7 +19,7 @@ import {
 } from '@/components/shared';
 import { useUser } from '@/store/user';
 
-export const ProfileSection = ({ user }: ProfileSectionProps) => {
+export const ProfileSection = ({ children, user }: ProfileSectionProps) => {
   const router = useRouter();
   const userStore = useUser();
   const [stateDeleteAccount, formActionDeleteAccount, isPendingDeleteAccount] =
@@ -66,6 +66,7 @@ export const ProfileSection = ({ user }: ProfileSectionProps) => {
 
   return (
     <section className={styles.section}>
+      {children}
       <header className={styles.headerUpdateProfile}>
         Update profile user
       </header>
@@ -103,7 +104,7 @@ export const ProfileSection = ({ user }: ProfileSectionProps) => {
         }}
         title="Delete user account"
         onSuccess={() => {
-          userStore.onChange && userStore.onChange(null);
+          if (userStore.onChange) userStore.onChange(null);
           showToast(stateDeleteAccount.message);
           router.replace('/');
         }}
