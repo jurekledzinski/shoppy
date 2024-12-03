@@ -9,6 +9,7 @@
 }
 
 .buttonConfirm {
+  margin: 0.5rem 0 !important;
   background-color: var(--color-primary);
   color: var(--color-text-bg-dark);
 }
