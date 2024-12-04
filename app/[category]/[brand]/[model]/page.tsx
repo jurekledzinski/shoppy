@@ -1,13 +1,28 @@
 import { Breadcrumb, Breadcrumbs } from '@/components/shared';
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { DetailsProductSection } from '@/components/pages';
-import { getDomain, getBreadcrumbsDetails } from '@/app/_helpers';
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { getBreadcrumbsDetails, getDomain } from '@/app/_helpers';
 
 type Params = Promise<{ category: string; brand: string; model: string }>;
 type SearchParams = Promise<{ id: string }>;
 
+const fetchProductReviews = async (url: string) => {
+  const response = await fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    cache: 'force-cache',
+  });
+  return response;
+};
+
 const fetchDetailsProduct = async (url: string) => {
-  const response = await fetch(url, { cache: 'force-cache' });
+  const response = await fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    cache: 'force-cache',
+  });
   return response;
 };
 
@@ -16,15 +31,28 @@ const DetailsProduct = async (props: {
   searchParams: SearchParams;
 }) => {
   const domain = await getDomain();
+
   const { brand, category, model } = await props.params;
   const queryId = (await props.searchParams).id;
+
   const breadcrumbs = getBreadcrumbsDetails([category, brand, model, queryId]);
+
   const urlGetProduct = `${domain}/api/v1/product?id=${queryId}`;
-  const response = await fetchDetailsProduct(urlGetProduct);
-  const data = await response.json();
+  const urlGetProductReviews = `${domain}/api/v1/review?product_id=${queryId}`;
+
+  const resDetailsProduct = await fetchDetailsProduct(urlGetProduct);
+  const dataProduct = await resDetailsProduct.json();
+
+  const resReviews = await fetchProductReviews(urlGetProductReviews);
+  const dataReviews = await resReviews.json();
+
+  console.log('resReviews', resReviews);
 
   return (
-    <DetailsProductSection data={response.ok ? data.payload : null}>
+    <DetailsProductSection
+      dataProduct={resDetailsProduct.ok ? dataProduct.payload : { images: [] }}
+      dataReviews={resReviews.ok ? dataReviews.payload : []}
+    >
       <Breadcrumbs>
         {breadcrumbs.map((segment, index) => {
           return (
