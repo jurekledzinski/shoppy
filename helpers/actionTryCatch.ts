@@ -13,6 +13,7 @@ export const actionTryCatch = (
     try {
       return await fn(prevState, formData);
     } catch (error) {
+      console.log('actionTryCatch error', error);
       if (error instanceof z.ZodError) {
         return {
           message: 'Wrong credentials, check your credentials',
