@@ -14,8 +14,7 @@
   grid-template-areas:
     'box1 box1'
     'box2 box2'
-    'box3 box3'
-    'box4 box4';
+    'box3 box3';
   width: 100%;
 }
 
@@ -24,7 +23,6 @@
 }
 
 .boxTwo {
-  /* background-color: orange; */
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -32,13 +30,7 @@
 }
 
 .boxThree {
-  background-color: pink;
   grid-area: box3;
-}
-
-.boxFour {
-  background-color: hotpink;
-  grid-area: box4;
 }
 
 .title {
@@ -48,7 +40,6 @@
 }
 
 .price {
-  /* margin-bottom: 0.5rem; */
   color: var(--color-text-primary);
   font-size: 1rem;
   font-family: var(--font-oswald);
@@ -79,8 +70,7 @@
     grid-template-columns: 50% 1fr;
     grid-template-areas:
       'box1 box2'
-      'box3 box3'
-      'box4 box4';
+      'box3 box3';
   }
 
   .subTitle {

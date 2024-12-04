@@ -6,39 +6,52 @@ import {
   ThumbnailsSlider,
   DisplayOnstock,
 } from '@/components/shared';
+import { TabsDetailsContainer } from '../tabs-details-container';
 
 export const DetailsProductSection = ({
   children,
-  data,
+  dataProduct,
+  dataReviews,
 }: DetailsProductSectionProps) => {
   return (
     <section className={styles.section}>
       {children}
       <div className={styles.container}>
         <div className={styles.boxOne}>
-          <ThumbnailsSlider images={data.images} />
+          <ThumbnailsSlider images={dataProduct.images} />
         </div>
         <div className={styles.boxTwo}>
-          <h1 className={styles.title}>{data.name}</h1>
-          <StarRating initialValue={data.rate} readonly={true} />
-          <p className={styles.price}>Price: {data.price}€</p>
-          <p className={styles.text}>{data.description}</p>
+          <h1 className={styles.title}>{dataProduct.name}</h1>
+          <StarRating initialValue={dataProduct.rate} readonly={true} />
+          <p className={styles.price}>Price: {dataProduct.price}€</p>
+          <p className={styles.text}>{dataProduct.description}</p>
           <CartQuantityContoller
             data={{
               quantity: 1,
-              _id: data._id,
-              image: data.images[0],
-              name: data.name,
-              onStock: data.onStock,
-              price: data.price,
+              _id: dataProduct._id,
+              image: dataProduct.images[0],
+              name: dataProduct.name,
+              onStock: dataProduct.onStock,
+              price: dataProduct.price,
             }}
           />
           <div className={styles.wrapperOnStock}>
-            <DisplayOnstock className={styles.onStock} onStock={data.onStock} />
+            <DisplayOnstock
+              className={styles.onStock}
+              onStock={dataProduct.onStock}
+            />
           </div>
         </div>
-        <div className={styles.boxThree}>3</div>
-        <div className={styles.boxFour}>4</div>
+        <div className={styles.boxThree}>
+          <TabsDetailsContainer
+            dataProduct={{
+              _id: dataProduct._id,
+              specification: dataProduct.specification,
+            }}
+            dataReviews={dataReviews}
+            userId="userId123"
+          />
+        </div>
       </div>
     </section>
   );

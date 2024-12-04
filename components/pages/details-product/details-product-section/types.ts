@@ -1,6 +1,7 @@
-import { Product } from '@/models';
+import { Product, Review } from '@/models';
 
 export type DetailsProductSectionProps = {
   children: React.ReactNode;
-  data: Product;
+  dataProduct: Product;
+  dataReviews: Review[];
 };
