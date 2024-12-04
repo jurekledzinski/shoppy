@@ -23,13 +23,6 @@
   color: var(--color-text-primary);
 }
 
-.button {
-  padding: 0.5rem 1rem;
-  background-color: var(--color-error);
-  color: var(--color-text-bg-dark);
-  cursor: pointer;
-}
-
 .modalDeleteText {
   font-size: 14px;
 }
