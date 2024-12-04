@@ -3,6 +3,7 @@ export type TabsProps = {
 };
 
 export type TabsPanelProps = {
+  className?: string;
   children: React.ReactNode;
 };
 
