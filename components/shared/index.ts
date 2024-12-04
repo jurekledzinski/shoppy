@@ -28,3 +28,6 @@ export * from './thumbnails-slider';
 export * from './cart-item-counter';
 export * from './add-to-cart-button';
 export * from './add-to-cart-controller';
+export * from './responsive-table';
+export * from './field-rating';
+export * from './review';
