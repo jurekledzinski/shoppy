@@ -1,8 +1,9 @@
 .buttonConfirm,
 .buttonCancel,
-.buttonDelete {
+.buttonDelete,
+.buttonAddToCart {
   border: none;
-  padding: 0.5rem !important;
+  padding: 0.25rem 0.5rem;
   text-transform: uppercase;
   cursor: pointer;
   transition: 0.3s linear;
@@ -10,11 +11,16 @@
 
 .buttonConfirm {
   margin: 0.5rem 0 !important;
+}
+
+.buttonAddToCart,
+.buttonConfirm {
   background-color: var(--color-primary);
   color: var(--color-text-bg-dark);
 }
 
-.buttonConfirm:hover {
+.buttonConfirm:hover,
+.buttonAddToCart:hover {
   background-color: var(--color-primary-hover);
 }
 
@@ -51,4 +57,14 @@
 
 .buttonDelete:hover {
   background-color: var(--color-negative-hover);
+}
+
+/* from 575px */
+@media (min-width: 35.938rem) {
+  .buttonConfirm,
+  .buttonCancel,
+  .buttonDelete,
+  .buttonAddToCart {
+    padding: 0.5rem 1rem;
+  }
 }
