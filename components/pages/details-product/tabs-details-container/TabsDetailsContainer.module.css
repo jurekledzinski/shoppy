@@ -1,0 +1,8 @@
+div.tabsPanel {
+  display: initial;
+}
+
+.info {
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+}
