@@ -2,8 +2,8 @@ import { z } from 'zod';
 import { ProductCartSchema } from './product';
 
 export const CartSchema = z.object({
-  idCart: z.string(),
   _id: z.string().optional(),
+  cartId: z.string(),
   userId: z.string().optional(),
   products: z.array(ProductCartSchema, {
     required_error: 'Products are requried',
