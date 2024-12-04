@@ -1,5 +1,6 @@
 'use client';
 import styles from '../Form.module.css';
+import stylesButton from '@styles/buttons.module.css';
 import { ChangePasswordFormProps } from './types';
 
 import {
@@ -60,7 +61,7 @@ export const ChangePasswordForm = ({
       )}
 
       <Button
-        className={styles.button}
+        className={stylesButton.buttonConfirm}
         disabled={isPending}
         type="submit"
         text="Change password"

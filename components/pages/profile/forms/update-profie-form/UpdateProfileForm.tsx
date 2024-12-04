@@ -1,5 +1,6 @@
 'use client';
 import styles from '../Form.module.css';
+import stylesButton from '@styles/buttons.module.css';
 import { UpdateProfileFormProps } from './types';
 
 import {
@@ -54,7 +55,7 @@ export const UpdateProfileForm = ({
       )}
 
       <Button
-        className={styles.button}
+        className={stylesButton.buttonConfirm}
         disabled={isPending}
         type="submit"
         text="Update profile"
