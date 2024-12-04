@@ -7,3 +7,4 @@ export * from './resetPassword';
 export * from './changeUserPassword';
 export * from './updateUserProfile';
 export * from './deleteUserAccount';
+export * from './review';
