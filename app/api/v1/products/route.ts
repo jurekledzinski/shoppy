@@ -9,8 +9,6 @@ export const GET = connectDB(async (request: NextRequest) => {
   const category = searchParams.get('category');
   const brand = searchParams.get('brand');
 
-  console.log(category, brand);
-
   if (!category || category === 'undefined') return errorMessage(404);
   if (!brand || brand === 'undefined') return errorMessage(404);
 
@@ -21,8 +19,6 @@ export const GET = connectDB(async (request: NextRequest) => {
   const products = await collection
     .find<ProductCard>({ category, brand })
     .toArray();
-
-  console.log('check', products);
 
   if (!products) return errorMessage(404);
 
