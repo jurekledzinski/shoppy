@@ -31,9 +31,11 @@
   --background-color-footer: #444444;
   --background-color-menu-item-hover: #a7a7a73b;
   --background-pagination-slider-button: #555555;
+  --background-even-row-table: #f9f9f9;
 
   --color-border-input: #cccccc;
   --color-border-loader: #dddddd;
+  --color-border-table: #dddddd;
   --color-box-shadow-bottom: rgba(0, 0, 0, 0.16);
 }
 
@@ -64,9 +66,11 @@
   --background-color-footer: #444444;
   --background-color-menu-item-hover: #a7a7a73b;
   --background-pagination-slider-button: #ffffff;
+  --background-even-row-table: #555555;
 
   --color-border-input: #757575;
   --color-border-loader: #dddddd;
+  --color-border-table: #555;
   --color-box-shadow-bottom: rgba(255, 255, 255, 0.5);
 }
 
@@ -177,4 +181,13 @@ form:focus-visible {
 
 .splide__track--nav > .splide__list > .splide__slide.is-active {
   border: none !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-oswald);
 }
