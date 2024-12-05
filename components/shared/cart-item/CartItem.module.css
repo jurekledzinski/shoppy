@@ -1,0 +1,35 @@
+.cartItem {
+  width: 100%;
+}
+
+.header {
+  width: 100%;
+}
+
+.title {
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+  font-size: 1rem;
+}
+
+.text {
+  color: var(--color-text-primary);
+  font-size: 14px;
+}
+
+.content {
+  display: flex;
+}
+
+.contentLeft,
+.contentRight {
+  width: 50%;
+}
+
+.image {
+  object-fit: contain;
+}
+
+.footer {
+  width: 100%;
+}
