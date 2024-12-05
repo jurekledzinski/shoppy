@@ -1,12 +1,12 @@
 import styles from './DetailsProductSection.module.css';
 import { CartQuantityContoller } from '../cart-quantity-contoller';
 import { DetailsProductSectionProps } from './types';
+import { TabsDetailsContainer } from '../tabs-details-container';
 import {
   StarRating,
   ThumbnailsSlider,
   DisplayOnstock,
 } from '@/components/shared';
-import { TabsDetailsContainer } from '../tabs-details-container';
 
 export const DetailsProductSection = ({
   children,
