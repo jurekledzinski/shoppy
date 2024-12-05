@@ -1,8 +1,8 @@
 'use client';
-import { CSSTransition } from 'react-transition-group';
-import { useRef } from 'react';
 import styles from './Backdrop.module.css';
 import { BackdropProps } from './types';
+import { CSSTransition } from 'react-transition-group';
+import { useRef } from 'react';
 
 export const Backdrop = ({ onClick, show }: BackdropProps) => {
   const nodeRef = useRef(null);

@@ -1,7 +1,7 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import styles from './CardBrand.module.css';
 import { CardBrandProps } from './types';
-import Link from 'next/link';
 
 export const CardBrand = ({ alt, src, title, url }: CardBrandProps) => {
   return (

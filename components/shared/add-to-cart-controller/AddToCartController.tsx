@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
-import { AddToCartControllerProps } from './types';
 import { AddToCartButton } from '@/components/shared';
+import { AddToCartControllerProps } from './types';
 
 export const AddToCartController = ({ data }: AddToCartControllerProps) => {
   return (

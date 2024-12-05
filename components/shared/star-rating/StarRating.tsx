@@ -1,5 +1,4 @@
 'use client';
-
 import { Rating } from 'react-simple-star-rating';
 import { StarRatingProps } from './types';
 import { useEffect, useState } from 'react';

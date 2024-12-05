@@ -1,9 +1,9 @@
 'use client';
-import { useAside } from '@/store/aside';
 import styles from './MenuButton.module.css';
+import { controlAside } from '@/helpers';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { controlAside } from '@/helpers';
+import { useAside } from '@/store/aside';
 
 export const MenuButton = () => {
   const context = useAside();
