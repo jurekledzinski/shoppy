@@ -1,9 +1,9 @@
+import { Breadcrumb, Breadcrumbs } from '@/components/shared';
+import { cookies } from 'next/headers';
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { getBreadcrumbsProfile, getDomain } from '@/app/_helpers';
 import { ProfileSection } from '@/components/pages';
-import { Breadcrumb, Breadcrumbs } from '@/components/shared';
 import { UserRegister } from '@/models';
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import { cookies } from 'next/headers';
 
 type Params = Promise<{ id: string }>;
 
