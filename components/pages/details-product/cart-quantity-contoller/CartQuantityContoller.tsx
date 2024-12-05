@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import { CartQuantityContollerProps } from './types';
 import { AddToCartButton, CartItemCounter } from '@/components/shared';
+import { CartQuantityContollerProps } from './types';
 
 export const CartQuantityContoller = ({ data }: CartQuantityContollerProps) => {
   const [quanity, setQuantity] = useState(1);
