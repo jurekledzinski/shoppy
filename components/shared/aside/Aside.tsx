@@ -79,7 +79,7 @@ export const Aside = () => {
     formAction: formActionContact,
     isPending: isPendingContact,
     isSuccess: stateContact.success,
-    onSuccessAction: () => {
+    onSuccess: () => {
       showToast(stateContact.message);
       context.onChange(actionElement, false);
     },
@@ -99,7 +99,7 @@ export const Aside = () => {
       formAction: formActionForgetPassword,
       isPending: isPendingForgetPassword,
       isSuccess: stateForgetPassword.success,
-      onSuccessAction: () => {
+      onSuccess: () => {
         showToast(stateForgetPassword.message, 10000);
         context.onChange(actionElement, false);
       },
@@ -109,7 +109,7 @@ export const Aside = () => {
     formAction: actionLogin.formAction,
     isPending: actionLogin.isPending,
     isSuccess: actionLogin.state.success,
-    onSuccessAction: () => {
+    onSuccess: () => {
       showToast('Login successful');
       context.onChange(actionElement, false);
     },
@@ -119,7 +119,7 @@ export const Aside = () => {
     formAction: formActionRegister,
     isPending: isPendingRegister,
     isSuccess: stateRegister.success,
-    onSuccessAction: () => {
+    onSuccess: () => {
       showToast('Register successful');
       context.onChange(actionElement, false);
     },
@@ -129,7 +129,7 @@ export const Aside = () => {
     formAction: formActionResetPassword,
     isPending: isPendingResetPassword,
     isSuccess: stateResetPassword.success,
-    onSuccessAction: () => {
+    onSuccess: () => {
       router.replace(window.location.pathname);
       showToast('Reset password successful');
       setTimeout(() => {
@@ -149,10 +149,10 @@ export const Aside = () => {
     >
       {context.type === 'menu' ? (
         <MenuPanel
-          onCloseAsideAction={() => {
+          onCloseAside={() => {
             context.onChange(actionElement, false);
           }}
-          onLogoutAction={() => {
+          onLogout={() => {
             resetStateActionLogin();
             resetStateActionLogout(new FormData());
             showToast('Logout successful');
@@ -173,20 +173,20 @@ export const Aside = () => {
       ) : context.type === 'cart' ? (
         <>
           <header className={styles.header}>Shopping cart</header>
-          <Cart />
+          <Cart data={[]} />
         </>
       ) : context.type === 'contact' ? (
         <ContactPanel
           isPending={isPendingContact}
           methods={methodsContact}
-          onSubmitAction={onSubmitContact}
+          onSubmit={onSubmitContact}
           state={stateContact}
         />
       ) : context.type === 'login' ? (
         <LoginPanel
           isPending={actionLogin.isPending}
           methods={methodsLogin}
-          onSubmitAction={onSubmitLogin}
+          onSubmit={onSubmitLogin}
           state={actionLogin.state}
           onRedirectForgetPassword={(e) => {
             e.preventDefault();
@@ -201,7 +201,7 @@ export const Aside = () => {
         <RegisterPanel
           isPending={isPendingRegister}
           methods={methodsRegister}
-          onSubmitAction={onSubmitRegister}
+          onSubmit={onSubmitRegister}
           state={stateRegister}
           onRedirectLogin={(e) => {
             e.preventDefault();
@@ -212,7 +212,7 @@ export const Aside = () => {
         <ForgetPasswordPanel
           isPending={isPendingForgetPassword}
           methods={methodsForgetPassword}
-          onSubmitAction={onSubmitForgetPassword}
+          onSubmit={onSubmitForgetPassword}
           state={stateForgetPassword}
         />
       ) : context.type === 'reset_password' ? (
@@ -220,14 +220,14 @@ export const Aside = () => {
           <ResetPasswordPanel
             isPending={isPendingResetPassword}
             methods={methodsResetPassword}
-            onCancelAction={(e) => {
+            onCancel={(e) => {
               e.preventDefault();
               router.replace(window.location.pathname);
               setTimeout(() => {
                 context.onChange(actionElement, false);
               }, 500);
             }}
-            onSubmitAction={onSubmitResetPassword}
+            onSubmit={onSubmitResetPassword}
             state={stateResetPassword}
           />
         </>

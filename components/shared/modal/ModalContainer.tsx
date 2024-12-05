@@ -1,10 +1,10 @@
 'use client';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './Modal.module.css';
 import { Backdrop } from '../backdrop';
 import { Button } from '../button';
 import { CSSTransition } from 'react-transition-group';
 import { Modal } from './Modal';
-import React, { useEffect, useRef, useState } from 'react';
 import { ModalContainerProps } from './types';
 
 export const ModalContainer = ({
@@ -24,17 +24,17 @@ export const ModalContainer = ({
 
   useEffect(() => {
     if (isSuccess) {
-      onSuccess && onSuccess();
+      if (onSuccess) onSuccess();
       setModal(false);
     }
-  }, [isSuccess]);
+  }, [isSuccess, onSuccess]);
 
   return (
     <>
       <Button
         className={classButton}
         onClick={() => setModal(true)}
-        text="Delete account by modAL"
+        text="Delete account"
       ></Button>
       <Backdrop show={showBackdrop} />
       <CSSTransition

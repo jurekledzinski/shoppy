@@ -7,6 +7,7 @@ import { showToast } from '@/helpers';
 import { startTransition, useActionState } from 'react';
 import { useChangePasswordForm, useUpdateProfileForm } from '@/hooks';
 import { useRouter } from 'next/navigation';
+import { useUser } from '@/store/user';
 
 import {
   changeUserPassword,
@@ -17,11 +18,11 @@ import {
   AlertError,
   ModalContainer as ModalUserDelete,
 } from '@/components/shared';
-import { useUser } from '@/store/user';
 
 export const ProfileSection = ({ children, user }: ProfileSectionProps) => {
   const router = useRouter();
   const userStore = useUser();
+
   const [stateDeleteAccount, formActionDeleteAccount, isPendingDeleteAccount] =
     useActionState(deleteUserAccount, {
       message: '',
@@ -49,7 +50,7 @@ export const ProfileSection = ({ children, user }: ProfileSectionProps) => {
     formAction: formActionProfile,
     isPending: isPendingProfile,
     isSuccess: stateProfile.success,
-    onSuccessAction: () => {
+    onSuccess: () => {
       showToast(stateProfile.message);
     },
   });
@@ -59,7 +60,7 @@ export const ProfileSection = ({ children, user }: ProfileSectionProps) => {
       formAction: formActionPassword,
       isPending: isPendingPassword,
       isSuccess: statePassword.success,
-      onSuccessAction: () => {
+      onSuccess: () => {
         showToast(statePassword.message);
       },
     });
@@ -73,7 +74,7 @@ export const ProfileSection = ({ children, user }: ProfileSectionProps) => {
       <UpdateProfileForm
         isPending={isPendingProfile}
         methods={methodsUpdateProfile}
-        onSubmitAction={onSubmitUpdateProfile}
+        onSubmit={onSubmitUpdateProfile}
         state={stateProfile}
       />
 
@@ -83,7 +84,7 @@ export const ProfileSection = ({ children, user }: ProfileSectionProps) => {
       <ChangePasswordForm
         isPending={isPendingPassword}
         methods={methodsChangePassword}
-        onSubmitAction={onSubmitChangePassword}
+        onSubmit={onSubmitChangePassword}
         state={statePassword}
       />
 
