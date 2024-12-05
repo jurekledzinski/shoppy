@@ -5,12 +5,12 @@
   height: 100%;
 }
 
-.wrapperThumbNails {
+div.wrapperThumbNails {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
-  padding: 0.25rem !important;
+  padding: 0.25rem;
 }
 
 .mainImage {
