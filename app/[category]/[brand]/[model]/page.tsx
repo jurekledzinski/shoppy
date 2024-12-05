@@ -46,8 +46,6 @@ const DetailsProduct = async (props: {
   const resReviews = await fetchProductReviews(urlGetProductReviews);
   const dataReviews = await resReviews.json();
 
-  console.log('resReviews', resReviews);
-
   return (
     <DetailsProductSection
       dataProduct={resDetailsProduct.ok ? dataProduct.payload : { images: [] }}
