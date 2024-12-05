@@ -1,6 +1,6 @@
-'use client';
 import styles from './button.module.css';
 import { ButtonProps } from './types';
+import { classNames } from '@/helpers';
 
 export const Button = ({
   children,
@@ -12,7 +12,7 @@ export const Button = ({
 }: ButtonProps) => {
   return (
     <button
-      className={[styles.button, className].filter(Boolean).join(' ')}
+      className={classNames(styles.button, className!)}
       disabled={disabled}
       {...(onClick && { onClick })}
       {...rest}

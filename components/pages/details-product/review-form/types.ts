@@ -8,7 +8,7 @@ export type ReviewFormInputs = {
 
 export type ReviewFormProps = {
   methods: UseFormReturn<ReviewFormInputs, unknown, undefined>;
-  onSubmitAction: (e?: React.BaseSyntheticEvent) => Promise<void>;
+  onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
   state: State;
   isPending: boolean;
 };

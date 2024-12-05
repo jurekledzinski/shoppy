@@ -8,6 +8,6 @@ export type ForgetPasswordInputs = {
 export type ForgetPasswordFormProps = {
   isPending: boolean;
   methods: UseFormReturn<ForgetPasswordInputs, unknown, undefined>;
-  onSubmitAction: (e?: React.BaseSyntheticEvent) => Promise<void>;
+  onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
   state: State;
 };

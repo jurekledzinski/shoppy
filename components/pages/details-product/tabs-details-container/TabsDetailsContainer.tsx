@@ -1,5 +1,7 @@
 'use client';
 import styles from './TabsDetailsContainer.module.css';
+import { faLock } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { review } from '@/actions';
 import { ReviewForm } from '../review-form';
 import { showToast } from '@/helpers';
@@ -7,8 +9,6 @@ import { TabsDetailsContainerProps } from './types';
 import { useActionStateAndReset, useReviewForm } from '@/hooks';
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { faLock } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
   Tab,
@@ -82,7 +82,7 @@ export const TabsDetailsContainer = ({
               <ReviewForm
                 isPending={action.isPending}
                 methods={methodsReview}
-                onSubmitAction={onSubmitReview}
+                onSubmit={onSubmitReview}
                 state={action.state}
               />
 

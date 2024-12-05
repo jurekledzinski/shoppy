@@ -1,4 +1,3 @@
-'use client';
 import { startTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { LoginFormInputs } from '@/components/pages';
@@ -8,14 +7,14 @@ type UseLoginFormProps = {
   formAction: (payload: FormData) => void;
   isPending: boolean;
   isSuccess: boolean;
-  onSuccessAction: () => void;
+  onSuccess: () => void;
 };
 
 export const useLoginForm = ({
   formAction,
   isPending,
   isSuccess,
-  onSuccessAction,
+  onSuccess,
 }: UseLoginFormProps) => {
   const methods = useForm<LoginFormInputs>({
     defaultValues: {
@@ -39,7 +38,7 @@ export const useLoginForm = ({
     isSuccess,
     methods,
     defaultValues: { email: '', password: '' },
-    onSuccessAction,
+    onSuccess,
   });
 
   return {

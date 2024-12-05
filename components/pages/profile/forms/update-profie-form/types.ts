@@ -8,7 +8,7 @@ export type UpdateProfileFormInputs = {
 
 export type UpdateProfileFormProps = {
   methods: UseFormReturn<UpdateProfileFormInputs, unknown, undefined>;
-  onSubmitAction: (e?: React.BaseSyntheticEvent) => Promise<void>;
+  onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
   state: State;
   isPending: boolean;
 };

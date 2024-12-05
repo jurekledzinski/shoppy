@@ -1,4 +1,3 @@
-'use client';
 import { startTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { RegisterFormInputs } from '@/components/pages';
@@ -8,14 +7,14 @@ type UseRegisterFormProps = {
   formAction: (payload: FormData) => void;
   isPending: boolean;
   isSuccess: boolean;
-  onSuccessAction: () => void;
+  onSuccess: () => void;
 };
 
 export const useRegisterForm = ({
   formAction,
   isPending,
   isSuccess,
-  onSuccessAction,
+  onSuccess,
 }: UseRegisterFormProps) => {
   const methods = useForm<RegisterFormInputs>({
     defaultValues: {
@@ -42,7 +41,7 @@ export const useRegisterForm = ({
     isSuccess,
     methods,
     defaultValues: { email: '', name: '', password: '', confirmPassword: '' },
-    onSuccessAction,
+    onSuccess,
   });
 
   return {

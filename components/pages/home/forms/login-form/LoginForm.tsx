@@ -1,4 +1,3 @@
-'use client';
 import stylesButton from '@styles/buttons.module.css';
 import {
   AlertError,
@@ -12,7 +11,7 @@ import { LoginFormProps } from './types';
 
 export const LoginForm = ({
   methods,
-  onSubmitAction,
+  onSubmit,
   state,
   isPending,
 }: LoginFormProps) => {
@@ -20,7 +19,7 @@ export const LoginForm = ({
   const { errors } = formState;
 
   return (
-    <form onSubmit={onSubmitAction}>
+    <form onSubmit={onSubmit}>
       <FieldInput
         autoComplete="username"
         label="Email"

@@ -1,5 +1,5 @@
-'use client';
 import stylesButton from '@styles/buttons.module.css';
+import { ForgetPasswordFormProps } from './types';
 import {
   AlertError,
   Button,
@@ -8,19 +8,17 @@ import {
   Loader,
 } from '@/components/shared';
 
-import { ForgetPasswordFormProps } from './types';
-
 export const ForgetPasswordForm = ({
   isPending,
   methods,
-  onSubmitAction,
+  onSubmit,
   state,
 }: ForgetPasswordFormProps) => {
   const { formState } = methods;
   const { errors } = formState;
 
   return (
-    <form onSubmit={onSubmitAction}>
+    <form onSubmit={onSubmit}>
       <FieldInput
         autoComplete="username"
         label="Email"

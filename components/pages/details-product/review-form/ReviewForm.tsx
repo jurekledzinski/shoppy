@@ -1,6 +1,7 @@
-'use client';
-import stylesButton from '@styles/buttons.module.css';
 import styles from './ReviewForm.module.css';
+import stylesButton from '@styles/buttons.module.css';
+import { classNames } from '@/helpers';
+import { ReviewFormProps } from './types';
 import {
   AlertError,
   Button,
@@ -10,12 +11,9 @@ import {
   FieldRating,
 } from '@/components/shared';
 
-import { ReviewFormProps } from './types';
-import { classNames } from '@/helpers';
-
 export const ReviewForm = ({
   methods,
-  onSubmitAction,
+  onSubmit,
   state,
   isPending,
 }: ReviewFormProps) => {
@@ -23,7 +21,7 @@ export const ReviewForm = ({
   const { errors } = formState;
 
   return (
-    <form className={styles.form} onSubmit={onSubmitAction}>
+    <form className={styles.form} onSubmit={onSubmit}>
       <FieldTextarea
         label="Review"
         placeholder="Review"

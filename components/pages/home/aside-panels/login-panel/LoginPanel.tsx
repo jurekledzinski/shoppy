@@ -1,4 +1,3 @@
-'use client';
 import { QuestionRedirect } from '@/components/shared';
 import { LoginForm } from '../../forms';
 import { LoginPanelProps } from './types';
@@ -7,7 +6,7 @@ import styles from './LoginPanel.module.css';
 export const LoginPanel = ({
   isPending,
   methods,
-  onSubmitAction,
+  onSubmit,
   state,
   onRedirectForgetPassword,
   onRedirectRegister,
@@ -17,7 +16,7 @@ export const LoginPanel = ({
       <header className={styles.header}>Sign In</header>
       <LoginForm
         methods={methods}
-        onSubmitAction={onSubmitAction}
+        onSubmit={onSubmit}
         state={state}
         isPending={isPending}
       />

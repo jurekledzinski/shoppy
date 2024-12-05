@@ -1,6 +1,6 @@
-import { StarRating } from '../star-rating';
 import styles from './Review.module.css';
 import { ReviewProps } from './types';
+import { StarRating } from '../star-rating';
 
 export const Review = ({ data }: ReviewProps) => {
   return (

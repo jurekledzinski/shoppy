@@ -1,4 +1,3 @@
-'use client';
 import styles from './Breadcrumbs.module.css';
 import { BreadcrumbsProps } from './types';
 

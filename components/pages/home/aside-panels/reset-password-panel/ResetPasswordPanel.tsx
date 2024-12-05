@@ -5,8 +5,8 @@ import { ResetPasswordPanelProps } from './types';
 export const ResetPasswordPanel = ({
   isPending,
   methods,
-  onCancelAction,
-  onSubmitAction,
+  onCancel,
+  onSubmit,
   state,
 }: ResetPasswordPanelProps) => {
   return (
@@ -15,9 +15,9 @@ export const ResetPasswordPanel = ({
       <ResetPasswordForm
         isPending={isPending}
         methods={methods}
-        onSubmitAction={onSubmitAction}
+        onSubmit={onSubmit}
         state={state}
-        onCancelAction={onCancelAction}
+        onCancel={onCancel}
       />
     </>
   );

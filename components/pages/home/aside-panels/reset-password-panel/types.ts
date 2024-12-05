@@ -6,7 +6,7 @@ import { MouseEventHandler } from 'react';
 export type ResetPasswordPanelProps = {
   isPending: boolean;
   methods: UseFormReturn<ResetPasswordFormInputs, unknown, undefined>;
-  onCancelAction: MouseEventHandler<HTMLButtonElement>;
-  onSubmitAction: (e?: React.BaseSyntheticEvent) => Promise<void>;
+  onCancel: MouseEventHandler<HTMLButtonElement>;
+  onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
   state: State;
 };

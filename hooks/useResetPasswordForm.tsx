@@ -1,4 +1,3 @@
-'use client';
 import { startTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { ResetPasswordFormInputs } from '@/components/pages';
@@ -9,14 +8,14 @@ type UseResetPasswordProps = {
   formAction: (payload: FormData) => void;
   isPending: boolean;
   isSuccess: boolean;
-  onSuccessAction: () => void;
+  onSuccess: () => void;
 };
 
 export const useResetPasswordForm = ({
   formAction,
   isPending,
   isSuccess,
-  onSuccessAction,
+  onSuccess,
 }: UseResetPasswordProps) => {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
@@ -42,7 +41,7 @@ export const useResetPasswordForm = ({
     isSuccess,
     methods,
     defaultValues: { password: '', confirmPassword: '' },
-    onSuccessAction,
+    onSuccess,
   });
 
   return {

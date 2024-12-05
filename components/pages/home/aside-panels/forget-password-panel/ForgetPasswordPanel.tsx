@@ -5,7 +5,7 @@ import { ForgetPasswordPanelProps } from './types';
 export const ForgetPasswordPanel = ({
   isPending,
   methods,
-  onSubmitAction,
+  onSubmit,
   state,
 }: ForgetPasswordPanelProps) => {
   return (
@@ -14,7 +14,7 @@ export const ForgetPasswordPanel = ({
       <ForgetPasswordForm
         isPending={isPending}
         methods={methods}
-        onSubmitAction={onSubmitAction}
+        onSubmit={onSubmit}
         state={state}
       />
     </>

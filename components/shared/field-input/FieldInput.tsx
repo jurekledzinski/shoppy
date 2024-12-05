@@ -1,5 +1,5 @@
-'use client';
 import styles from './FieldInput.module.css';
+import { classNames } from '@/helpers';
 import { FieldInputProps } from './types';
 import { Fieldset } from '../fieldset';
 import { Input } from '../input';
@@ -17,12 +17,10 @@ export const FieldInput = ({
   ...rest
 }: FieldInputProps) => {
   return (
-    <Fieldset
-      className={[classNameField, styles.fieldset].filter(Boolean).join(' ')}
-    >
+    <Fieldset className={classNames(styles.fieldset, classNameField!)}>
       {label && (
         <Label
-          className={[classNameLabel, styles.label].filter(Boolean).join(' ')}
+          className={classNames(styles.label, classNameLabel!)}
           htmlFor={name}
         >
           {label}
@@ -31,7 +29,7 @@ export const FieldInput = ({
       {children ?? (
         <Input
           {...rest}
-          className={[classNameInput, styles.input].filter(Boolean).join(' ')}
+          className={classNames(classNameInput!, styles.input)}
           name={name}
           placeholder={placeholder}
           type={type}

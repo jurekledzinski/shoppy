@@ -1,5 +1,5 @@
-'use client';
 import stylesButton from '@styles/buttons.module.css';
+import { RegisterFormProps } from './types';
 import {
   AlertError,
   Button,
@@ -7,19 +7,18 @@ import {
   FieldInput,
   Loader,
 } from '@/components/shared';
-import { RegisterFormProps } from './types';
 
 export const RegisterForm = ({
   isPending,
   methods,
-  onSubmitAction,
+  onSubmit,
   state,
 }: RegisterFormProps) => {
   const { formState } = methods;
   const { errors } = formState;
 
   return (
-    <form onSubmit={onSubmitAction}>
+    <form onSubmit={onSubmit}>
       <FieldInput
         autoComplete="username"
         label="Name"

@@ -1,4 +1,3 @@
-'use client';
 import { startTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { useResetForm } from './useResetForm';
@@ -10,7 +9,7 @@ type UseUpdateProfileFormProps = {
   formAction: (payload: FormData) => void;
   isPending: boolean;
   isSuccess: boolean;
-  onSuccessAction: () => void;
+  onSuccess: () => void;
 };
 
 export const useUpdateProfileForm = ({
@@ -18,7 +17,7 @@ export const useUpdateProfileForm = ({
   formAction,
   isPending,
   isSuccess,
-  onSuccessAction,
+  onSuccess,
 }: UseUpdateProfileFormProps) => {
   const methods = useForm<UpdateProfileFormInputs>({
     defaultValues: {
@@ -41,7 +40,7 @@ export const useUpdateProfileForm = ({
     isPending,
     isSuccess,
     methods,
-    onSuccessAction,
+    onSuccess,
   });
 
   return {

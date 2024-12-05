@@ -1,5 +1,3 @@
-'use client';
-
 import stylesButton from '@styles/buttons.module.css';
 import {
   AlertError,
@@ -14,14 +12,14 @@ import { ContactFormProps } from './types';
 export const ContactForm = ({
   isPending,
   methods,
-  onSubmitAction,
+  onSubmit,
   state,
 }: ContactFormProps) => {
   const { formState } = methods;
   const { errors } = formState;
 
   return (
-    <form onSubmit={onSubmitAction}>
+    <form onSubmit={onSubmit}>
       <FieldInput
         autoComplete="username"
         label="Name"

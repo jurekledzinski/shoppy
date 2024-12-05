@@ -1,11 +1,11 @@
-'use client';
-import { InputProps } from './types';
 import styles from './Input.module.css';
+import { classNames } from '@/helpers';
+import { InputProps } from './types';
 
 export const Input = ({ className, ...props }: InputProps) => (
   <input
     {...props}
-    className={[className, styles.input].filter(Boolean).join(' ')}
+    className={classNames(styles.input, className!)}
     id={props.name}
   />
 );

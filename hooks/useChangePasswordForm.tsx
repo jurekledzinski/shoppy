@@ -1,4 +1,3 @@
-'use client';
 import { startTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { ChangePasswordFormInputs } from '@/components/pages';
@@ -8,14 +7,14 @@ type UseChangePasswordFormProps = {
   formAction: (payload: FormData) => void;
   isPending: boolean;
   isSuccess: boolean;
-  onSuccessAction: () => void;
+  onSuccess: () => void;
 };
 
 export const useChangePasswordForm = ({
   formAction,
   isPending,
   isSuccess,
-  onSuccessAction,
+  onSuccess,
 }: UseChangePasswordFormProps) => {
   const methods = useForm<ChangePasswordFormInputs>({
     defaultValues: {
@@ -38,7 +37,7 @@ export const useChangePasswordForm = ({
     isSuccess,
     methods,
     defaultValues: { password: '', confirmPassword: '' },
-    onSuccessAction,
+    onSuccess,
   });
 
   return {

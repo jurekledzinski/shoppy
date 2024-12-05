@@ -1,5 +1,5 @@
-'use client';
 import styles from './FieldTextarea.module.css';
+import { classNames } from '@/helpers';
 import { Fieldset } from '../fieldset';
 import { FieldTextareaProps } from './types';
 import { Label } from '../label';
@@ -16,12 +16,10 @@ export const FieldTextarea = ({
   ...rest
 }: FieldTextareaProps) => {
   return (
-    <Fieldset
-      className={[classNameField, styles.fieldset].filter(Boolean).join(' ')}
-    >
+    <Fieldset className={classNames(styles.fieldset, classNameField!)}>
       {label && (
         <Label
-          className={[classNameLabel, styles.label].filter(Boolean).join(' ')}
+          className={classNames(styles.label, classNameLabel!)}
           htmlFor={name}
         >
           {label}
@@ -30,9 +28,7 @@ export const FieldTextarea = ({
       {children ?? (
         <Textarea
           {...rest}
-          className={[classNameTextarea, styles.input]
-            .filter(Boolean)
-            .join(' ')}
+          className={classNames(styles.input, classNameTextarea!)}
           name={name}
           placeholder={placeholder}
         />

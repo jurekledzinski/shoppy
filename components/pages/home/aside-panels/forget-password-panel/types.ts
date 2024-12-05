@@ -5,6 +5,6 @@ import { State } from '@/helpers';
 export type ForgetPasswordPanelProps = {
   isPending: boolean;
   methods: UseFormReturn<ForgetPasswordInputs, unknown, undefined>;
-  onSubmitAction: (e?: React.BaseSyntheticEvent) => Promise<void>;
+  onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
   state: State;
 };

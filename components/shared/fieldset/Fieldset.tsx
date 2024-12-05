@@ -1,12 +1,9 @@
-'use client';
-import { FieldsetProps } from './types';
 import styles from './Fieldset.module.css';
+import { classNames } from '@/helpers';
+import { FieldsetProps } from './types';
 
 export const Fieldset = ({ children, className, ...props }: FieldsetProps) => (
-  <fieldset
-    {...props}
-    className={[className, styles.fieldset].filter(Boolean).join(' ')}
-  >
+  <fieldset {...props} className={classNames(styles.fieldset, className!)}>
     {children}
   </fieldset>
 );

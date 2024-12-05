@@ -1,4 +1,3 @@
-'use client';
 import styles from '../Form.module.css';
 import stylesButton from '@styles/buttons.module.css';
 import { ChangePasswordFormProps } from './types';
@@ -14,14 +13,14 @@ import {
 export const ChangePasswordForm = ({
   isPending,
   methods,
-  onSubmitAction,
+  onSubmit,
   state,
 }: ChangePasswordFormProps) => {
   const { formState } = methods;
   const { errors } = formState;
 
   return (
-    <form className={styles.form} onSubmit={onSubmitAction}>
+    <form className={styles.form} onSubmit={onSubmit}>
       <input
         type="text"
         name="username"

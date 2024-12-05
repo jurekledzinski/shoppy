@@ -1,13 +1,11 @@
-'use client';
-
-import { forwardRef, Ref } from 'react';
-import { ModalProps } from './types';
 import styles from './Modal.module.css';
 import stylesButton from '@styles/buttons.module.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '../button';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { forwardRef, Ref } from 'react';
 import { Loader } from '../loader';
+import { ModalProps } from './types';
 
 export const Modal = forwardRef<HTMLDivElement, ModalProps>(
   (

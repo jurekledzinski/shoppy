@@ -1,4 +1,3 @@
-'use client';
 import { startTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { ForgetPasswordInputs } from '@/components/pages';
@@ -8,14 +7,14 @@ type UseForgetPasswordFormProps = {
   formAction: (payload: FormData) => void;
   isPending: boolean;
   isSuccess: boolean;
-  onSuccessAction: () => void;
+  onSuccess: () => void;
 };
 
 export const useForgetPasswordForm = ({
   formAction,
   isPending,
   isSuccess,
-  onSuccessAction,
+  onSuccess,
 }: UseForgetPasswordFormProps) => {
   const methods = useForm<ForgetPasswordInputs>({
     defaultValues: {
@@ -37,7 +36,7 @@ export const useForgetPasswordForm = ({
     isSuccess,
     methods,
     defaultValues: { email: '' },
-    onSuccessAction,
+    onSuccess,
   });
 
   return {

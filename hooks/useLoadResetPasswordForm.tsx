@@ -1,4 +1,3 @@
-'use client';
 import { AsideState } from '@/store/aside';
 import { useEffect } from 'react';
 
@@ -13,7 +12,6 @@ export const useLoadResetPasswordForm = ({
 }: UseLoadResetPasswordFormProps) => {
   useEffect(() => {
     if (paramActionType === 'reset_password' && !context.value) {
-      console.log('load reset password');
       context.onChange('reset_password', true);
     }
   }, [context, paramActionType]);

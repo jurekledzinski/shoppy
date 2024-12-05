@@ -9,8 +9,8 @@ export type ResetPasswordFormInputs = {
 
 export type ResetPasswordFormProps = {
   methods: UseFormReturn<ResetPasswordFormInputs, unknown, undefined>;
-  onCancelAction: MouseEventHandler<HTMLButtonElement>;
-  onSubmitAction: (e?: React.BaseSyntheticEvent) => Promise<void>;
+  onCancel: MouseEventHandler<HTMLButtonElement>;
+  onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
   state: State;
   isPending: boolean;
 };

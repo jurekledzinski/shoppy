@@ -1,4 +1,3 @@
-'use client';
 import stylesButton from '@styles/buttons.module.css';
 import { ResetPasswordFormProps } from './types';
 
@@ -12,8 +11,8 @@ import {
 
 export const ResetPasswordForm = ({
   methods,
-  onCancelAction,
-  onSubmitAction,
+  onCancel,
+  onSubmit,
   state,
   isPending,
 }: ResetPasswordFormProps) => {
@@ -21,7 +20,7 @@ export const ResetPasswordForm = ({
   const { errors } = formState;
 
   return (
-    <form onSubmit={onSubmitAction}>
+    <form onSubmit={onSubmit}>
       <FieldInput
         autoComplete="current-password"
         label="Password"
@@ -66,7 +65,7 @@ export const ResetPasswordForm = ({
         className={stylesButton.buttonCancel}
         disabled={isPending}
         text="Cancel"
-        onClick={onCancelAction}
+        onClick={onCancel}
       />
     </form>
   );

@@ -6,7 +6,7 @@ import { MouseEventHandler } from 'react';
 export type LoginPanelProps = {
   isPending: boolean;
   methods: UseFormReturn<LoginFormInputs, unknown, undefined>;
-  onSubmitAction: (e?: React.BaseSyntheticEvent) => Promise<void>;
+  onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
   onRedirectRegister: MouseEventHandler<HTMLButtonElement>;
   onRedirectForgetPassword: MouseEventHandler<HTMLButtonElement>;
   state: State;

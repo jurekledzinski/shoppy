@@ -5,7 +5,7 @@ import { ContactPanelProps } from './types';
 export const ContactPanel = ({
   isPending,
   methods,
-  onSubmitAction,
+  onSubmit,
   state,
 }: ContactPanelProps) => {
   return (
@@ -14,7 +14,7 @@ export const ContactPanel = ({
       <ContactForm
         isPending={isPending}
         methods={methods}
-        onSubmitAction={onSubmitAction}
+        onSubmit={onSubmit}
         state={state}
       />
     </>

@@ -1,4 +1,3 @@
-'use client';
 import { startTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { ContactFormInputs } from '@/components/pages';
@@ -8,14 +7,14 @@ type UseContactFormProps = {
   formAction: (payload: FormData) => void;
   isPending: boolean;
   isSuccess: boolean;
-  onSuccessAction: () => void;
+  onSuccess: () => void;
 };
 
 export const useContactForm = ({
   formAction,
   isPending,
   isSuccess,
-  onSuccessAction,
+  onSuccess,
 }: UseContactFormProps) => {
   const methods = useForm<ContactFormInputs>({
     defaultValues: {
@@ -41,7 +40,7 @@ export const useContactForm = ({
     isSuccess,
     methods,
     defaultValues: { email: '', message: '', name: '' },
-    onSuccessAction,
+    onSuccess,
   });
 
   return {

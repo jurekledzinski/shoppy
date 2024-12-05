@@ -1,4 +1,3 @@
-'use client';
 import styles from './RegisterPanel.module.css';
 import { QuestionRedirect } from '@/components/shared';
 import { RegisterForm } from '../../forms';
@@ -8,7 +7,7 @@ export const RegisterPanel = ({
   onRedirectLogin,
   isPending,
   methods,
-  onSubmitAction,
+  onSubmit,
   state,
 }: RegisterPanelProps) => {
   return (
@@ -17,7 +16,7 @@ export const RegisterPanel = ({
       <RegisterForm
         isPending={isPending}
         methods={methods}
-        onSubmitAction={onSubmitAction}
+        onSubmit={onSubmit}
         state={state}
       />
 
