@@ -6,8 +6,6 @@ import { usePathname } from 'next/navigation';
 export const BreadcrumbText = ({ path, text }: BreadcrumbTextProps) => {
   const pathname = usePathname();
 
-  console.log('pathname', pathname);
-
   return (
     <span className={path === pathname ? styles.active : styles.text}>
       {text}
