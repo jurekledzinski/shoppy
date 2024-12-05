@@ -42,3 +42,5 @@
   border-top-right-radius: initial;
   border-bottom-right-radius: initial;
 }
+
+/* .wrapper:nth-last-of-type() {border-bottom: 1px solid var(--color-border-table) i wtedy musi miec padding lub margin i reszta by dobrze wygladać }*/
