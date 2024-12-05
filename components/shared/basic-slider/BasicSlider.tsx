@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './BasicSlider.module.css';
+import { classNames } from '@/helpers';
 import { optionsSlider } from './optionsSlider';
 import { sliderData } from '@/data';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
@@ -22,12 +23,8 @@ export const BasicSlider = () => {
                   <div
                     className={
                       indexSlide === index
-                        ? [styles.leftBoxContext, styles.showText]
-                            .filter(Boolean)
-                            .join(' ')
-                        : [styles.leftBoxContext, styles.hideText]
-                            .filter(Boolean)
-                            .join(' ')
+                        ? classNames(styles.leftBoxContext, styles.showText)
+                        : classNames(styles.leftBoxContext, styles.hideText)
                     }
                   >
                     <h3 className={styles.title}>{item.title}</h3>
@@ -41,12 +38,8 @@ export const BasicSlider = () => {
                   <Image
                     className={
                       indexSlide === index
-                        ? [styles.image, styles.showImage]
-                            .filter(Boolean)
-                            .join(' ')
-                        : [styles.image, styles.hideImage]
-                            .filter(Boolean)
-                            .join(' ')
+                        ? classNames(styles.image, styles.showImage)
+                        : classNames(styles.image, styles.hideImage)
                     }
                     src={item.image}
                     width={220}

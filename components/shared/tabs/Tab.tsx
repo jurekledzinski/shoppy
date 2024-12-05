@@ -1,4 +1,5 @@
 import styles from './Tabs.module.css';
+import { classNames } from '@/helpers';
 import { TabProps } from './types';
 
 export const Tab = ({
@@ -14,8 +15,8 @@ export const Tab = ({
     <button
       className={
         id === activeTab
-          ? [styles.tab, styles.active, className].filter(Boolean).join(' ')
-          : [styles.tab, className].filter(Boolean).join(' ')
+          ? classNames(styles.tab, styles.active, className!)
+          : classNames(styles.tab, className!)
       }
       onClick={() => onClick(id)}
       {...props}
