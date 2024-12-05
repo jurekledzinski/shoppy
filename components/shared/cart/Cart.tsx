@@ -11,7 +11,6 @@ export const Cart = ({ data }: CartProps) => {
         addGlobalQuantity={() => {}}
         removeItem={() => {}}
         subtractGlobalQuantity={() => {}}
-        key={'1'}
       />
     </div>
   );

@@ -22,7 +22,8 @@ button.buttonConfirm {
 }
 
 .buttonConfirm:hover,
-.buttonAddToCart:hover {
+.buttonAddToCart:hover,
+.buttonRemoveItem:hover {
   background-color: var(--color-primary-hover);
 }
 

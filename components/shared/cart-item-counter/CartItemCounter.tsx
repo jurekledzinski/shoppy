@@ -6,7 +6,10 @@ import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const CartItemCounter = ({
+  classNameInput,
   className,
+  classNameMinus,
+  classNamePlus,
   addGlobalQuantity,
   addLocalQuantity,
   subtractGlobalQuantity,
@@ -18,7 +21,7 @@ export const CartItemCounter = ({
   return (
     <div className={classNames(styles.wrapper, className!)}>
       <Button
-        className={styles.buttonMinus}
+        className={classNames(styles.buttonMinus, classNameMinus!)}
         onClick={() => {
           if (!subtractGlobalQuantity) return;
           if (!subtractLocalQuantity) return;
@@ -28,14 +31,9 @@ export const CartItemCounter = ({
         text={<FontAwesomeIcon icon={faMinus} />}
         disabled={localQuantity ? quanity === 1 : false}
       />
-      <input
-        className={styles.input}
-        type="text"
-        readOnly={true}
-        value={quanity}
-      />
+      <p className={classNames(styles.input, classNameInput!)}>{quanity}</p>
       <Button
-        className={styles.buttonPlus}
+        className={classNames(styles.buttonPlus, classNamePlus!)}
         onClick={() => {
           if (!addGlobalQuantity) return;
           if (!addLocalQuantity) return;
