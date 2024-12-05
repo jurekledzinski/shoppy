@@ -78,13 +78,13 @@
   transform: scale(0);
 }
 
-.link {
+a.link {
   display: block;
   width: fit-content;
   padding: 0.25rem 1rem;
   background-color: var(--color-primary);
   border-radius: 2px;
-  color: var(--color-text-bg-dark) !important;
+  color: var(--color-text-bg-dark);
   font-weight: 300;
   text-decoration: none;
   transition: 0.3s linear;
