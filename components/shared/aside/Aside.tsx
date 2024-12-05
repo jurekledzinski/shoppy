@@ -172,7 +172,10 @@ export const Aside = () => {
         />
       ) : context.type === 'cart' ? (
         <>
-          <header className={styles.header}>Shopping cart</header>
+          <header className={styles.header}>
+            <span>Shopping cart</span>
+            <span>Items: 5</span>
+          </header>
           <Cart data={[]} />
         </>
       ) : context.type === 'contact' ? (
