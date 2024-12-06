@@ -172,9 +172,9 @@ export const Aside = () => {
         />
       ) : context.type === 'cart' ? (
         <>
-          <header className={styles.header}>
+          <header className={styles.headerCart}>
             <span>Shopping cart</span>
-            <span>Items: 5</span>
+            <span>5 Items</span>
           </header>
           <Cart data={[]} />
         </>
