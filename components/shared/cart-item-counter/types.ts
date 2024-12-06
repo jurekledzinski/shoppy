@@ -1,7 +1,6 @@
 export type CartItemCounterProps = {
   idProduct?: string;
   quanity: number;
-  onStock: number;
   classNameInput?: string;
   className?: string;
   classNamePlus?: string;

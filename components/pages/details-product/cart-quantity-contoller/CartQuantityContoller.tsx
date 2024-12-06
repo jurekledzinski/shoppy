@@ -27,7 +27,6 @@ export const CartQuantityContoller = ({ data }: CartQuantityContollerProps) => {
         addLocalQuantity={addLocalQuantity}
         subtractLocalQuantity={subtractLocalQuantity}
         quanity={localQuanity}
-        onStock={data.onStock}
         disabledButtonMinus={localQuanity === 1}
         disabledButtonPlus={
           productInCart

@@ -16,7 +16,6 @@ export const CartItemCounter = ({
   subtractGlobalQuantity,
   subtractLocalQuantity,
   quanity,
-  onStock,
   localQuantity = true,
   disabledButtonMinus,
   disabledButtonPlus,

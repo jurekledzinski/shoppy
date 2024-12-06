@@ -48,7 +48,6 @@ export const CartItem = ({
                 quanity={data.quantity}
                 idProduct={data._id}
                 localQuantity={false}
-                onStock={10}
                 addGlobalQuantity={addGlobalQuantity}
                 subtractGlobalQuantity={subtractGlobalQuantity}
                 disabledButtonMinus={disabledButtonMinus}
