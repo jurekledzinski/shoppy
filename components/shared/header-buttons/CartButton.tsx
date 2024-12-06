@@ -7,6 +7,7 @@ import { useAside } from '@/store/aside';
 
 export const CartButton = () => {
   const context = useAside();
+  const quatity = 0;
 
   return (
     <button
@@ -18,6 +19,11 @@ export const CartButton = () => {
       }}
     >
       <FontAwesomeIcon icon={faCartShopping} />
+      {quatity ? (
+        <span className={styles.quantity}>
+          {quatity < 100 ? quatity : quatity - 1 + '+'}
+        </span>
+      ) : null}
     </button>
   );
 };
