@@ -19,10 +19,6 @@ export const DELETE = connectDB(async (request: NextRequest) => {
 
   const result = await collection.deleteOne({ _id: new ObjectId(decoded._id) });
 
-  console.log('result delete api', result);
-
-  console.log('cookie api delete user', cookie);
-
   const response = NextResponse.json({
     success: true,
   });

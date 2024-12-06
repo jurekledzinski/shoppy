@@ -7,7 +7,6 @@ type Params = Promise<{ id: string }>;
 
 const Orders = async (props: { params: Params }) => {
   const domain = await getDomain();
-  console.log('domain orders', domain);
   const params = await props.params;
   const breadcrumbs = getBreadcrumbsOrders(params.id);
   return (

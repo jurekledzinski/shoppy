@@ -9,8 +9,6 @@ export const POST = connectDB(async (request: NextRequest) => {
   const cookie = request.cookies.get('auth');
   const body = (await request.json()) as Omit<Review, '_id'>;
 
-  console.log('api review POST body', body);
-
   if (!cookie) return errorMessage(401);
 
   verifyToken(cookie.value, secret) as UserID;
