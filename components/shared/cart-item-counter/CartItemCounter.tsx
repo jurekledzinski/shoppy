@@ -6,6 +6,7 @@ import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const CartItemCounter = ({
+  idProduct,
   classNameInput,
   className,
   classNameMinus,
@@ -17,31 +18,35 @@ export const CartItemCounter = ({
   quanity,
   onStock,
   localQuantity = true,
+  disabledButtonMinus,
+  disabledButtonPlus,
 }: CartItemCounterProps) => {
   return (
     <div className={classNames(styles.wrapper, className!)}>
       <Button
         className={classNames(styles.buttonMinus, classNameMinus!)}
         onClick={() => {
-          if (!subtractGlobalQuantity) return;
-          if (!subtractLocalQuantity) return;
-          if (localQuantity) subtractLocalQuantity();
-          else subtractGlobalQuantity();
+          if (localQuantity && subtractLocalQuantity) subtractLocalQuantity();
+          if (!localQuantity && subtractGlobalQuantity && idProduct) {
+            subtractGlobalQuantity(idProduct);
+          }
         }}
         text={<FontAwesomeIcon icon={faMinus} />}
-        disabled={localQuantity ? quanity === 1 : false}
+        disabled={disabledButtonMinus}
       />
+
       <p className={classNames(styles.input, classNameInput!)}>{quanity}</p>
+
       <Button
         className={classNames(styles.buttonPlus, classNamePlus!)}
         onClick={() => {
-          if (!addGlobalQuantity) return;
-          if (!addLocalQuantity) return;
-          if (localQuantity) addLocalQuantity();
-          else addGlobalQuantity();
+          if (localQuantity && addLocalQuantity) addLocalQuantity();
+          if (!localQuantity && addGlobalQuantity && idProduct) {
+            addGlobalQuantity(idProduct);
+          }
         }}
         text={<FontAwesomeIcon icon={faPlus} />}
-        disabled={localQuantity ? quanity === onStock : false}
+        disabled={disabledButtonPlus}
       />
     </div>
   );

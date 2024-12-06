@@ -41,7 +41,7 @@ export const CardProduct = ({ product }: CardProductProps) => {
             image: images[0],
           }}
         />
-        <DisplayOnstock className={styles.onStock} onStock={onStock} />
+        <DisplayOnstock className={styles.onStock} data={{ _id, onStock }} />
       </footer>
     </div>
   );

@@ -9,6 +9,7 @@ import { useActionState } from 'react';
 import { useAside } from '@/store/aside';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useUser } from '@/store/user';
+import { useCart } from '@/store/cart';
 
 import {
   ContactPanel,
@@ -40,6 +41,7 @@ export const Aside = () => {
   const searchParams = useSearchParams();
   const paramActionType = searchParams.get('action_type');
   const router = useRouter();
+  const { state } = useCart();
 
   const { resetStateAction: resetStateActionLogout } = useActionStateAndReset({
     fnAction: logout,
@@ -174,7 +176,10 @@ export const Aside = () => {
         <>
           <header className={styles.headerCart}>
             <span>Shopping cart</span>
-            <span>5 Items</span>
+
+            {state.cart.products.length ? (
+              <span> {`${state.cart.totalAmountCart} Items`}</span>
+            ) : null}
           </header>
           <Cart data={[]} />
         </>

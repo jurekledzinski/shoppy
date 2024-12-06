@@ -1,4 +1,6 @@
+import { ProductCart } from '@/models';
+
 export type DisplayOnstockProps = {
   className?: string;
-  onStock: number;
+  data: Pick<ProductCart, '_id' | 'onStock'>;
 };

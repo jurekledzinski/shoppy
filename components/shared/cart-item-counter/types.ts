@@ -1,4 +1,7 @@
 export type CartItemCounterProps = {
+  idProduct?: string;
+  quanity: number;
+  onStock: number;
   classNameInput?: string;
   className?: string;
   classNamePlus?: string;
@@ -6,8 +9,8 @@ export type CartItemCounterProps = {
   localQuantity?: boolean;
   addLocalQuantity?: () => void;
   subtractLocalQuantity?: () => void;
-  addGlobalQuantity?: () => void;
-  subtractGlobalQuantity?: () => void;
-  quanity: number;
-  onStock: number;
+  addGlobalQuantity?: (id: string) => void;
+  subtractGlobalQuantity?: (id: string) => void;
+  disabledButtonMinus?: boolean;
+  disabledButtonPlus?: boolean;
 };

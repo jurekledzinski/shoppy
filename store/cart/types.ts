@@ -2,7 +2,7 @@ import { Dispatch } from 'react';
 import { Cart, ProductCart } from '@/models';
 
 export type CartState = {
-  cart: Cart | null;
+  cart: Cart;
 };
 
 export type CartProviderProps = {
@@ -10,10 +10,11 @@ export type CartProviderProps = {
 };
 
 export type CartAction =
-  | { type: 'ADD_ITEM'; payload: ProductCart }
+  | { type: 'ADD_ITEM'; payload: { data: ProductCart; id?: string } }
+  | { type: 'INCREASE_ITEM'; payload: { id: string } }
   | { type: 'REMOVE_ITEM'; payload: { id: string } }
   | { type: 'SUBTRACT_ITEM'; payload: { id: string } }
-  | { type: 'CLEAR_CART'; payload: null };
+  | { type: 'CLEAR_CART' };
 
 export type CartStoreContext = {
   state: CartState;

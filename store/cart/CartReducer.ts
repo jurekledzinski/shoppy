@@ -2,24 +2,28 @@
 import { Cart } from '@/models';
 import { CartAction, CartState } from './types';
 import { cloneDeep } from 'lodash';
+import { initialState } from './CartProvider';
 
 export const cartReducer = (state: CartState, action: CartAction) => {
   switch (action.type) {
     case 'ADD_ITEM':
-      if (!state.cart) return state;
-
-      const indexAddProduct = state.cart.products.findIndex(
-        (product) => product._id === action.payload._id
-      );
+      const indexAddProduct = state.cart
+        ? state.cart.products.findIndex(
+            (product) => product._id === action.payload.data._id
+          )
+        : -1;
 
       let udpatedProducts: Cart['products'];
 
       if (indexAddProduct >= 0) {
-        udpatedProducts = cloneDeep(state.cart.products);
-        udpatedProducts[indexAddProduct].quantity += 1;
+        udpatedProducts = cloneDeep(state.cart ? state.cart.products : []);
+        udpatedProducts[indexAddProduct].quantity +=
+          action.payload.data.quantity;
       } else {
-        // here when add first time when add to cart must be quantity: 1 property in payload too
-        udpatedProducts = [...cloneDeep(state.cart.products), action.payload];
+        udpatedProducts = [
+          ...cloneDeep(state.cart ? state.cart.products : []),
+          action.payload.data,
+        ];
       }
 
       const totalAmountCart = udpatedProducts.reduce(
@@ -32,18 +36,53 @@ export const cartReducer = (state: CartState, action: CartAction) => {
         0
       );
 
+      const cartId =
+        indexAddProduct < 0 ? action.payload.id! : state.cart?.cartId ?? '';
+
       return {
         cart: {
           ...state.cart,
+          cartId,
           products: udpatedProducts,
           totalAmountCart,
           totalPriceCart,
         },
       };
 
-    case 'SUBTRACT_ITEM': {
-      if (!state.cart) return state;
+    case 'INCREASE_ITEM':
+      const indexIncreaseProduct = state.cart.products.findIndex(
+        (product) => product._id === action.payload.id
+      );
 
+      let udpatedIncreaseProducts: Cart['products'];
+
+      if (indexIncreaseProduct >= 0) {
+        udpatedIncreaseProducts = cloneDeep(state.cart.products);
+        udpatedIncreaseProducts[indexIncreaseProduct].quantity += 1;
+      } else {
+        udpatedIncreaseProducts = cloneDeep(state.cart.products);
+      }
+
+      const totalAmountIncreaseCart = udpatedIncreaseProducts.reduce(
+        (acc, product) => acc + product.quantity,
+        0
+      );
+
+      const totalPriceIncreaseCart = udpatedIncreaseProducts.reduce(
+        (acc, product) => acc + product.quantity * product.price,
+        0
+      );
+
+      return {
+        cart: {
+          ...state.cart,
+          products: udpatedIncreaseProducts,
+          totalAmountCart: totalAmountIncreaseCart,
+          totalPriceCart: totalPriceIncreaseCart,
+        },
+      };
+
+    case 'SUBTRACT_ITEM':
       const indexSubtrackProduct = state.cart.products.findIndex(
         (product) => product._id === action.payload.id
       );
@@ -58,12 +97,12 @@ export const cartReducer = (state: CartState, action: CartAction) => {
       }
 
       const totalAmountSubtractCart = udpatedSubtractProducts.reduce(
-        (acc, product) => acc - product.quantity,
+        (acc, product) => product.quantity - acc,
         0
       );
 
       const totalPriceSubtractCart = udpatedSubtractProducts.reduce(
-        (acc, product) => acc - product.quantity * product.price,
+        (acc, product) => (product.quantity - acc) * product.price,
         0
       );
 
@@ -75,11 +114,8 @@ export const cartReducer = (state: CartState, action: CartAction) => {
           totalPriceCart: totalPriceSubtractCart,
         },
       };
-    }
 
     case 'REMOVE_ITEM':
-      if (!state.cart) return state;
-
       const restProducts = state.cart.products.filter(
         (product) => product._id !== action.payload.id
       );
@@ -97,6 +133,7 @@ export const cartReducer = (state: CartState, action: CartAction) => {
       return {
         cart: {
           ...state.cart,
+          cartId: state.cart.products.length ? state.cart.cartId : null,
           products: restProducts,
           totalAmountCart: totalAmountCartAfterRemove,
           totalPriceCart: totalPriceCartAfterRemove,
@@ -104,7 +141,7 @@ export const cartReducer = (state: CartState, action: CartAction) => {
       };
 
     case 'CLEAR_CART':
-      return { cart: action.payload };
+      return { cart: initialState.cart };
     default:
       return state;
   }

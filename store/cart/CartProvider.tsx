@@ -1,9 +1,22 @@
 'use client';
-import { createContext, useContext, useMemo, useReducer } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useReducer,
+} from 'react';
 import { CartProviderProps, CartStoreContext } from './types';
 import { cartReducer } from './CartReducer';
 
-const initialState = { cart: null };
+export const initialState = {
+  cart: {
+    cartId: null,
+    products: [],
+    totalAmountCart: 0,
+    totalPriceCart: 0,
+  },
+};
 
 export const CartContext = createContext<CartStoreContext>({
   state: initialState,
@@ -23,6 +36,10 @@ const CartProvider = ({ children }: CartProviderProps) => {
     () => ({ state, dispatch }),
     [state, dispatch]
   );
+
+  useEffect(() => {
+    console.log('state cart provider', state);
+  }, [state]);
 
   return <CartContext.Provider value={values}>{children}</CartContext.Provider>;
 };

@@ -2,34 +2,53 @@
 import React, { useState } from 'react';
 import { AddToCartButton, CartItemCounter } from '@/components/shared';
 import { CartQuantityContollerProps } from './types';
+import { useCart } from '@/store/cart';
+import { v4 as uuidv4 } from 'uuid';
 
 export const CartQuantityContoller = ({ data }: CartQuantityContollerProps) => {
-  const [quanity, setQuantity] = useState(1);
+  const [localQuanity, setLocalQuanity] = useState(1);
+  const { state, dispatch } = useCart();
+  const currentProductId = data._id!;
+
+  const productInCart = state.cart.products.find(
+    (product) => product._id === currentProductId
+  );
 
   const addLocalQuantity = () => {
-    setQuantity((prev) => prev + 1);
+    setLocalQuanity((prev) => prev + 1);
   };
   const subtractLocalQuantity = () => {
-    setQuantity((prev) => prev - 1);
+    setLocalQuanity((prev) => prev - 1);
   };
-
-  const addGlobalQuantity = () => {};
-  const subtractGlobalQuantity = () => {};
 
   return (
     <React.Fragment>
       <CartItemCounter
-        addGlobalQuantity={addGlobalQuantity}
         addLocalQuantity={addLocalQuantity}
-        subtractGlobalQuantity={subtractGlobalQuantity}
         subtractLocalQuantity={subtractLocalQuantity}
-        quanity={quanity}
+        quanity={localQuanity}
         onStock={data.onStock}
+        disabledButtonMinus={localQuanity === 1}
+        disabledButtonPlus={
+          productInCart
+            ? data.onStock - productInCart.quantity <= localQuanity
+            : data.onStock <= localQuanity
+        }
       />
       <AddToCartButton
         onClick={() => {
-          console.log('Confirm add to cart quantity', quanity);
+          dispatch({
+            type: 'ADD_ITEM',
+            payload: {
+              data: { ...data, quantity: localQuanity },
+              ...(!productInCart && { id: uuidv4() }),
+            },
+          });
+          setLocalQuanity(1);
         }}
+        disabled={
+          productInCart ? data.onStock <= productInCart.quantity : false
+        }
       />
     </React.Fragment>
   );

@@ -11,33 +11,33 @@ export const CartItem = ({
   addGlobalQuantity,
   subtractGlobalQuantity,
   removeItem,
+  disabledButtonMinus,
+  disabledButtonPlus,
 }: CartItemProps) => {
-  console.log('data', data);
   return (
     <div className={styles.cartItem}>
       <div className={styles.wrapper}>
         <header className={styles.header}>
           <h6 className={styles.title}>Product</h6>
-          <p className={styles.text}>Samsugn galaxy J7 (2016)</p>
+          <p className={styles.text}>{data.name}</p>
         </header>
+
         <div className={styles.content}>
           <div className={styles.contentLeft}>
             <Image
               className={styles.image}
-              src={
-                'https://ik.imagekit.io/mdklwracd5rti/Shoppy/Phones/Samsung/Samsung-galaxy-a51-front_gpioTOu6b.png'
-              }
+              src={data.image}
               width={200}
               height={200}
-              alt={'image phone'}
+              alt={data.name}
             />
           </div>
           <div className={styles.contentRight}>
             <div>
               <h6 className={styles.title}>Price</h6>
-              <p className={styles.text}>140€</p>{' '}
+              <p className={styles.text}>{data.price}€</p>
               <h6 className={styles.title}>Total</h6>
-              <p className={styles.text}>840€</p>
+              <p className={styles.text}>{data.quantity * data.price}€</p>
             </div>
             <div>
               <h6 className={styles.title}>Quantity</h6>
@@ -45,23 +45,30 @@ export const CartItem = ({
                 classNameInput={styles.input}
                 classNameMinus={styles.buttonMinus}
                 classNamePlus={styles.buttonPlus}
-                quanity={1}
+                quanity={data.quantity}
+                idProduct={data._id}
                 localQuantity={false}
                 onStock={10}
                 addGlobalQuantity={addGlobalQuantity}
                 subtractGlobalQuantity={subtractGlobalQuantity}
+                disabledButtonMinus={disabledButtonMinus}
+                disabledButtonPlus={disabledButtonPlus}
               />
             </div>
           </div>
         </div>
       </div>
+
       <footer className={styles.footer}>
         <Button
           className={classNames(
             stylesButton.buttonRemoveItem,
             styles.buttonRemoveItem
           )}
-          onClick={() => removeItem('id')}
+          onClick={() => {
+            if (!data._id) return;
+            removeItem(data._id);
+          }}
           text="Remove item"
         />
       </footer>

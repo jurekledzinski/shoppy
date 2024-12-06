@@ -2,7 +2,8 @@
 .buttonCancel,
 .buttonDelete,
 .buttonAddToCart,
-.buttonRemoveItem {
+.buttonRemoveItem,
+.buttonProccedCheckout {
   border: none;
   padding: 0.25rem 0.5rem;
   text-transform: uppercase;
@@ -16,14 +17,16 @@ button.buttonConfirm {
 
 .buttonAddToCart,
 .buttonConfirm,
-.buttonRemoveItem {
+.buttonRemoveItem,
+.buttonProccedCheckout {
   background-color: var(--color-primary);
   color: var(--color-text-bg-dark);
 }
 
 .buttonConfirm:hover,
 .buttonAddToCart:hover,
-.buttonRemoveItem:hover {
+.buttonRemoveItem:hover,
+.buttonProccedCheckout:hover {
   background-color: var(--color-primary-hover);
 }
 
@@ -62,13 +65,19 @@ button.buttonModalClose {
   background-color: var(--color-negative-hover);
 }
 
+button.buttonAddToCart:disabled,
+button.buttonProccedCheckout:disabled {
+  background-color: var(--background-disabled);
+}
+
 /* from 575px */
 @media (min-width: 35.938rem) {
   .buttonConfirm,
   .buttonCancel,
   .buttonDelete,
   .buttonAddToCart,
-  .buttonRemoveItem {
+  .buttonRemoveItem,
+  .buttonProccedCheckout {
     padding: 0.5rem 1rem;
   }
 }

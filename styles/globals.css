@@ -32,6 +32,7 @@
   --background-color-menu-item-hover: #a7a7a73b;
   --background-pagination-slider-button: #555555;
   --background-even-row-table: #f9f9f9;
+  --background-disabled: #dddddd;
 
   --color-border-input: #cccccc;
   --color-border-loader: #dddddd;
@@ -67,6 +68,7 @@
   --background-color-menu-item-hover: #a7a7a73b;
   --background-pagination-slider-button: #ffffff;
   --background-even-row-table: #555555;
+  --background-disabled: #555555;
 
   --color-border-input: #757575;
   --color-border-loader: #dddddd;

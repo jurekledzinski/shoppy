@@ -38,7 +38,7 @@ export const DetailsProductSection = ({
           <div className={styles.wrapperOnStock}>
             <DisplayOnstock
               className={styles.onStock}
-              onStock={dataProduct.onStock}
+              data={{ _id: dataProduct._id, onStock: dataProduct.onStock }}
             />
           </div>
         </div>

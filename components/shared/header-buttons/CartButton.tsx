@@ -4,10 +4,11 @@ import { controlAside } from '@/helpers';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAside } from '@/store/aside';
+import { useCart } from '@/store/cart';
 
 export const CartButton = () => {
   const context = useAside();
-  const quatity = 0;
+  const { state } = useCart();
 
   return (
     <button
@@ -19,9 +20,11 @@ export const CartButton = () => {
       }}
     >
       <FontAwesomeIcon icon={faCartShopping} />
-      {quatity ? (
+      {state.cart.products.length ? (
         <span className={styles.quantity}>
-          {quatity < 100 ? quatity : quatity - 1 + '+'}
+          {state.cart.totalAmountCart < 100
+            ? state.cart.totalAmountCart
+            : state.cart.totalAmountCart - 1 + '+'}
         </span>
       ) : null}
     </button>
