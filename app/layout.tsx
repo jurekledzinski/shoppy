@@ -1,11 +1,12 @@
-import ThemeProvider from '@/store/theme';
 import AsideProvider from '@/store/aside';
+import CartProvider from '@/store/cart/CartProvider';
+import ThemeProvider from '@/store/theme';
 import UserProvider from '@/store/user';
-import type { Metadata } from 'next';
 import { Oswald, Roboto } from 'next/font/google';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '@styles/globals.css';
+import type { Metadata } from 'next';
 
 const oswald = Oswald({
   variable: '--font-oswald',
@@ -41,14 +42,16 @@ export default function RootLayout({
       <ThemeProvider>
         <AsideProvider>
           <UserProvider>
-            <body>
-              {header}
-              {children}
-              {footer}
-              {aside}
-              {backdrop}
-              <ToastContainer position="top-right" autoClose={1500} />
-            </body>
+            <CartProvider>
+              <body>
+                {header}
+                {children}
+                {footer}
+                {aside}
+                {backdrop}
+                <ToastContainer position="top-right" autoClose={1500} />
+              </body>
+            </CartProvider>
           </UserProvider>
         </AsideProvider>
       </ThemeProvider>
