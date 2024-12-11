@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { transformMessage } from './messagesJwtWebToken';
 
 export type State = {
   message: string;
@@ -13,14 +14,14 @@ export const actionTryCatch = (
     try {
       return await fn(prevState, formData);
     } catch (error) {
-      console.log('actionTryCatch error', error);
       if (error instanceof z.ZodError) {
         return {
           message: 'Wrong credentials, check your credentials',
           success: false,
         };
       } else {
-        return { message: (error as Error).message, success: false };
+        const err = error as Error;
+        return { message: transformMessage(err.name), success: false };
       }
     }
   };
