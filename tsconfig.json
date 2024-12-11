@@ -21,17 +21,18 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
+      "@actions/*": ["actions/*"],
+      "@auth/*": ["auth/*"],
       "@components/*": ["components/*"],
       "@data/*": ["data/*"],
-      "@styles/*": ["styles/*"],
-      "@actions/*": ["actions/*"],
+      "@db/*": ["db/*"],
       "@helpers/*": ["helpers/*"],
       "@hooks/*": ["hooks/*"],
-      "@db/*": ["db/*"],
       "@models/*": ["models/*"],
       "@splidejs/react-splide": [
         "node_modules/@splidejs/react-splide/dist/types/index.d.ts"
-      ]
+      ],
+      "@styles/*": ["styles/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
