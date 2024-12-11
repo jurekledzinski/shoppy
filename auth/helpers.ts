@@ -6,6 +6,9 @@ export async function loginIn() {
   await signInTemp();
 }
 
-export async function logOut() {
-  await signOutTemp({ redirect: true, redirectTo: '/' });
+export async function logOut<R extends boolean = true>(options?: {
+  redirectTo?: string;
+  redirect?: R;
+}) {
+  await signOutTemp(options);
 }
