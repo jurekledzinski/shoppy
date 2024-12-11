@@ -4,4 +4,5 @@ export type TabsDetailsContainerProps = {
   dataProduct: Pick<Product, '_id' | 'specification'>;
   dataReviews: Review[];
   userId: string;
+  userName: string;
 };

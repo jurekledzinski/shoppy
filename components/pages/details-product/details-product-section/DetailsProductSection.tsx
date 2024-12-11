@@ -12,6 +12,7 @@ export const DetailsProductSection = ({
   children,
   dataProduct,
   dataReviews,
+  dataUser,
 }: DetailsProductSectionProps) => {
   return (
     <section className={styles.section}>
@@ -49,7 +50,8 @@ export const DetailsProductSection = ({
               specification: dataProduct.specification,
             }}
             dataReviews={dataReviews}
-            userId="userId123"
+            userId={dataUser?.user.id ?? ''}
+            userName={dataUser?.user.name ?? ''}
           />
         </div>
       </div>

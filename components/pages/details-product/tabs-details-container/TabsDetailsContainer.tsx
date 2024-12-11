@@ -24,6 +24,8 @@ const tabs = ['Specification', 'Reviews'];
 export const TabsDetailsContainer = ({
   dataProduct,
   dataReviews,
+  userId,
+  userName,
 }: TabsDetailsContainerProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -39,11 +41,11 @@ export const TabsDetailsContainer = ({
     formAction: action.formAction,
     isPending: action.isPending,
     isSuccess: action.state.success,
-    onSuccessAction: () => {
+    onSuccess: () => {
       showToast(action.state.message);
     },
-    userId: 'dummyUserid123',
-    userName: 'Joe doe',
+    userId,
+    userName,
     productId: dataProduct._id ?? '',
   });
 
@@ -75,16 +77,24 @@ export const TabsDetailsContainer = ({
           )}
           {activeTab === tabs[1].toLowerCase() && (
             <>
-              <h5 className={styles.info}>
-                <FontAwesomeIcon icon={faLock} /> Please log in to add review.
-              </h5>
-              <h5 className={styles.info}>No reviews. Write first review.</h5>
-              <ReviewForm
-                isPending={action.isPending}
-                methods={methodsReview}
-                onSubmit={onSubmitReview}
-                state={action.state}
-              />
+              {!userId && !userName ? (
+                <h5 className={styles.info}>
+                  <FontAwesomeIcon icon={faLock} /> Please log in to add review.
+                </h5>
+              ) : null}
+
+              {!dataReviews.length ? (
+                <h5 className={styles.info}>No reviews. Write first review.</h5>
+              ) : null}
+
+              {userId && userName ? (
+                <ReviewForm
+                  isPending={action.isPending}
+                  methods={methodsReview}
+                  onSubmit={onSubmitReview}
+                  state={action.state}
+                />
+              ) : null}
 
               <div>
                 {dataReviews.map((review) => {

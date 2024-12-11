@@ -1,3 +1,4 @@
+import { auth } from '@/auth';
 import { Breadcrumb, Breadcrumbs } from '@/components/shared';
 import { DetailsProductSection } from '@/components/pages';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
@@ -30,6 +31,7 @@ const DetailsProduct = async (props: {
   params: Params;
   searchParams: SearchParams;
 }) => {
+  const session = await auth();
   const domain = await getDomain();
 
   const { brand, category, model } = await props.params;
@@ -46,10 +48,15 @@ const DetailsProduct = async (props: {
   const resReviews = await fetchProductReviews(urlGetProductReviews);
   const dataReviews = await resReviews.json();
 
+  if (session && session.user) {
+    session.user = { id: session.user.id, name: session.user.name };
+  }
+
   return (
     <DetailsProductSection
       dataProduct={resDetailsProduct.ok ? dataProduct.payload : { images: [] }}
       dataReviews={resReviews.ok ? dataReviews.payload : []}
+      dataUser={session}
     >
       <Breadcrumbs>
         {breadcrumbs.map((segment, index) => {
