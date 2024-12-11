@@ -8,7 +8,6 @@ import { showToast } from '@/helpers';
 import { useActionState } from 'react';
 import { useAside } from '@/store/aside';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useUser } from '@/store/user';
 import { useCart } from '@/store/cart';
 
 import {
@@ -22,7 +21,6 @@ import {
 
 import {
   useActionStateAndReset,
-  useLoadUser,
   useLoginForm,
   useRegisterForm,
   useResetPasswordForm,
@@ -30,14 +28,14 @@ import {
   useLoadResetPasswordForm,
   useContactForm,
 } from '@/hooks';
+import { AsideProps } from './types';
 
-export const Aside = () => {
-  const user = useUser();
+export const Aside = ({ userData }: AsideProps) => {
   const context = useAside();
   const actionElement = context.type;
   const stateOpen = context.value;
-  const userId = user.payload?.id ?? '';
-  const userName = user.payload?.name ?? '';
+  const userId = userData?.user.id ?? '';
+  const userName = userData?.user.name ?? '';
   const searchParams = useSearchParams();
   const paramActionType = searchParams.get('action_type');
   const router = useRouter();
@@ -47,13 +45,10 @@ export const Aside = () => {
     fnAction: logout,
   });
 
-  const { action: actionLogin, resetStateAction: resetStateActionLogin } =
-    useActionStateAndReset({
-      fnAction: login,
-      onResetAction: () => {
-        if (user.onChange) user.onChange(null);
-      },
-    });
+  const [stateLogin, formActionLogin, isPendingLogin] = useActionState(login, {
+    message: '',
+    success: false,
+  });
 
   const [stateRegister, formActionRegister, isPendingRegister] = useActionState(
     register,
@@ -108,9 +103,9 @@ export const Aside = () => {
     });
 
   const { methodsLogin, onSubmitLogin } = useLoginForm({
-    formAction: actionLogin.formAction,
-    isPending: actionLogin.isPending,
-    isSuccess: actionLogin.state.success,
+    formAction: formActionLogin,
+    isPending: isPendingLogin,
+    isSuccess: stateLogin.success,
     onSuccess: () => {
       showToast('Login successful');
       context.onChange(actionElement, false);
@@ -140,7 +135,6 @@ export const Aside = () => {
     },
   });
 
-  useLoadUser({ body: actionLogin.state.body, onChange: user.onChange });
   useLoadResetPasswordForm({ context, paramActionType });
 
   return (
@@ -155,7 +149,6 @@ export const Aside = () => {
             context.onChange(actionElement, false);
           }}
           onLogout={() => {
-            resetStateActionLogin();
             resetStateActionLogout(new FormData());
             showToast('Logout successful');
             context.onChange(actionElement, false);
@@ -192,10 +185,10 @@ export const Aside = () => {
         />
       ) : context.type === 'login' ? (
         <LoginPanel
-          isPending={actionLogin.isPending}
+          isPending={isPendingLogin}
           methods={methodsLogin}
           onSubmit={onSubmitLogin}
-          state={actionLogin.state}
+          state={stateLogin}
           onRedirectForgetPassword={(e) => {
             e.preventDefault();
             controlAside(context, 'forget-password', actionElement, stateOpen);
