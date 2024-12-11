@@ -11,8 +11,7 @@ export const login = async (prevState: unknown, formData: FormData) => {
   await signIn('credentials', {
     email: parsedData.email,
     password: parsedData.password,
-    redirect: true,
-    redirectTo: '/',
+    redirect: false,
   });
 
   return { message: 'Login success', success: true };
