@@ -1,10 +1,8 @@
-'use client';
-
-import { actionTryCatch } from '@/helpers';
-
+'use server';
 import { logOut } from '@/auth';
 
-export const logout = actionTryCatch(async () => {
-  await logOut();
+export const logout = async () => {
+  await logOut({ redirect: false });
+
   return { message: 'Logout success', success: true };
-});
+};
