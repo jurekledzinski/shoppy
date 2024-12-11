@@ -1,5 +1,4 @@
 import { Breadcrumb, Breadcrumbs } from '@/components/shared';
-import { cookies } from 'next/headers';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { getBreadcrumbsProfile, getDomain } from '@/app/_helpers';
 import { ProfileSection } from '@/components/pages';
@@ -9,14 +8,13 @@ type Params = Promise<{ id: string }>;
 
 const Profile = async (props: { params: Params }) => {
   const domain = await getDomain();
-  const cookieStore = await cookies();
-  const userSession = cookieStore.get('auth');
   const params = await props.params;
-  const url = `${domain}/api/v1/get_user?id=${params.id}`;
+
+  const url = `${domain}/api/v1/user?id=${params.id}`;
+
   const response = await fetch(url, {
-    headers: {
-      Cookie: `auth=${userSession?.value}`,
-    },
+    cache: 'no-store',
+    headers: { 'Content-Type': 'application/json' },
   });
 
   const userData = (await response.json()) as {
