@@ -1,5 +1,5 @@
 import { ForgetPasswordForm } from '../../forms';
-import stylesAside from '@components/shared/aside/Aside.module.css';
+import stylesAside from '@/components/shared/aside/Aside.module.css';
 import { ForgetPasswordPanelProps } from './types';
 
 export const ForgetPasswordPanel = ({

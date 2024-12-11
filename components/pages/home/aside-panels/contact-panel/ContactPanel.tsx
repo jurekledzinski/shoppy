@@ -1,4 +1,4 @@
-import stylesAside from '@components/shared/aside/Aside.module.css';
+import stylesAside from '@/components/shared/aside/Aside.module.css';
 import { ContactForm } from '../../forms';
 import { ContactPanelProps } from './types';
 

@@ -1,5 +1,5 @@
 import { ResetPasswordForm } from '../../forms';
-import stylesAside from '@components/shared/aside/Aside.module.css';
+import stylesAside from '@/components/shared/aside/Aside.module.css';
 import { ResetPasswordPanelProps } from './types';
 
 export const ResetPasswordPanel = ({
