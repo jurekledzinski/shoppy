@@ -9,7 +9,7 @@ export const POST = connectDB(async (request: NextRequest) => {
   const secret = process.env.JWT_SECRET_FORGET_PASSWORD!;
   const { searchParams } = new URL(request.url);
   const token = searchParams.get('token');
-  const body = (await request.json()) as UserResetPassword;
+  const body = (await request.json()) as Omit<UserResetPassword, 'token'>;
 
   if (!token) return errorMessage(409);
 
