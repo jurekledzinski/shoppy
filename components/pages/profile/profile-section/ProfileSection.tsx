@@ -7,7 +7,7 @@ import { showToast } from '@/helpers';
 import { startTransition, useActionState } from 'react';
 import { useChangePasswordForm, useUpdateProfileForm } from '@/hooks';
 import { useRouter } from 'next/navigation';
-import { useUser } from '@/store/user';
+import { logOut } from '@/auth';
 
 import {
   changeUserPassword,
@@ -21,7 +21,6 @@ import {
 
 export const ProfileSection = ({ children, user }: ProfileSectionProps) => {
   const router = useRouter();
-  const userStore = useUser();
 
   const [stateDeleteAccount, formActionDeleteAccount, isPendingDeleteAccount] =
     useActionState(deleteUserAccount, {
@@ -104,8 +103,8 @@ export const ProfileSection = ({ children, user }: ProfileSectionProps) => {
           });
         }}
         title="Delete user account"
-        onSuccess={() => {
-          if (userStore.onChange) userStore.onChange(null);
+        onSuccess={async () => {
+          await logOut();
           showToast(stateDeleteAccount.message);
           router.replace('/');
         }}
