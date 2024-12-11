@@ -2,6 +2,7 @@ import 'server-only';
 import type { NextRequest, NextResponse } from 'next/server';
 import { MongoClient } from 'mongodb';
 import { errorMessage, transformMessage } from '@/helpers';
+import { AppRouteHandlerFn } from 'next/dist/server/route-modules/app-route/module';
 
 if (!process.env.ATLAS_URL) {
   throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
@@ -41,8 +42,29 @@ const connectDB = (
   };
 };
 
+const connectDBAuth = (
+  fn: (
+    req: NextRequest,
+    ctx: { params?: Record<string, string | string[]> }
+  ) => ReturnType<AppRouteHandlerFn>
+) => {
+  return async (
+    req: NextRequest,
+    ctx: { params?: Record<string, string | string[]> }
+  ) => {
+    try {
+      await client.connect();
+      return await fn(req, ctx);
+    } catch (err) {
+      const error = err as Error;
+      const message = transformMessage(error.name);
+      return errorMessage(500, message);
+    }
+  };
+};
+
 const getCollectionDb = <T extends object>(name: string) => {
   return db && db.collection<T>(name);
 };
 
-export { connectDB, db, getCollectionDb };
+export { connectDB, connectDBAuth, db, getCollectionDb };
