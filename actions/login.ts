@@ -1,29 +1,19 @@
+'use server';
+
 import { LoginUserSchema } from '@/models';
-import { actionTryCatch } from '@/helpers';
+import { signIn } from '@/auth';
 
-export const login = actionTryCatch(
-  async (prevState: unknown, formData: FormData) => {
-    const body = Object.fromEntries(formData);
+export const login = async (prevState: unknown, formData: FormData) => {
+  const body = Object.fromEntries(formData);
 
-    const parsedData = LoginUserSchema.parse(body);
+  const parsedData = LoginUserSchema.parse(body);
 
-    const res = await fetch('/api/v1/login', {
-      body: JSON.stringify(parsedData),
-      method: 'POST',
-      cache: 'no-store',
-      headers: { 'Content-Type': 'application/json' },
-    });
+  await signIn('credentials', {
+    email: parsedData.email,
+    password: parsedData.password,
+    redirect: true,
+    redirectTo: '/',
+  });
 
-    if (!res.ok) {
-      throw new Error(res.statusText);
-    }
-
-    const data = await res.json();
-
-    return {
-      message: 'Login successful',
-      success: true,
-      body: data.payload,
-    };
-  }
-);
+  return { message: 'Login success', success: true };
+};
