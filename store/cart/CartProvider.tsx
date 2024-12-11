@@ -1,5 +1,11 @@
 'use client';
-import { createContext, useContext, useMemo, useReducer } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useReducer,
+} from 'react';
 import { CartProviderProps, CartStoreContext } from './types';
 import { cartReducer } from './CartReducer';
 
