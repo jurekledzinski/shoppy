@@ -1,6 +1,7 @@
 import { Breadcrumb, Breadcrumbs } from '@/components/shared';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { getBreadcrumbsProfile, getDomain } from '@/app/_helpers';
+import { headers } from 'next/headers';
 import { ProfileSection } from '@/components/pages';
 import { UserRegister } from '@/models';
 
@@ -12,9 +13,12 @@ const Profile = async (props: { params: Params }) => {
 
   const url = `${domain}/api/v1/user?id=${params.id}`;
 
+  const userHeaders = await headers();
+
   const response = await fetch(url, {
+    method: 'GET',
     cache: 'no-store',
-    headers: { 'Content-Type': 'application/json' },
+    headers: userHeaders,
   });
 
   const userData = (await response.json()) as {

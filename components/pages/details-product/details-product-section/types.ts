@@ -1,9 +1,8 @@
-import { Product, Review } from '@/models';
-import { Session } from 'next-auth';
+import { Product, Review, UserRegister } from '@/models';
 
 export type DetailsProductSectionProps = {
   children: React.ReactNode;
   dataProduct: Product;
   dataReviews: Review[];
-  dataUser: Session | null;
+  dataUser: Omit<UserRegister, 'password'> | null;
 };

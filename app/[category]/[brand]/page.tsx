@@ -6,7 +6,10 @@ import { ProductsSection } from '@/components/pages';
 type Params = Promise<{ category: string; brand: string }>;
 
 const fetchProducts = async (url: string) => {
-  const response = await fetch(url, { cache: 'force-cache' });
+  const response = await fetch(url, {
+    cache: 'force-cache',
+    next: { tags: ['get_product'] },
+  });
   return response;
 };
 

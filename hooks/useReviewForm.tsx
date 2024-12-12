@@ -8,7 +8,7 @@ type UseReviewFormProps = {
   isPending: boolean;
   isSuccess: boolean;
   onSuccess: () => void;
-  userId: string;
+  userId: string | undefined;
   userName: string;
   productId: string;
 };
@@ -33,7 +33,7 @@ export const useReviewForm = ({
     const formData = new FormData();
     formData.append('rate', data.rate.toString());
     formData.set('review', data.review);
-    formData.set('userId', userId);
+    formData.set('userId', userId!);
     formData.set('productId', productId);
     formData.set('userName', userName);
 

@@ -1,9 +1,10 @@
 import 'server-only';
 import { auth } from '@/auth';
 import { connectDB, connectDBAuth, getCollectionDb } from '@/lib';
-import { errorMessage } from '@/helpers';
+import { errorMessage, roundAvergeRate } from '@/helpers';
 import { NextRequest, NextResponse } from 'next/server';
-import { Review } from '@/models';
+import { ObjectId } from 'mongodb';
+import { Product, Review } from '@/models';
 
 export const POST = connectDBAuth(
   auth(async (request) => {
@@ -16,6 +17,39 @@ export const POST = connectDBAuth(
     if (!collection) return errorMessage(500);
 
     await collection.insertOne({ ...body });
+
+    const reviewProductId = body.productId;
+
+    const productSumRate = await collection
+      .aggregate([
+        {
+          $match: { productId: reviewProductId },
+        },
+        {
+          $group: {
+            _id: '$productId',
+            totalRate: { $sum: '$rate' },
+            amount: { $sum: 1 },
+          },
+        },
+      ])
+      .toArray();
+
+    const averageRate = productSumRate[0].totalRate / productSumRate[0].amount;
+
+    const collectionProducts =
+      getCollectionDb<Omit<Product, '_id'>>('products');
+
+    if (!collectionProducts) return errorMessage(500);
+
+    const newRate = roundAvergeRate(averageRate);
+
+    await collectionProducts.updateOne(
+      {
+        _id: new ObjectId(reviewProductId),
+      },
+      { $set: { rate: newRate } }
+    );
 
     const response = NextResponse.json({
       success: true,
@@ -37,7 +71,7 @@ export const GET = connectDB(async (request: NextRequest) => {
 
   const response = NextResponse.json({
     success: true,
-    payload: result,
+    payload: result ?? [],
   });
 
   return response;

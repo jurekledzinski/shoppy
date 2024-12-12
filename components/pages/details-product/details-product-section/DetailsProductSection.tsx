@@ -14,6 +14,7 @@ export const DetailsProductSection = ({
   dataReviews,
   dataUser,
 }: DetailsProductSectionProps) => {
+  console.log('dataUser eee', dataUser);
   return (
     <section className={styles.section}>
       {children}
@@ -50,8 +51,8 @@ export const DetailsProductSection = ({
               specification: dataProduct.specification,
             }}
             dataReviews={dataReviews}
-            userId={dataUser?.user.id ?? ''}
-            userName={dataUser?.user.name ?? ''}
+            userId={dataUser ? dataUser._id : ''}
+            userName={dataUser ? dataUser.name : ''}
           />
         </div>
       </div>
