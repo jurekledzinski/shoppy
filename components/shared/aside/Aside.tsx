@@ -1,7 +1,6 @@
 'use client';
 import styles from './Aside.module.css';
 import { AsideProps } from './types';
-import { Cart } from '../cart';
 import { contact, login, logout, register, resetPassword } from '@/actions';
 import { controlAside } from '@/helpers';
 import { forgetPassword } from '@/actions';
@@ -12,6 +11,7 @@ import { useCart } from '@/store/cart';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import {
+  CartPanel,
   ContactPanel,
   ForgetPasswordPanel,
   MenuPanel,
@@ -39,7 +39,7 @@ export const Aside = ({ userData }: AsideProps) => {
   const searchParams = useSearchParams();
   const paramActionType = searchParams.get('action_type');
   const router = useRouter();
-  const { state } = useCart();
+  const { dispatch, state } = useCart();
 
   const { action: actionLogout, resetStateAction } = useActionStateAndReset({
     fnAction: logout,
@@ -178,16 +178,18 @@ export const Aside = ({ userData }: AsideProps) => {
           user={{ id: userId, name: userName }}
         />
       ) : context.type === 'cart' ? (
-        <>
-          <header className={styles.headerCart}>
-            <span>Shopping cart</span>
-
-            {state.cart.products.length ? (
-              <span> {`${state.cart.totalAmountCart} Items`}</span>
-            ) : null}
-          </header>
-          <Cart data={[]} />
-        </>
+        <CartPanel
+          addGlobalQuantity={(id) => {
+            dispatch({ type: 'INCREASE_ITEM', payload: { id } });
+          }}
+          data={state}
+          removeItem={(id) => {
+            dispatch({ type: 'REMOVE_ITEM', payload: { id } });
+          }}
+          subtractGlobalQuantity={(id) => {
+            dispatch({ type: 'SUBTRACT_ITEM', payload: { id } });
+          }}
+        />
       ) : context.type === 'contact' ? (
         <ContactPanel
           isPending={isPendingContact}

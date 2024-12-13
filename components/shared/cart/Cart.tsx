@@ -4,26 +4,17 @@ import { Button } from '../button';
 import { CartItem } from '../cart-item';
 import { CartProps } from './types';
 import { classNames } from '@/helpers';
-import { useCart } from '@/store/cart';
 
-export const Cart = ({}: CartProps) => {
-  const { dispatch, state } = useCart();
-
-  const addGlobalQuantity = (id: string) => {
-    dispatch({ type: 'INCREASE_ITEM', payload: { id } });
-  };
-  const subtractGlobalQuantity = (id: string) => {
-    dispatch({ type: 'SUBTRACT_ITEM', payload: { id } });
-  };
-
-  const removeItem = (id: string) => {
-    dispatch({ type: 'REMOVE_ITEM', payload: { id } });
-  };
-
+export const Cart = ({
+  data,
+  addGlobalQuantity,
+  removeItem,
+  subtractGlobalQuantity,
+}: CartProps) => {
   return (
     <div className={styles.cart}>
-      {state.cart.products.length
-        ? state.cart.products.map((product) => (
+      {data.cart.products.length
+        ? data.cart.products.map((product) => (
             <CartItem
               key={product._id ?? ''}
               data={product}
@@ -37,9 +28,9 @@ export const Cart = ({}: CartProps) => {
         : null}
 
       <h4 className={styles.title}>
-        Total amount: {state.cart.totalAmountCart}
+        Total amount: {data.cart.totalAmountCart}
       </h4>
-      <h4 className={styles.title}>Subtotal: {state.cart.totalPriceCart}€</h4>
+      <h4 className={styles.title}>Subtotal: {data.cart.totalPriceCart}€</h4>
       <Button
         className={classNames(
           stylesButton.buttonProccedCheckout,
@@ -49,7 +40,7 @@ export const Cart = ({}: CartProps) => {
           console.log('Click procced to checkout');
         }}
         text="Procced to checkout"
-        disabled={state.cart.products.length ? false : true}
+        disabled={data.cart.products.length ? false : true}
       />
     </div>
   );
