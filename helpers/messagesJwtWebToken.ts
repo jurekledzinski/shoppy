@@ -1,4 +1,5 @@
 export const transformMessage = (name: string) => {
+  console.log('name message', name);
   switch (name) {
     case 'TokenExpiredError':
       return 'Invalid or expired link, please try one more time';
@@ -6,7 +7,9 @@ export const transformMessage = (name: string) => {
       return 'Invalid or expired link, please try one more time';
     case 'CredentialsSignin':
       return 'Incorrect credentials';
+    case 'AccessDenied':
+      return 'Incorrect credentials';
     default:
-      return 'Something went wrong, please one more time';
+      return 'Something went wrong, please try later';
   }
 };
