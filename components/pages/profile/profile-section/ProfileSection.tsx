@@ -11,8 +11,8 @@ import { logOut } from '@/auth';
 
 import {
   changeUserPassword,
-  updateUserProfile,
   deleteUserAccount,
+  updateUserProfile,
 } from '@/actions';
 import {
   AlertError,
