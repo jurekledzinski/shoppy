@@ -1,14 +1,15 @@
 'use client';
 import styles from './Aside.module.css';
+import { AsideProps } from './types';
 import { Cart } from '../cart';
 import { contact, login, logout, register, resetPassword } from '@/actions';
 import { controlAside } from '@/helpers';
 import { forgetPassword } from '@/actions';
 import { showToast } from '@/helpers';
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
 import { useAside } from '@/store/aside';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { useCart } from '@/store/cart';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import {
   ContactPanel,
@@ -28,7 +29,6 @@ import {
   useLoadResetPasswordForm,
   useContactForm,
 } from '@/hooks';
-import { AsideProps } from './types';
 
 export const Aside = ({ userData }: AsideProps) => {
   const context = useAside();
@@ -41,7 +41,7 @@ export const Aside = ({ userData }: AsideProps) => {
   const router = useRouter();
   const { state } = useCart();
 
-  const { resetStateAction: resetStateActionLogout } = useActionStateAndReset({
+  const { action: actionLogout, resetStateAction } = useActionStateAndReset({
     fnAction: logout,
   });
 
@@ -109,6 +109,7 @@ export const Aside = ({ userData }: AsideProps) => {
     onSuccess: () => {
       showToast('Login successful');
       context.onChange(actionElement, false);
+      router.replace(window.location.pathname);
     },
   });
 
@@ -137,6 +138,18 @@ export const Aside = ({ userData }: AsideProps) => {
 
   useLoadResetPasswordForm({ context, paramActionType });
 
+  useEffect(() => {
+    if (actionLogout.state.success && !actionLogout.isPending) {
+      resetStateAction();
+      router.replace(window.location.pathname);
+    }
+  }, [
+    actionLogout.state.success,
+    actionLogout.isPending,
+    resetStateAction,
+    router,
+  ]);
+
   return (
     <aside
       className={`${styles.aside} ${
@@ -149,10 +162,9 @@ export const Aside = ({ userData }: AsideProps) => {
             context.onChange(actionElement, false);
           }}
           onLogout={() => {
-            resetStateActionLogout(new FormData());
+            resetStateAction(new FormData());
             showToast('Logout successful');
             context.onChange(actionElement, false);
-            router.replace('/');
           }}
           onRedirectContact={() => {
             controlAside(context, 'contact', actionElement, stateOpen);
