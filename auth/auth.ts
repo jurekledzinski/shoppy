@@ -20,14 +20,15 @@ const nextAuthOptions: NextAuthConfig = {
           });
 
           if (!res.ok) {
-            throw new Error(res.statusText);
+            throw new Error(`Authentication failed: ${res.statusText}`);
           }
 
           const data = await res.json();
 
           return data.payload;
-        } catch {
-          return null;
+        } catch (err) {
+          const error = err as Error;
+          return { error: error.message };
         }
       },
     }),
@@ -49,6 +50,10 @@ const nextAuthOptions: NextAuthConfig = {
       const tokenId = token.id as string;
       session.user.id = tokenId;
       return session;
+    },
+    signIn({ user }) {
+      if (user?.error) return false;
+      return true;
     },
   },
 };
