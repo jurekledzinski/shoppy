@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { transformMessage } from './messagesJwtWebToken';
+import { AuthError } from 'next-auth';
 
 export type State = {
   message: string;
@@ -14,14 +15,28 @@ export const actionTryCatch = (
     try {
       return await fn(prevState, formData);
     } catch (error) {
+      console.log('errr async ', error);
       if (error instanceof z.ZodError) {
         return {
-          message: 'Wrong credentials, check your credentials',
+          message: 'Incorrect credentials',
+          success: false,
+        };
+      } else if (error instanceof AuthError) {
+        if (error.type === 'AccessDenied') {
+          return { message: transformMessage(error.type), success: false };
+        }
+
+        if (error.type === 'CredentialsSignin') {
+          return { message: transformMessage(error.type), success: false };
+        }
+
+        return {
+          message: 'Authentication failed',
           success: false,
         };
       } else {
         const err = error as Error;
-        return { message: transformMessage(err.name), success: false };
+        return { message: err.message, success: false };
       }
     }
   };
