@@ -13,19 +13,23 @@ export const Cart = ({
 }: CartProps) => {
   return (
     <div className={styles.cart}>
-      {data.cart.products.length
-        ? data.cart.products.map((product) => (
-            <CartItem
-              key={product._id ?? ''}
-              data={product}
-              addGlobalQuantity={addGlobalQuantity}
-              removeItem={removeItem}
-              subtractGlobalQuantity={subtractGlobalQuantity}
-              disabledButtonMinus={product.quantity === 1}
-              disabledButtonPlus={product.onStock <= product.quantity}
-            />
-          ))
-        : null}
+      {data.cart.products.length ? (
+        data.cart.products.map((product) => (
+          <CartItem
+            key={product._id ?? ''}
+            data={product}
+            addGlobalQuantity={addGlobalQuantity}
+            removeItem={removeItem}
+            subtractGlobalQuantity={subtractGlobalQuantity}
+            disabledButtonMinus={product.quantity === 1}
+            disabledButtonPlus={product.onStock <= product.quantity}
+          />
+        ))
+      ) : (
+        <div className={styles.wrapper}>
+          <h6 className={styles.text}>Cart is empty</h6>
+        </div>
+      )}
 
       <h4 className={styles.title}>
         Total amount: {data.cart.totalAmountCart}
