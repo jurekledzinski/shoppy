@@ -12,6 +12,7 @@
   cursor: pointer;
   font-size: 0.6rem;
   transition: 0.3s linear;
+  font-family: var(--font-roboto);
 }
 
 .button:hover {
