@@ -46,6 +46,7 @@
     "@types/react-transition-group": "^4.4.11",
     "eslint": "^8",
     "eslint-config-next": "15.0.3",
+    "handlebars-loader": "^1.7.3",
     "typescript": "^5"
   }
 }
