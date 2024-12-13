@@ -55,7 +55,7 @@ export const LoginForm = ({
       )}
 
       <Button
-        className={stylesButton.buttonConfirm}
+        className={stylesButton.buttonConfirmFullWidth}
         disabled={isPending}
         type="submit"
         text="Sign In"

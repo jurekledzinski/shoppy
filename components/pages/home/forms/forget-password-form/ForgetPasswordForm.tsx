@@ -40,7 +40,7 @@ export const ForgetPasswordForm = ({
       )}
 
       <Button
-        className={stylesButton.buttonConfirm}
+        className={stylesButton.buttonConfirmFullWidth}
         disabled={isPending}
         type="submit"
         text="Change password"
