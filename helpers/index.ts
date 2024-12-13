@@ -6,3 +6,4 @@ export * from './messagesJwtWebToken';
 export * from './toasts';
 export * from './convertHeadersToObject';
 export * from './roundAvergeRate';
+export * from './errorMessageAction';
