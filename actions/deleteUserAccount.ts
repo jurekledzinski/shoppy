@@ -1,31 +1,34 @@
 'use server';
-import { actionTryCatch } from '@/helpers';
-import { revalidateTag } from 'next/cache';
+import { connectDBAction, getCollectionDb } from '@/lib';
+import { errorMessageAction } from '@/helpers';
+import { getToken } from 'next-auth/jwt';
 import { headers } from 'next/headers';
-import { convertHeadersToObject } from '@/helpers';
-import { getDomain } from '@/app/_helpers';
+import { ObjectId } from 'mongodb';
+import { revalidateTag } from 'next/cache';
+import { UserRegister } from '@/models';
 
-export const deleteUserAccount = actionTryCatch(
+const secret = process.env.AUTH_SECRET;
+
+export const deleteUserAccount = connectDBAction(
   async (prevState: unknown, formData: FormData) => {
-    const body = Object.fromEntries(formData);
-    const domain = await getDomain();
+    const userHeaders = await headers();
+    Object.fromEntries(formData);
 
-    const headersUser = await headers();
-    const header = await convertHeadersToObject(headersUser);
-    const url = `${domain}/api/v1/delete_user_account`;
+    const token = await getToken({ req: { headers: userHeaders }, secret });
 
-    const res = await fetch(url, {
-      body: JSON.stringify(body),
-      method: 'DELETE',
-      headers: { ...header, 'Content-Type': 'application/json' },
+    if (!token) return errorMessageAction('Unauthorized');
+
+    const userId = token.id as string;
+
+    const collection = getCollectionDb<Omit<UserRegister, '_id'>>('users');
+
+    if (!collection) return errorMessageAction('Internal server error');
+
+    await collection.deleteOne({
+      _id: new ObjectId(userId),
     });
 
-    if (!res.ok) {
-      throw new Error(res.statusText);
-    }
-
     revalidateTag('get_user');
-
     return { message: 'Delete user successful', success: true };
   }
 );
