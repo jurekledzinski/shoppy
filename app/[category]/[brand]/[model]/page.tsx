@@ -73,18 +73,12 @@ const DetailsProduct = async (props: {
 
   const resDetailsProduct = await fetchDetailsProduct(urlGetProduct);
 
-  console.log('resDetailsProduct', resDetailsProduct);
-
   const urlGetProductReviews = `${domain}/api/v1/review?product_id=${queryId}`;
   const resReviews = await fetchProductReviews(urlGetProductReviews);
-
-  console.log('resReviews', resReviews);
 
   const userHeaders = await headers();
   const urlGetUser = `${domain}/api/v1/user?id=${session?.user.id}`;
   const resUser = session ? await fetchUser(urlGetUser, userHeaders) : null;
-
-  console.log('resUser', resUser);
 
   return (
     <DetailsProductSection
