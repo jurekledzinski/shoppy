@@ -17,6 +17,7 @@ import {
   TabsPanel,
   ResponsiveTable,
   Review,
+  AlertError,
 } from '@/components/shared';
 
 const tabs = ['Specification', 'Reviews'];
@@ -26,6 +27,7 @@ export const TabsDetailsContainer = ({
   dataReviews,
   userId,
   userName,
+  errorReviews,
 }: TabsDetailsContainerProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -100,6 +102,12 @@ export const TabsDetailsContainer = ({
                 {dataReviews.map((review) => {
                   return <Review key={review._id} data={review} />;
                 })}
+
+                {errorReviews &&
+                  !errorReviews.success &&
+                  errorReviews.message && (
+                    <AlertError>{errorReviews.message}</AlertError>
+                  )}
               </div>
             </>
           )}

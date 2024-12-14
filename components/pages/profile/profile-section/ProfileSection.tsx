@@ -19,7 +19,7 @@ import {
   ModalContainer as ModalUserDelete,
 } from '@/components/shared';
 
-export const ProfileSection = ({ children, user }: ProfileSectionProps) => {
+export const ProfileSection = ({ children, userData }: ProfileSectionProps) => {
   const router = useRouter();
 
   const [stateDeleteAccount, formActionDeleteAccount, isPendingDeleteAccount] =
@@ -45,7 +45,7 @@ export const ProfileSection = ({ children, user }: ProfileSectionProps) => {
   );
 
   const { methodsUpdateProfile, onSubmitUpdateProfile } = useUpdateProfileForm({
-    defaults: user,
+    defaults: userData,
     formAction: formActionProfile,
     isPending: isPendingProfile,
     isSuccess: stateProfile.success,

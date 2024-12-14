@@ -34,8 +34,8 @@ export const Aside = ({ userData }: AsideProps) => {
   const context = useAside();
   const actionElement = context.type;
   const stateOpen = context.value;
-  const userId = userData?.user.id ?? '';
-  const userName = userData?.user.name ?? '';
+  const userId = userData?._id ?? '';
+  const userName = userData?.name ?? '';
   const searchParams = useSearchParams();
   const paramActionType = searchParams.get('action_type');
   const router = useRouter();

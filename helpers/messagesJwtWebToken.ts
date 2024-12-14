@@ -1,5 +1,4 @@
 export const transformMessage = (name: string) => {
-  console.log('name message', name);
   switch (name) {
     case 'TokenExpiredError':
       return 'Invalid or expired link, please try one more time';

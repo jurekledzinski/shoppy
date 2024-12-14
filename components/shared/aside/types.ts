@@ -1,5 +1,5 @@
-import { Session } from 'next-auth';
+import { UserRegister } from '@/models';
 
 export type AsideProps = {
-  userData: Session | null;
+  userData: Omit<UserRegister, 'password' | 'email'> | null;
 };

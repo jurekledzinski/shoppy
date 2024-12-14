@@ -4,40 +4,58 @@ import { DetailsProductSection } from '@/components/pages';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { getBreadcrumbsDetails, getDomain } from '@/app/_helpers';
 import { headers } from 'next/headers';
+import { Product, Review, UserRegister } from '@/models';
 import { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
+import { tryCatch } from '@/helpers';
 
 type Params = Promise<{ category: string; brand: string; model: string }>;
 type SearchParams = Promise<{ id: string }>;
 
-const fetchUser = async (url: string, headers: ReadonlyHeaders) => {
-  const response = await fetch(url, {
-    method: 'GET',
-    headers,
-    next: { revalidate: 3600, tags: ['get_user'] },
-  });
+const fetchUser = tryCatch<Omit<UserRegister, 'password'>>(
+  async (url: string, headers?: ReadonlyHeaders) => {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers,
+      next: { revalidate: 3600, tags: ['get_user'] },
+    });
 
-  return response;
-};
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
 
-const fetchProductReviews = async (url: string) => {
+    return await response.json();
+  }
+);
+
+const fetchProductReviews = tryCatch<Review[]>(async (url: string) => {
   const response = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
     },
     next: { revalidate: 3600, tags: ['get_product_reviews'] },
   });
-  return response;
-};
 
-const fetchDetailsProduct = async (url: string) => {
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+
+  return await response.json();
+});
+
+const fetchDetailsProduct = tryCatch<Product>(async (url: string) => {
   const response = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
     },
     next: { revalidate: 3600, tags: ['get_product'] },
   });
-  return response;
-};
+
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+
+  return await response.json();
+});
 
 const DetailsProduct = async (props: {
   params: Params;
@@ -52,32 +70,30 @@ const DetailsProduct = async (props: {
   const breadcrumbs = getBreadcrumbsDetails([category, brand, model, queryId]);
 
   const urlGetProduct = `${domain}/api/v1/product?id=${queryId}`;
-  const urlGetProductReviews = `${domain}/api/v1/review?product_id=${queryId}`;
 
   const resDetailsProduct = await fetchDetailsProduct(urlGetProduct);
-  const dataProduct = await resDetailsProduct.json();
 
+  console.log('resDetailsProduct', resDetailsProduct);
+
+  const urlGetProductReviews = `${domain}/api/v1/review?product_id=${queryId}`;
   const resReviews = await fetchProductReviews(urlGetProductReviews);
-  const dataReviews = await resReviews.json();
+
+  console.log('resReviews', resReviews);
 
   const userHeaders = await headers();
+  const urlGetUser = `${domain}/api/v1/user?id=${session?.user.id}`;
+  const resUser = session ? await fetchUser(urlGetUser, userHeaders) : null;
 
-  let dataUser = null;
-  let resUser = null;
-  if (session && session.user) {
-    session.user = { id: session.user.id, name: session.user.name };
-    const urlGetUser = `${domain}/api/v1/user?id=${session.user.id}`;
-    resUser = await fetchUser(urlGetUser, userHeaders);
-    dataUser = await resUser.json();
-  }
+  console.log('resUser', resUser);
 
   return (
     <DetailsProductSection
-      dataProduct={resDetailsProduct.ok ? dataProduct.payload : { images: [] }}
-      dataReviews={resReviews.ok ? dataReviews.payload : []}
-      dataUser={
-        session && resUser ? (resUser.ok ? dataUser.payload : null) : null
-      }
+      dataProduct={resDetailsProduct.success ? resDetailsProduct.data : null}
+      dataReviews={resReviews.success ? resReviews.data : []}
+      dataUser={resUser && resUser.success ? resUser.data : null}
+      {...(!resReviews.success && {
+        errorReviews: resReviews,
+      })}
     >
       <Breadcrumbs>
         {breadcrumbs.map((segment, index) => {
