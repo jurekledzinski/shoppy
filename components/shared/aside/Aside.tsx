@@ -189,6 +189,14 @@ export const Aside = ({ userData }: AsideProps) => {
           subtractGlobalQuantity={(id) => {
             dispatch({ type: 'SUBTRACT_ITEM', payload: { id } });
           }}
+          onClick={() => {
+            if (userId) {
+              // redirect to shipping page
+              router.replace(`/shipping/${userId}`);
+            } else {
+              // open aside with options
+            }
+          }}
         />
       ) : context.type === 'contact' ? (
         <ContactPanel
