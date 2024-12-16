@@ -11,11 +11,6 @@
   font-weight: 400;
 }
 
-button.button {
-  max-width: initial;
-  width: 100%;
-}
-
 .wrapper {
   width: 100%;
   display: flex;
