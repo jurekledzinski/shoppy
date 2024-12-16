@@ -7,6 +7,7 @@ export type AsideType =
   | 'register'
   | 'forget-password'
   | 'reset_password'
+  | 'procced-checkout-options'
   | null;
 
 export type AsideState = {
