@@ -190,11 +190,17 @@ export const Aside = ({ userData }: AsideProps) => {
             dispatch({ type: 'SUBTRACT_ITEM', payload: { id } });
           }}
           onClick={() => {
-            if (userId) {
-              // redirect to shipping page
-              router.replace(`/shipping/${userId}`);
+            if (userId && userName) {
+              // redirect to shipping page when logged in
+              router.replace(`/shipping?userId=${userId}`);
             } else {
               // open aside with options
+              controlAside(
+                context,
+                'procced-checkout-options',
+                actionElement,
+                stateOpen
+              );
             }
           }}
         />
@@ -254,6 +260,8 @@ export const Aside = ({ userData }: AsideProps) => {
             state={stateResetPassword}
           />
         </>
+      ) : context.type === 'procced-checkout-options' ? (
+        <>Register, login, guest</>
       ) : null}
     </aside>
   );
