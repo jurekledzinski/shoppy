@@ -31,3 +31,4 @@ export * from './add-to-cart-controller';
 export * from './responsive-table';
 export * from './field-rating';
 export * from './review';
+export * from './accordion';
