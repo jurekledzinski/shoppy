@@ -140,6 +140,11 @@ export const cartReducer = (state: CartState, action: CartAction) => {
         },
       };
 
+    case 'SET_CART':
+      return {
+        cart: action.payload,
+      };
+
     case 'CLEAR_CART':
       return { cart: initialState.cart };
     default:

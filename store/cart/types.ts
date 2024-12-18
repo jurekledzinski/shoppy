@@ -14,7 +14,8 @@ export type CartAction =
   | { type: 'INCREASE_ITEM'; payload: { id: string } }
   | { type: 'REMOVE_ITEM'; payload: { id: string } }
   | { type: 'SUBTRACT_ITEM'; payload: { id: string } }
-  | { type: 'CLEAR_CART' };
+  | { type: 'CLEAR_CART' }
+  | { type: 'SET_CART'; payload: CartState['cart'] };
 
 export type CartStoreContext = {
   state: CartState;
