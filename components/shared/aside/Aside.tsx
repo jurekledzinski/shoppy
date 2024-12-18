@@ -2,7 +2,11 @@
 import styles from './Aside.module.css';
 import { AsideProps } from './types';
 import { contact, login, logout, register, resetPassword } from '@/actions';
-import { controlAside } from '@/helpers';
+import {
+  controlAside,
+  getItemFromLocalStorage,
+  removeItemFromLocalStorage,
+} from '@/helpers';
 import { forgetPassword } from '@/actions';
 import { showToast } from '@/helpers';
 import { useActionState, useEffect } from 'react';
@@ -18,6 +22,7 @@ import {
   LoginPanel,
   RegisterPanel,
   ResetPasswordPanel,
+  ProccedCheckoutPanel,
 } from '@/components/pages';
 
 import {
@@ -38,6 +43,7 @@ export const Aside = ({ userData }: AsideProps) => {
   const userName = userData?.name ?? '';
   const searchParams = useSearchParams();
   const paramActionType = searchParams.get('action_type');
+  const paramOption = searchParams.get('option');
   const router = useRouter();
   const { dispatch, state } = useCart();
 
@@ -109,6 +115,11 @@ export const Aside = ({ userData }: AsideProps) => {
     onSuccess: () => {
       showToast('Login successful');
       context.onChange(actionElement, false);
+
+      if (paramOption === 'login' || paramOption === 'register') {
+        return router.replace(`/shipping`);
+      }
+
       router.replace(window.location.pathname);
     },
   });
@@ -120,6 +131,9 @@ export const Aside = ({ userData }: AsideProps) => {
     onSuccess: () => {
       showToast('Register successful');
       context.onChange(actionElement, false);
+      if (paramOption === 'register') {
+        controlAside(context, 'login', actionElement, stateOpen);
+      }
     },
   });
 
@@ -185,6 +199,11 @@ export const Aside = ({ userData }: AsideProps) => {
           data={state}
           removeItem={(id) => {
             dispatch({ type: 'REMOVE_ITEM', payload: { id } });
+
+            const localData = getItemFromLocalStorage('cart', 'null');
+            if (localData && localData.products.length === 1) {
+              removeItemFromLocalStorage('cart');
+            }
           }}
           subtractGlobalQuantity={(id) => {
             dispatch({ type: 'SUBTRACT_ITEM', payload: { id } });
@@ -192,16 +211,17 @@ export const Aside = ({ userData }: AsideProps) => {
           onClick={() => {
             if (userId && userName) {
               // redirect to shipping page when logged in
-              router.replace(`/shipping?userId=${userId}`);
-            } else {
-              // open aside with options
-              controlAside(
-                context,
-                'procced-checkout-options',
-                actionElement,
-                stateOpen
-              );
+              context.onChange(actionElement, false);
+              return router.replace('/shipping');
             }
+
+            // open aside with options
+            controlAside(
+              context,
+              'procced-checkout-options',
+              actionElement,
+              stateOpen
+            );
           }}
         />
       ) : context.type === 'contact' ? (
@@ -261,8 +281,37 @@ export const Aside = ({ userData }: AsideProps) => {
           />
         </>
       ) : context.type === 'procced-checkout-options' ? (
-        <>Register, login, guest</>
+        <ProccedCheckoutPanel
+          onCancelAction={() => {
+            context.onChange(actionElement, false);
+          }}
+          onChooseOptionAction={(name) => {
+            const options = {
+              guest: () => {
+                // Przekierowanie z akcji z nie wiem czy dawać id guestId do url as query teraz
+                console.log('1');
+                context.onChange(actionElement, false);
+                router.replace(`/shipping`);
+              },
+              register: () => {
+                console.log('2');
+                controlAside(context, 'register', actionElement, stateOpen);
+                router.replace(`${window.location.pathname}?option=register`);
+              },
+              login: () => {
+                console.log('3');
+                controlAside(context, 'login', actionElement, stateOpen);
+                router.replace(`${window.location.pathname}?option=login`);
+              },
+            };
+
+            options[name as keyof typeof options]();
+          }}
+        />
       ) : null}
     </aside>
   );
 };
+
+// onmount check for option register i login to open form on refresh in case
+// custom hook to check for it
