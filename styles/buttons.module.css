@@ -1,10 +1,10 @@
 .buttonConfirm,
 .buttonConfirmFullWidth,
 .buttonCancel,
+.buttonCancelFullWidth,
 .buttonDelete,
 .buttonAddToCart,
-.buttonRemoveItem,
-.buttonProccedCheckout {
+.buttonRemoveItem {
   border: none;
   padding: 0.25rem 0.5rem;
   text-transform: uppercase;
@@ -12,8 +12,10 @@
   transition: 0.3s linear;
 }
 
-button.buttonConfirmFullWidth {
+button.buttonConfirmFullWidth,
+button.buttonCancelFullWidth {
   max-width: initial;
+  width: 100%;
 }
 
 button.buttonConfirm,
@@ -24,8 +26,7 @@ button.buttonConfirmFullWidth {
 .buttonAddToCart,
 .buttonConfirm,
 .buttonConfirmFullWidth,
-.buttonRemoveItem,
-.buttonProccedCheckout {
+.buttonRemoveItem {
   background-color: var(--color-primary);
   color: var(--color-text-bg-dark);
 }
@@ -33,18 +34,19 @@ button.buttonConfirmFullWidth {
 .buttonConfirm:hover,
 .buttonConfirmFullWidth:hover,
 .buttonAddToCart:hover,
-.buttonRemoveItem:hover,
-.buttonProccedCheckout:hover {
+.buttonRemoveItem:hover {
   background-color: var(--color-primary-hover);
 }
 
-button.buttonCancel {
+button.buttonCancel,
+button.buttonCancelFullWidth {
   background-color: transparent;
   border: 1px solid var(--color-secondary);
   color: var(--color-text-primary);
 }
 
-.buttonCancel:hover {
+.buttonCancel:hover,
+.buttonCancelFullWidth:hover {
   background-color: var(--color-secondary-hover);
 }
 
@@ -74,7 +76,7 @@ button.buttonModalClose {
 }
 
 button.buttonAddToCart:disabled,
-button.buttonProccedCheckout:disabled {
+button.buttonConfirmFullWidth:disabled {
   background-color: var(--background-disabled);
 }
 
@@ -83,10 +85,10 @@ button.buttonProccedCheckout:disabled {
   .buttonConfirm,
   .buttonConfirmFullWidth,
   .buttonCancel,
+  .buttonCancelFullWidth,
   .buttonDelete,
   .buttonAddToCart,
-  .buttonRemoveItem,
-  .buttonProccedCheckout {
+  .buttonRemoveItem {
     padding: 0.5rem 1rem;
   }
 }
