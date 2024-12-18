@@ -62,7 +62,7 @@ export const ResetPasswordForm = ({
         {isPending && <Loader />}
       </Button>
       <Button
-        className={stylesButton.buttonCancel}
+        className={stylesButton.buttonCancelFullWidth}
         disabled={isPending}
         text="Cancel"
         onClick={onCancel}
