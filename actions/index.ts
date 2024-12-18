@@ -8,3 +8,4 @@ export * from './changeUserPassword';
 export * from './deleteUserAccount';
 export * from './review';
 export * from './updateUserProfile';
+export * from './shipping';
