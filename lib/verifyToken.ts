@@ -1,6 +1,7 @@
 import 'server-only';
-import jwt from 'jsonwebtoken';
+import { jwtVerify } from 'jose';
 
-export const verifyToken = (token: string, secret: string) => {
-  return jwt.verify(token, secret);
+export const verifyToken = async <T>(token: string, secret: string) => {
+  const secretToken = new TextEncoder().encode(secret);
+  return await jwtVerify<T>(token, secretToken);
 };

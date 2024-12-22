@@ -1,4 +1,4 @@
 export * from './db';
 export * from './comparePasswords';
-export * from './createTokenForgetPassword';
+export * from './createToken';
 export * from './verifyToken';
