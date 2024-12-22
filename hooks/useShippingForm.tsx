@@ -2,28 +2,35 @@ import { startTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { ShippingFormInputs } from '@/components/pages';
 import { useResetForm } from './useResetForm';
+import { Order } from '@/models';
 
 type useShippingFormProps = {
+  defaultData: Order | null;
   formAction: (payload: FormData) => void;
   isPending: boolean;
   isSuccess: boolean;
   onSuccess: () => void;
+  userId?: string;
+  guestId?: string | null;
 };
 
 export const useShippingForm = ({
+  defaultData,
   formAction,
   isPending,
   isSuccess,
   onSuccess,
+  userId,
+  guestId,
 }: useShippingFormProps) => {
   const methods = useForm<ShippingFormInputs>({
     defaultValues: {
-      name: '',
-      surname: '',
-      city: '',
-      country: '',
-      postCode: '',
-      street: '',
+      name: defaultData ? defaultData.name : '',
+      surname: defaultData ? defaultData.surname : '',
+      city: defaultData ? defaultData.city : '',
+      country: defaultData ? defaultData.country : '',
+      postCode: defaultData ? defaultData.postCode : '',
+      street: defaultData ? defaultData.street : '',
     },
   });
 
@@ -35,6 +42,9 @@ export const useShippingForm = ({
     formData.set('postCode', data.postCode);
     formData.set('city', data.city);
     formData.set('country', data.country);
+    formData.set('createdAt', new Date().toISOString());
+    if (userId) formData.set('userId', userId);
+    if (guestId) formData.set('guestId', guestId);
 
     startTransition(() => {
       formAction(formData);
