@@ -1,4 +1,6 @@
+import { Order } from '@/models';
+
 export type PlaceOrderSectionProps = {
   children: React.ReactNode;
-  userData: [];
+  orderData: Order | null;
 };
