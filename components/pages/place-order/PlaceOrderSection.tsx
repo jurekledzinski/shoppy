@@ -1,5 +1,5 @@
-import { PlaceOrderSectionProps } from './types';
 import styles from './PlaceOrderSection.module.css';
+import { PlaceOrderSectionProps } from './types';
 
 export const PlaceOrderSection = ({
   children,

@@ -4,9 +4,9 @@ import { getDomain, tokenVerify } from '@/app/_helpers';
 import { Order } from '@/models';
 import { PlaceOrderSection } from '@/components/pages';
 import { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
-import { tryCatch } from '@/helpers';
-import { steps } from '@/data';
 import { Step, Stepper } from '@/components/shared';
+import { steps } from '@/data';
+import { tryCatch } from '@/helpers';
 
 const fetchOrder = tryCatch<Order>(
   async (url: string, headers?: ReadonlyHeaders) => {
