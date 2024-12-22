@@ -9,3 +9,4 @@ export * from './deleteUserAccount';
 export * from './review';
 export * from './updateUserProfile';
 export * from './shipping';
+export * from './guestCheckout';
