@@ -1,12 +1,28 @@
 import { auth } from '@/auth';
-import { ShippingSection } from '@/components/pages';
-import { tryCatch } from '@/helpers';
-import { UserRegister } from '@/models';
+import { cookies, headers } from 'next/headers';
+import { getDomain, tokenVerify } from '../_helpers';
+import { Order, UserRegister } from '@/models';
 import { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
-import { headers } from 'next/headers';
-import { getDomain } from '../_helpers';
+import { ShippingSection } from '@/components/pages';
+import { Step, Stepper } from '@/components/shared';
+import { steps } from '@/data';
+import { tryCatch } from '@/helpers';
 
-type SearchParams = Promise<{ orderId: string }>;
+const fetchOrder = tryCatch<Order>(
+  async (url: string, headers?: ReadonlyHeaders) => {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers,
+      next: { revalidate: 3600, tags: ['get_order'] },
+    });
+
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+
+    return await response.json();
+  }
+);
 
 const fetchUser = tryCatch<Omit<UserRegister, 'password'>>(
   async (url: string, headers?: ReadonlyHeaders) => {
@@ -24,25 +40,63 @@ const fetchUser = tryCatch<Omit<UserRegister, 'password'>>(
   }
 );
 
-const Shipping = async (props: { searchParams: SearchParams }) => {
+const secretGuest = process.env.GUEST_SECRET!;
+const secretStepper = process.env.STEPPER_SECRET!;
+
+const Shipping = async () => {
   const session = await auth();
   const domain = await getDomain();
-  const searchParams = await props.searchParams;
+  const headersFetch = await headers();
+  const cookieStore = await cookies();
 
-  const orderId = searchParams.orderId;
-  console.log('orderId', orderId);
-  console.log('session shipping page', session);
+  const guestCookie = cookieStore.get('guestId') ?? null;
+  const stepperCookie = cookieStore.get('stepper') ?? null;
 
   const urlGetUser = `${domain}/api/v1/user?id=${session?.user.id}`;
-  const userHeaders = await headers();
+  const resUser = session ? await fetchUser(urlGetUser, headersFetch) : null;
 
-  const resUser = session ? await fetchUser(urlGetUser, userHeaders) : null;
+  const guestCookieDecoded = guestCookie
+    ? await tokenVerify<{ value: string }>(guestCookie.value, secretGuest)
+    : null;
+
+  const stepperCookieDecoded = stepperCookie
+    ? await tokenVerify<{ value: { allowed: string; completed: string[] } }>(
+        stepperCookie.value,
+        secretStepper
+      )
+    : null;
+
+  const urlGetOrder = `${domain}/api/v1/order`;
+  const resOrder =
+    guestCookieDecoded || session
+      ? await fetchOrder(urlGetOrder, headersFetch)
+      : null;
+
+  console.log('resOrder page shipping', resOrder);
+
+  const completedSteps = stepperCookieDecoded
+    ? stepperCookieDecoded.payload.value.completed
+    : [];
 
   return (
     <ShippingSection
+      guestId={guestCookieDecoded ? guestCookieDecoded.payload.value : null}
+      orderData={resOrder && resOrder.success ? resOrder.data : null}
       userData={resUser && resUser.success ? resUser.data : null}
     >
-      Stepper
+      <Stepper>
+        {steps.map((step) => {
+          return (
+            <Step
+              key={step.label}
+              icon={step.icon}
+              label={step.label}
+              path={step.path}
+              completed={completedSteps.includes(step.path)}
+            />
+          );
+        })}
+      </Stepper>
     </ShippingSection>
   );
 };
