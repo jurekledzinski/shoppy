@@ -10,6 +10,13 @@ export const CartSchema = z.object({
   }),
   totalAmountCart: z.number({ required_error: 'Total amount is requrired' }),
   totalPriceCart: z.number({ required_error: 'Total price is required' }),
+  expiredAt: z.date().optional(),
+  guestId: z.string().optional(),
 });
 
 export type Cart = z.infer<typeof CartSchema>;
+
+// guestId?:string
+// timeStamp?:string
+// Kiedy user process to checkout jest guest wtedy dodaje timeStamp property i to bedzie ttl index
+// Potem gdy checkout click ton cart zapisany
