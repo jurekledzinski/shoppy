@@ -18,12 +18,15 @@ export const GET = connectDBAuth(
 
     console.log('guestId get route api', cookieGuest);
 
-    // Gdy user nie zalogowany to wtedy może być guest user
-    if (!request.auth) {
-      if (!cookieGuest || !cookieStepper) {
-        return errorMessage(401);
-      }
+    if (!request.auth && !cookieGuest && !cookieStepper) {
+      return errorMessage(401);
+    }
 
+    const collection = getCollectionDb<Omit<Order, '_id'>>('orders');
+    if (!collection) return errorMessage(500);
+
+    // Gdy user nie zalogowany to wtedy może być guest user
+    if (!request.auth && cookieGuest && cookieStepper) {
       const dataGuest = await verifyToken<{ value: string }>(
         cookieGuest.value,
         secretGuest
@@ -34,52 +37,41 @@ export const GET = connectDBAuth(
         secretStepper
       );
 
-      if (cookieGuest) {
-        const collection = getCollectionDb<Omit<Order, '_id'>>('orders');
+      const result = await collection.findOne({
+        guestId: dataGuest.payload.value,
+      });
 
-        if (!collection) return errorMessage(500);
+      const response = NextResponse.json({
+        success: true,
+        payload: result,
+      });
 
-        const result = await collection.findOne({
-          guestId: dataGuest.payload.value,
-        });
-
-        const response = NextResponse.json({
-          success: true,
-          payload: result,
-        });
-
-        return response;
-      }
-
-      return errorMessage(401);
+      return response;
     }
 
     // Gdy user zalogowany
+    if (request.auth && !cookieGuest && cookieStepper) {
+      await verifyToken<{ value: { allowed: string; completed: string[] } }>(
+        cookieStepper.value,
+        secretStepper
+      );
 
-    await verifyToken<{ value: { allowed: string; completed: string[] } }>(
-      cookieStepper.value,
-      secretStepper
-    );
+      const result = await collection.findOne(
+        {
+          userId: request.auth.user.id,
+          isPaid: false,
+        },
+        { sort: { createdAt: -1 } }
+      );
 
-    const collection = getCollectionDb<Omit<Order, '_id'>>('orders');
+      const response = NextResponse.json({
+        success: true,
+        payload: result,
+      });
 
-    if (!collection) return errorMessage(500);
+      return response;
+    }
 
-    // by userId and last added
-
-    const result = await collection.findOne(
-      {
-        userId: request.auth.user.id,
-        isPaid: false,
-      },
-      { sort: { createdAt: -1 } }
-    );
-
-    const response = NextResponse.json({
-      success: true,
-      payload: result,
-    });
-
-    return response;
+    return errorMessage(401);
   })
 );
