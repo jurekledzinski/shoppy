@@ -21,14 +21,17 @@ export const resetPassword = connectDBAction(
 
     if (!resetToken) return errorMessageAction('Unauthorized');
 
-    const decoded = verifyToken(resetToken, secret) as UserForgetPassword;
+    const decoded = await verifyToken<{ value: UserForgetPassword }>(
+      resetToken,
+      secret
+    );
 
     const collection = getCollectionDb<UserResetPassword>('users');
 
     if (!collection) return errorMessageAction('Internal server error');
 
     const user = await collection.findOne<UserResetPassword>({
-      email: decoded.email,
+      email: decoded.payload.value.email,
     });
 
     if (!user) return errorMessageAction('Incorrect credentials');
@@ -37,7 +40,7 @@ export const resetPassword = connectDBAction(
     const hash = await bcrypt.hash(parsedData.password, salt);
 
     await collection.updateOne(
-      { email: decoded.email },
+      { email: decoded.payload.value.email },
       { $set: { password: hash } }
     );
 

@@ -21,6 +21,8 @@ import {
 const secretGuest = process.env.GUEST_SECRET!;
 const secretStepper = process.env.STEPPER_SECRET!;
 const secretAuth = process.env.AUTH_SECRET!;
+const expireGuestToken = process.env.EXPIRE_GUEST_TOKEN!;
+const expireStepperToken = process.env.EXPIRE_STEPPER_TOKEN!;
 
 const payloadStepper = {
   allowed: '/shipping/place-order',
@@ -54,7 +56,11 @@ export const shipping = connectDBAction(
     if (!collection) return errorMessageAction('Internal server error');
 
     const expiresIn = new Date(Date.now() + 30 * 60 * 1000);
-    const tokenStepper = await createToken(payloadStepper, secretStepper, '3h');
+    const tokenStepper = await createToken(
+      payloadStepper,
+      secretStepper,
+      expireStepperToken
+    );
 
     if (!token && cookieGuest && cookieStepper) {
       // gdy user normalny niezalogowany i guest user zalogowany i jest stepper
@@ -70,7 +76,7 @@ export const shipping = connectDBAction(
       const tokenGuest = await createToken(
         dataGuest.payload.value,
         secretGuest,
-        '3h'
+        expireGuestToken
       );
 
       await updateShipping(collection, parsedData, 'guestId');

@@ -37,14 +37,12 @@ const Aside = async () => {
   const resUser = session ? await fetchUser(urlGetUser, userHeaders) : null;
 
   const guestCookieDecoded = guestCookie
-    ? await verifyToken(guestCookie.value, secretGuest)
+    ? await verifyToken<{ value: string }>(guestCookie.value, secretGuest)
     : null;
-
-  //   console.log('guestId aside', guestCookieDecoded);
 
   return (
     <MainAside
-      guestId={guestCookieDecoded ? guestCookieDecoded.payload : null}
+      guestId={guestCookieDecoded ? guestCookieDecoded.payload.value : null}
       userData={resUser && resUser.success ? resUser.data : null}
     />
   );
