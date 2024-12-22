@@ -1,9 +1,5 @@
 'use server';
-import {
-  connectDBAction,
-  createTokenForgetPassword,
-  getCollectionDb,
-} from '@/lib';
+import { connectDBAction, createToken, getCollectionDb } from '@/lib';
 import { errorMessageAction } from '@/helpers';
 import { ForgetPasswordSchema, UserForgetPassword } from '@/models';
 import { getDomain } from '@/app/_helpers';
@@ -13,6 +9,9 @@ import path from 'path';
 // import Handlebars from 'handlebars';
 import juice from 'juice';
 import forgetPasswordTemplate from '../templates/forgetPassword.hbs';
+
+const secret = process.env.JWT_SECRET_FORGET_PASSWORD!;
+const lifeTimeAccessToken = process.env.JWT_LIFETIME_SECRET_FORGET_PASSWORD!;
 
 export const forgetPassword = connectDBAction(
   async (prevState: unknown, formData: FormData) => {
@@ -30,7 +29,7 @@ export const forgetPassword = connectDBAction(
 
     if (!user) return errorMessageAction('Incorrect credentials');
 
-    const token = createTokenForgetPassword(user.email);
+    const token = createToken(user.email, secret, lifeTimeAccessToken);
 
     const domain = await getDomain();
 
