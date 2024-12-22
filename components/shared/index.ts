@@ -32,3 +32,4 @@ export * from './responsive-table';
 export * from './field-rating';
 export * from './review';
 export * from './accordion';
+export * from './stepper';
