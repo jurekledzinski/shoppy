@@ -1,7 +1,15 @@
 'use client';
+// import { startTransition } from 'react';
 import styles from './Aside.module.css';
 import { AsideProps } from './types';
-import { contact, login, logout, register, resetPassword } from '@/actions';
+import {
+  contact,
+  guestCheckout,
+  login,
+  logout,
+  register,
+  resetPassword,
+} from '@/actions';
 import {
   controlAside,
   getItemFromLocalStorage,
@@ -35,7 +43,7 @@ import {
   useContactForm,
 } from '@/hooks';
 
-export const Aside = ({ userData }: AsideProps) => {
+export const Aside = ({ guestId, userData }: AsideProps) => {
   const context = useAside();
   const actionElement = context.type;
   const stateOpen = context.value;
@@ -46,6 +54,19 @@ export const Aside = ({ userData }: AsideProps) => {
   const paramOption = searchParams.get('option');
   const router = useRouter();
   const { dispatch, state } = useCart();
+
+  //   const [stateGuest, formActionGuest, isPendingGuest] = useActionState(
+  //     guestCheckout,
+  //     {
+  //       message: '',
+  //       success: false,
+  //     }
+  //   );
+
+  //   console.log('guestId aside client', guestId);
+
+  //   console.log('stateGuest', stateGuest);
+  //   console.log('isPendingGuest', isPendingGuest);
 
   const { action: actionLogout, resetStateAction } = useActionStateAndReset({
     fnAction: logout,
@@ -209,7 +230,9 @@ export const Aside = ({ userData }: AsideProps) => {
             dispatch({ type: 'SUBTRACT_ITEM', payload: { id } });
           }}
           onClick={() => {
-            if (userId && userName) {
+            // TODO:
+
+            if ((userId && userName) || guestId) {
               // redirect to shipping page when logged in
               context.onChange(actionElement, false);
               return router.replace('/shipping');
@@ -288,8 +311,15 @@ export const Aside = ({ userData }: AsideProps) => {
           onChooseOptionAction={(name) => {
             const options = {
               guest: () => {
+                // TODO:
                 // Przekierowanie z akcji z nie wiem czy dawać id guestId do url as query teraz
-                console.log('1');
+
+                // startTransition(() => {
+                //   formActionGuest(new FormData());
+                // });
+                guestCheckout('', new FormData());
+
+                console.log('1 clic continue as guest');
                 context.onChange(actionElement, false);
                 router.replace(`/shipping`);
               },
