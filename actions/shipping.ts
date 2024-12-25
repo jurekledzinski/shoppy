@@ -45,7 +45,9 @@ export const shipping = connectDBAction(
     const parsedData = OrderShippingSchema.parse({
       ...body,
       createdAt: new Date(body.createdAt as string),
+      isDelivered: false,
       isPaid: false,
+      isSent: false,
     });
 
     if (!token && !cookieGuest && !cookieStepper) {
