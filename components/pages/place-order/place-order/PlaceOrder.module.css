@@ -1,13 +1,29 @@
 .container {
   display: flex;
+  flex-direction: column;
   gap: 0.5rem;
   width: 100%;
 }
 
 .left {
-  width: 70%;
+  width: 100%;
 }
 
 .right {
-  width: 30%;
+  width: 100%;
+}
+
+/* from 575px */
+@media (min-width: 35.938rem) {
+  .container {
+    flex-direction: row;
+  }
+
+  .left {
+    width: 70%;
+  }
+
+  .right {
+    width: 30%;
+  }
 }
