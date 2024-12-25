@@ -1,8 +1,9 @@
 'use client';
 import { createContext, useContext, useMemo, useState } from 'react';
-import { AsideState, AsideType, AsideProviderProps } from './types';
+import { AsideState, AsideType, AsideProviderProps, Checkout } from './types';
 
 export const AsideContext = createContext<AsideState>({
+  checkout: null,
   type: null,
   value: false,
   onChange: () => {},
@@ -20,6 +21,7 @@ export const useAside = () => {
 
 const AsideProvider = ({ children }: AsideProviderProps) => {
   const [state, setState] = useState<Omit<AsideState, 'onChange'>>({
+    checkout: null,
     type: null,
     value: false,
   });
@@ -27,8 +29,12 @@ const AsideProvider = ({ children }: AsideProviderProps) => {
   const value = useMemo(
     () => ({
       ...state,
-      onChange: (type: AsideType, value: boolean) => {
-        setState((prev) => ({ ...prev, type, value }));
+      onChange: (
+        type: AsideType,
+        value: boolean,
+        checkout: Checkout = null
+      ) => {
+        setState((prev) => ({ ...prev, type, value, checkout }));
       },
     }),
     [state]

@@ -8,6 +8,7 @@ type UseLoginFormProps = {
   isPending: boolean;
   isSuccess: boolean;
   onSuccess: () => void;
+  optionCheckout?: string | null;
 };
 
 export const useLoginForm = ({
@@ -15,6 +16,7 @@ export const useLoginForm = ({
   isPending,
   isSuccess,
   onSuccess,
+  optionCheckout,
 }: UseLoginFormProps) => {
   const methods = useForm<LoginFormInputs>({
     defaultValues: {
@@ -27,6 +29,7 @@ export const useLoginForm = ({
     const formData = new FormData();
     formData.set('email', data.email);
     formData.set('password', data.password);
+    if (optionCheckout) formData.set('params', optionCheckout);
 
     startTransition(() => {
       formAction(formData);

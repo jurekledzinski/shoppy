@@ -10,10 +10,13 @@ export type AsideType =
   | 'procced-checkout-options'
   | null;
 
+export type Checkout = null | 'login' | 'register';
+
 export type AsideState = {
+  checkout?: Checkout;
   type: AsideType;
   value: boolean;
-  onChange: (type: AsideType, value: boolean) => void;
+  onChange: (type: AsideType, value: boolean, checkout?: Checkout) => void;
 };
 
 export type AsideProviderProps = {

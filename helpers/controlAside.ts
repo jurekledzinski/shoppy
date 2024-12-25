@@ -1,16 +1,17 @@
-import { AsideState, AsideType } from '@/store/aside';
+import { AsideState, AsideType, Checkout } from '@/store/aside';
 
 export const controlAside = (
   context: AsideState,
   currentElement: string,
   actionElement: AsideType,
-  stateOpen: boolean
+  stateOpen: boolean,
+  checkout?: Checkout
 ) => {
   if (actionElement !== currentElement && stateOpen) {
     context.onChange(actionElement, !stateOpen);
 
     const idTimeout = setTimeout(() => {
-      context.onChange(currentElement, true);
+      context.onChange(currentElement, true, checkout ?? null);
       clearTimeout(idTimeout);
     }, 1000);
 

@@ -47,13 +47,15 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
   const context = useAside();
   const actionElement = context.type;
   const stateOpen = context.value;
+  const optionCheckout = context.checkout;
   const userId = userData?._id ?? '';
   const userName = userData?.name ?? '';
   const searchParams = useSearchParams();
   const paramActionType = searchParams.get('action_type');
-  const paramOption = searchParams.get('option');
   const router = useRouter();
   const { dispatch, state } = useCart();
+
+  console.log('context aside state', context);
 
   //   const [stateGuest, formActionGuest, isPendingGuest] = useActionState(
   //     guestCheckout,
@@ -137,12 +139,17 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
       showToast('Login successful');
       context.onChange(actionElement, false);
 
-      if (paramOption === 'login' || paramOption === 'register') {
+      console.log('-------- 1', optionCheckout);
+
+      if (optionCheckout === 'login') {
         return router.replace(`/shipping`);
       }
 
+      console.log('-------- 2');
+
       router.replace(window.location.pathname);
     },
+    optionCheckout,
   });
 
   const { methodsRegister, onSubmitRegister } = useRegisterForm({
@@ -152,8 +159,8 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
     onSuccess: () => {
       showToast('Register successful');
       context.onChange(actionElement, false);
-      if (paramOption === 'register') {
-        controlAside(context, 'login', actionElement, stateOpen);
+      if (optionCheckout === 'register') {
+        controlAside(context, 'login', actionElement, stateOpen, 'login');
       }
     },
   });
@@ -319,19 +326,31 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
                 // });
                 guestCheckout('', new FormData());
 
-                console.log('1 clic continue as guest');
+                console.log('1 click continue as guest');
                 context.onChange(actionElement, false);
                 router.replace(`/shipping`);
               },
               register: () => {
                 console.log('2');
-                controlAside(context, 'register', actionElement, stateOpen);
-                router.replace(`${window.location.pathname}?option=register`);
+                controlAside(
+                  context,
+                  'register',
+                  actionElement,
+                  stateOpen,
+                  'register'
+                );
+                // router.replace(`${window.location.pathname}?option=register`);
               },
               login: () => {
                 console.log('3');
-                controlAside(context, 'login', actionElement, stateOpen);
-                router.replace(`${window.location.pathname}?option=login`);
+                controlAside(
+                  context,
+                  'login',
+                  actionElement,
+                  stateOpen,
+                  'login'
+                );
+                // router.replace(`${window.location.pathname}?option=login`);
               },
             };
 
