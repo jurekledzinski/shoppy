@@ -14,6 +14,13 @@ export const OrderSchema = z.object({
   isPaid: z.boolean(),
   isDelivered: z.boolean(),
   isSent: z.boolean(),
+  methodPayment: z.string({ required_error: 'Method payment is required' }),
+  methodDelivery: z.string({ required_error: 'Method delivery is required' }),
+  priceDelivery: z.number({ required_error: 'Price delivery is required' }),
+  timeDelivery: z.number({ required_error: 'Time delivery is required' }),
+  termsConditions: z.boolean({
+    required_error: 'Terms conditions are required',
+  }),
 });
 
 export const OrderShippingSchema = OrderSchema.pick({
@@ -30,5 +37,20 @@ export const OrderShippingSchema = OrderSchema.pick({
   isPaid: true,
 });
 
+export const OrderPlaceOrderSchema = OrderSchema.pick({
+  _id: true,
+  methodDelivery: true,
+  methodPayment: true,
+  priceDelivery: true,
+  timeDelivery: true,
+});
+
+export const OrderCheckoutSchema = OrderSchema.pick({
+  _id: true,
+  termsConditions: true,
+});
+
 export type Order = z.infer<typeof OrderSchema>;
 export type OrderShipping = z.infer<typeof OrderShippingSchema>;
+export type OrderPlaceOrder = z.infer<typeof OrderPlaceOrderSchema>;
+export type OrderCheckout = z.infer<typeof OrderCheckoutSchema>;
