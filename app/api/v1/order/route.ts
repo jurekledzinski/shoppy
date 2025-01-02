@@ -16,8 +16,6 @@ export const GET = connectDBAuth(
     const cookieGuest = request.cookies.get('guestId')!;
     const cookieStepper = request.cookies.get('stepper')!;
 
-    console.log('guestId get route api', cookieGuest);
-
     if (!request.auth && !cookieGuest && !cookieStepper) {
       return errorMessage(401);
     }
