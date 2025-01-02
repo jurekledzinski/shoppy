@@ -17,9 +17,6 @@ export default auth(async (request) => {
     const cookieGuest = request.cookies.get('guestId') ?? null;
     const cookieStepper = request.cookies.get('stepper') ?? null;
 
-    // console.log('cookieGuest middleware', cookieGuest);
-    // console.log('cookieStepper middleware', cookieStepper);
-
     const guestCookieValue = cookieGuest
       ? await jwtVerify<{ value: string }>(cookieGuest.value, guestSecret)
       : null;
@@ -44,8 +41,6 @@ export default auth(async (request) => {
     const isProtectedCheckout = checkoutProcess.some((item) =>
       pathname.includes(item)
     );
-
-    // console.log('isProtectedCheckout middleware', isProtectedCheckout);
 
     //Kiedy nie zalogowany user normalnie
     if (!request.auth && isProtectedCheckout) {
