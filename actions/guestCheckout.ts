@@ -3,7 +3,7 @@
 import { createToken } from '@/lib';
 import { v4 as uuidv4 } from 'uuid';
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
+// import { redirect } from 'next/navigation';
 
 const secretGuest = process.env.GUEST_SECRET!;
 const secretStepper = process.env.STEPPER_SECRET!;
@@ -44,7 +44,12 @@ export const guestCheckout = async (prevState: unknown, formData: FormData) => {
     secure: process.env.NODE_ENV === 'production',
   });
 
-  redirect('/shipping');
+  //   redirect('/shipping');
+
+  return {
+    message: 'Procces checkout as guest successful',
+    success: true,
+  };
 };
 
 //   redirect('/shipping', RedirectType.replace);

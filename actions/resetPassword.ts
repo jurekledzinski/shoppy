@@ -3,11 +3,7 @@ import bcrypt from 'bcrypt';
 import { connectDBAction, getCollectionDb, verifyToken } from '@/lib';
 import { errorMessageAction } from '@/helpers';
 
-import {
-  PasswordSchema,
-  UserResetPassword,
-  UserForgetPassword,
-} from '@/models';
+import { PasswordSchema, UserResetPassword } from '@/models';
 
 const secret = process.env.JWT_SECRET_FORGET_PASSWORD!;
 
@@ -21,17 +17,14 @@ export const resetPassword = connectDBAction(
 
     if (!resetToken) return errorMessageAction('Unauthorized');
 
-    const decoded = await verifyToken<{ value: UserForgetPassword }>(
-      resetToken,
-      secret
-    );
+    const decoded = await verifyToken<{ value: string }>(resetToken, secret);
 
     const collection = getCollectionDb<UserResetPassword>('users');
 
     if (!collection) return errorMessageAction('Internal server error');
 
     const user = await collection.findOne<UserResetPassword>({
-      email: decoded.payload.value.email,
+      email: decoded.payload.value,
     });
 
     if (!user) return errorMessageAction('Incorrect credentials');
@@ -40,7 +33,7 @@ export const resetPassword = connectDBAction(
     const hash = await bcrypt.hash(parsedData.password, salt);
 
     await collection.updateOne(
-      { email: decoded.payload.value.email },
+      { email: decoded.payload.value },
       { $set: { password: hash } }
     );
 

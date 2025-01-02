@@ -37,8 +37,6 @@ export const placeOrder = connectDBAction(
     const cookieStepper = cookieStore.get('stepper');
     const body = Object.fromEntries(formData);
 
-    console.log('body place order', body);
-
     const token = await getToken({
       req: { headers: headersData },
       secret: secretAuth,
@@ -49,8 +47,6 @@ export const placeOrder = connectDBAction(
       priceDelivery: parseFloat(body.priceDelivery as string),
       timeDelivery: parseInt(body.timeDelivery as string),
     });
-
-    console.log('parsedData place order action', parsedData);
 
     if (!token && !cookieGuest && !cookieStepper) {
       return errorMessageAction('Unauthorized');
