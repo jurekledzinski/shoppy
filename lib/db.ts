@@ -102,6 +102,10 @@ const connectDBAction = (
         };
       } else {
         const err = error as Error;
+        if (err.name === 'JWTExpired') {
+          return { message: transformMessage(err.name), success: false };
+        }
+
         return { message: err.message, success: false };
       }
     }
