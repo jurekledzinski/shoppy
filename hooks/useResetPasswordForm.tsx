@@ -45,7 +45,7 @@ export const useResetPasswordForm = ({
   });
 
   return {
-    methodsResetPassword: methods,
-    onSubmitResetPassword: methods.handleSubmit(onSubmit),
+    methods,
+    onSubmit: methods.handleSubmit(onSubmit),
   };
 };
