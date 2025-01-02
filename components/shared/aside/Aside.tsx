@@ -1,25 +1,13 @@
 'use client';
-// import { startTransition } from 'react';
 import styles from './Aside.module.css';
 import { AsideProps } from './types';
-import {
-  contact,
-  guestCheckout,
-  login,
-  logout,
-  register,
-  resetPassword,
-} from '@/actions';
-import {
-  controlAside,
-  getItemFromLocalStorage,
-  removeItemFromLocalStorage,
-} from '@/helpers';
-import { forgetPassword } from '@/actions';
+import { controlAside } from '@/helpers';
+import { guestCheckout } from '@/actions';
 import { showToast } from '@/helpers';
-import { useActionState, useEffect } from 'react';
+import { startTransition, useActionState, useEffect } from 'react';
 import { useAside } from '@/store/aside';
 import { useCart } from '@/store/cart';
+import { useLoadResetPasswordForm } from '@/hooks';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import {
@@ -33,16 +21,6 @@ import {
   ProccedCheckoutPanel,
 } from '@/components/pages';
 
-import {
-  useActionStateAndReset,
-  useLoginForm,
-  useRegisterForm,
-  useResetPasswordForm,
-  useForgetPasswordForm,
-  useLoadResetPasswordForm,
-  useContactForm,
-} from '@/hooks';
-
 export const Aside = ({ guestId, userData }: AsideProps) => {
   const context = useAside();
   const actionElement = context.type;
@@ -55,142 +33,21 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
   const router = useRouter();
   const { dispatch, state } = useCart();
 
-  console.log('context aside state', context);
-
-  //   const [stateGuest, formActionGuest, isPendingGuest] = useActionState(
-  //     guestCheckout,
-  //     {
-  //       message: '',
-  //       success: false,
-  //     }
-  //   );
-
-  //   console.log('guestId aside client', guestId);
-
-  //   console.log('stateGuest', stateGuest);
-  //   console.log('isPendingGuest', isPendingGuest);
-
-  const { action: actionLogout, resetStateAction } = useActionStateAndReset({
-    fnAction: logout,
-  });
-
-  const [stateLogin, formActionLogin, isPendingLogin] = useActionState(login, {
-    message: '',
-    success: false,
-  });
-
-  const [stateRegister, formActionRegister, isPendingRegister] = useActionState(
-    register,
+  const [stateGuest, formActionGuest, isPendingGuest] = useActionState(
+    guestCheckout,
     {
       message: '',
       success: false,
     }
   );
-
-  const [stateResetPassword, formActionResetPassword, isPendingResetPassword] =
-    useActionState(resetPassword, {
-      message: '',
-      success: false,
-    });
-
-  const [stateContact, formActionContact, isPendingContact] = useActionState(
-    contact,
-    {
-      message: '',
-      success: false,
-    }
-  );
-
-  const { methodsContact, onSubmitContact } = useContactForm({
-    formAction: formActionContact,
-    isPending: isPendingContact,
-    isSuccess: stateContact.success,
-    onSuccess: () => {
-      showToast(stateContact.message);
-      context.onChange(actionElement, false);
-    },
-  });
-
-  const [
-    stateForgetPassword,
-    formActionForgetPassword,
-    isPendingForgetPassword,
-  ] = useActionState(forgetPassword, {
-    message: '',
-    success: false,
-  });
-
-  const { methodsForgetPassword, onSubmitForgetPassword } =
-    useForgetPasswordForm({
-      formAction: formActionForgetPassword,
-      isPending: isPendingForgetPassword,
-      isSuccess: stateForgetPassword.success,
-      onSuccess: () => {
-        showToast(stateForgetPassword.message, 10000);
-        context.onChange(actionElement, false);
-      },
-    });
-
-  const { methodsLogin, onSubmitLogin } = useLoginForm({
-    formAction: formActionLogin,
-    isPending: isPendingLogin,
-    isSuccess: stateLogin.success,
-    onSuccess: () => {
-      showToast('Login successful');
-      context.onChange(actionElement, false);
-
-      console.log('-------- 1', optionCheckout);
-
-      if (optionCheckout === 'login') {
-        return router.replace(`/shipping`);
-      }
-
-      console.log('-------- 2');
-
-      router.replace(window.location.pathname);
-    },
-    optionCheckout,
-  });
-
-  const { methodsRegister, onSubmitRegister } = useRegisterForm({
-    formAction: formActionRegister,
-    isPending: isPendingRegister,
-    isSuccess: stateRegister.success,
-    onSuccess: () => {
-      showToast('Register successful');
-      context.onChange(actionElement, false);
-      if (optionCheckout === 'register') {
-        controlAside(context, 'login', actionElement, stateOpen, 'login');
-      }
-    },
-  });
-
-  const { methodsResetPassword, onSubmitResetPassword } = useResetPasswordForm({
-    formAction: formActionResetPassword,
-    isPending: isPendingResetPassword,
-    isSuccess: stateResetPassword.success,
-    onSuccess: () => {
-      router.replace(window.location.pathname);
-      showToast('Reset password successful');
-      setTimeout(() => {
-        controlAside(context, 'login', actionElement, stateOpen);
-      }, 500);
-    },
-  });
 
   useLoadResetPasswordForm({ context, paramActionType });
 
   useEffect(() => {
-    if (actionLogout.state.success && !actionLogout.isPending) {
-      resetStateAction();
-      router.replace(window.location.pathname);
+    if (stateGuest.success && !isPendingGuest) {
+      router.replace(`/shipping`);
     }
-  }, [
-    actionLogout.state.success,
-    actionLogout.isPending,
-    resetStateAction,
-    router,
-  ]);
+  }, [stateGuest.success, isPendingGuest, router]);
 
   return (
     <aside
@@ -200,73 +57,33 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
     >
       {context.type === 'menu' ? (
         <MenuPanel
-          onCloseAside={() => {
-            context.onChange(actionElement, false);
-          }}
-          onLogout={() => {
-            resetStateAction(new FormData());
-            showToast('Logout successful');
-            context.onChange(actionElement, false);
-          }}
-          onRedirectContact={() => {
-            controlAside(context, 'contact', actionElement, stateOpen);
-          }}
-          onRedirectLogin={() => {
-            controlAside(context, 'login', actionElement, stateOpen);
-          }}
-          onRedirectRegister={() => {
-            controlAside(context, 'register', actionElement, stateOpen);
-          }}
+          actionElement={actionElement}
+          context={context}
+          stateOpen={stateOpen}
           user={{ id: userId, name: userName }}
+          onSuccess={() => router.replace(window.location.pathname)}
         />
       ) : context.type === 'cart' ? (
         <CartPanel
-          addGlobalQuantity={(id) => {
-            dispatch({ type: 'INCREASE_ITEM', payload: { id } });
-          }}
+          actionElement={actionElement}
+          context={context}
           data={state}
-          removeItem={(id) => {
-            dispatch({ type: 'REMOVE_ITEM', payload: { id } });
-
-            const localData = getItemFromLocalStorage('cart', 'null');
-            if (localData && localData.products.length === 1) {
-              removeItemFromLocalStorage('cart');
-            }
-          }}
-          subtractGlobalQuantity={(id) => {
-            dispatch({ type: 'SUBTRACT_ITEM', payload: { id } });
-          }}
-          onClick={() => {
-            // TODO:
-
-            if ((userId && userName) || guestId) {
-              // redirect to shipping page when logged in
-              context.onChange(actionElement, false);
-              return router.replace('/shipping');
-            }
-
-            // open aside with options
-            controlAside(
-              context,
-              'procced-checkout-options',
-              actionElement,
-              stateOpen
-            );
-          }}
+          dispatch={dispatch}
+          guestId={guestId}
+          onSuccess={() => router.replace('/shipping')}
+          stateOpen={stateOpen}
+          userId={userId}
+          userName={userName}
         />
       ) : context.type === 'contact' ? (
         <ContactPanel
-          isPending={isPendingContact}
-          methods={methodsContact}
-          onSubmit={onSubmitContact}
-          state={stateContact}
+          onSuccess={(message) => {
+            showToast(message);
+            context.onChange(actionElement, false);
+          }}
         />
       ) : context.type === 'login' ? (
         <LoginPanel
-          isPending={isPendingLogin}
-          methods={methodsLogin}
-          onSubmit={onSubmitLogin}
-          state={stateLogin}
           onRedirectForgetPassword={(e) => {
             e.preventDefault();
             controlAside(context, 'forget-password', actionElement, stateOpen);
@@ -275,30 +92,41 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
             e.preventDefault();
             controlAside(context, 'register', actionElement, stateOpen);
           }}
+          onSuccess={() => {
+            showToast('Login successful');
+            context.onChange(actionElement, false);
+
+            if (optionCheckout === 'login') {
+              return router.replace(`/shipping`);
+            }
+            router.replace(window.location.pathname);
+          }}
+          optionCheckout={optionCheckout}
         />
       ) : context.type === 'register' ? (
         <RegisterPanel
-          isPending={isPendingRegister}
-          methods={methodsRegister}
-          onSubmit={onSubmitRegister}
-          state={stateRegister}
           onRedirectLogin={(e) => {
             e.preventDefault();
             controlAside(context, 'login', actionElement, stateOpen);
           }}
+          onSuccess={() => {
+            showToast('Register successful');
+            context.onChange(actionElement, false);
+            if (optionCheckout === 'register') {
+              controlAside(context, 'login', actionElement, stateOpen, 'login');
+            }
+          }}
         />
       ) : context.type === 'forget-password' ? (
         <ForgetPasswordPanel
-          isPending={isPendingForgetPassword}
-          methods={methodsForgetPassword}
-          onSubmit={onSubmitForgetPassword}
-          state={stateForgetPassword}
+          onSuccess={(message) => {
+            showToast(message, 10000);
+            context.onChange(actionElement, false);
+          }}
         />
       ) : context.type === 'reset_password' ? (
         <>
           <ResetPasswordPanel
-            isPending={isPendingResetPassword}
-            methods={methodsResetPassword}
             onCancel={(e) => {
               e.preventDefault();
               router.replace(window.location.pathname);
@@ -306,8 +134,13 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
                 context.onChange(actionElement, false);
               }, 500);
             }}
-            onSubmit={onSubmitResetPassword}
-            state={stateResetPassword}
+            onSuccess={(message) => {
+              router.replace(window.location.pathname);
+              showToast(message);
+              setTimeout(() => {
+                controlAside(context, 'login', actionElement, stateOpen);
+              }, 500);
+            }}
           />
         </>
       ) : context.type === 'procced-checkout-options' ? (
@@ -315,23 +148,13 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
           onCancelAction={() => {
             context.onChange(actionElement, false);
           }}
-          onChooseOptionAction={(name) => {
+          onContinueAction={(name) => {
             const options = {
               guest: () => {
-                // TODO:
-                // Przekierowanie z akcji z nie wiem czy dawać id guestId do url as query teraz
-
-                // startTransition(() => {
-                //   formActionGuest(new FormData());
-                // });
-                guestCheckout('', new FormData());
-
-                console.log('1 click continue as guest');
+                startTransition(() => formActionGuest(new FormData()));
                 context.onChange(actionElement, false);
-                router.replace(`/shipping`);
               },
               register: () => {
-                console.log('2');
                 controlAside(
                   context,
                   'register',
@@ -339,10 +162,8 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
                   stateOpen,
                   'register'
                 );
-                // router.replace(`${window.location.pathname}?option=register`);
               },
               login: () => {
-                console.log('3');
                 controlAside(
                   context,
                   'login',
@@ -350,7 +171,6 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
                   stateOpen,
                   'login'
                 );
-                // router.replace(`${window.location.pathname}?option=login`);
               },
             };
 
