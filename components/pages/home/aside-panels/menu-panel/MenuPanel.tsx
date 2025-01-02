@@ -1,16 +1,25 @@
+'use client';
 import Link from 'next/link';
 import styles from './MenuPanel.module.css';
 import { Menu, MenuItem } from '@/components/shared';
 import { MenuPanelProps } from './types';
+import { useMenuPanel } from './useMenuPanel';
 
 export const MenuPanel = ({
-  onCloseAside,
-  onLogout,
-  onRedirectContact,
-  onRedirectLogin,
-  onRedirectRegister,
+  actionElement,
+  context,
+  stateOpen,
   user,
+  onSuccess,
 }: MenuPanelProps) => {
+  const {
+    onCloseAside,
+    onLogout,
+    onRedirectContact,
+    onRedirectLogin,
+    onRedirectRegister,
+  } = useMenuPanel({ actionElement, context, stateOpen, onSuccess });
+
   return (
     <>
       <header className={styles.header}>Welcome {user.name ?? ''}</header>

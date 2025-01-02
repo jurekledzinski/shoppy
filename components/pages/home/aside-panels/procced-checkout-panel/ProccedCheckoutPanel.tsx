@@ -15,7 +15,7 @@ import { ProccedCheckoutPanelProps } from './types';
 
 export const ProccedCheckoutPanel = ({
   onCancelAction,
-  onChooseOptionAction,
+  onContinueAction,
 }: ProccedCheckoutPanelProps) => {
   const [open, setOpen] = useState<Record<string, boolean>>({
     register: false,
@@ -89,8 +89,7 @@ export const ProccedCheckoutPanel = ({
             const selected = Object.entries(open).find((value) => value[1]);
             if (!selected) return;
             const option = selected[0];
-            onChooseOptionAction(option)
-            console.log('selected', option);
+            onContinueAction(option);
           }}
         />
         <Button

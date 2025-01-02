@@ -1,10 +1,16 @@
-import { MouseEventHandler } from 'react';
+import { AsideState, AsideType } from '@/store/aside';
 
 export type MenuPanelProps = {
-  onRedirectContact?: MouseEventHandler<HTMLLIElement>;
-  onRedirectLogin?: MouseEventHandler<HTMLLIElement>;
-  onRedirectRegister?: MouseEventHandler<HTMLLIElement>;
-  onLogout: () => void;
-  onCloseAside: () => void;
+  actionElement: AsideType;
+  context: AsideState;
+  stateOpen: boolean;
   user: { id: string; name: string };
+  onSuccess: () => void;
+};
+
+export type UseMenuPanelProps = {
+  actionElement: AsideType;
+  context: AsideState;
+  stateOpen: boolean;
+  onSuccess: () => void;
 };

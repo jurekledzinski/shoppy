@@ -1,4 +1,4 @@
 export type ProccedCheckoutPanelProps = {
   onCancelAction: () => void;
-  onChooseOptionAction: (name: string) => void;
+  onContinueAction: (name: string) => void;
 };

@@ -1,14 +1,26 @@
-import { ResetPasswordForm } from '../../forms';
+'use client';
 import stylesAside from '@/components/shared/aside/Aside.module.css';
+import { resetPassword } from '@/actions';
+import { ResetPasswordForm } from '../../forms';
 import { ResetPasswordPanelProps } from './types';
+import { useActionState } from 'react';
+import { useResetPasswordForm } from '@/hooks';
 
 export const ResetPasswordPanel = ({
-  isPending,
-  methods,
   onCancel,
-  onSubmit,
-  state,
+  onSuccess,
 }: ResetPasswordPanelProps) => {
+  const [state, formAction, isPending] = useActionState(resetPassword, {
+    message: '',
+    success: false,
+  });
+
+  const { methods, onSubmit } = useResetPasswordForm({
+    formAction,
+    isPending,
+    isSuccess: state.success,
+    onSuccess: () => onSuccess(state.message),
+  });
   return (
     <>
       <header className={stylesAside.header}>Reset password</header>

@@ -1,24 +1,39 @@
-import { QuestionRedirect } from '@/components/shared';
+'use client';
+import styles from './LoginPanel.module.css';
+import { login } from '@/actions';
 import { LoginForm } from '../../forms';
 import { LoginPanelProps } from './types';
-import styles from './LoginPanel.module.css';
+import { QuestionRedirect } from '@/components/shared';
+import { useActionState } from 'react';
+import { useLoginForm } from '@/hooks';
 
 export const LoginPanel = ({
-  isPending,
-  methods,
-  onSubmit,
-  state,
   onRedirectForgetPassword,
   onRedirectRegister,
+  optionCheckout,
+  onSuccess,
 }: LoginPanelProps) => {
+  const [stateLogin, formActionLogin, isPendingLogin] = useActionState(login, {
+    message: '',
+    success: false,
+  });
+
+  const { methodsLogin, onSubmitLogin } = useLoginForm({
+    formAction: formActionLogin,
+    isPending: isPendingLogin,
+    isSuccess: stateLogin.success,
+    onSuccess,
+    optionCheckout,
+  });
+
   return (
     <>
       <header className={styles.header}>Sign In</header>
       <LoginForm
-        methods={methods}
-        onSubmit={onSubmit}
-        state={state}
-        isPending={isPending}
+        methods={methodsLogin}
+        onSubmit={onSubmitLogin}
+        state={stateLogin}
+        isPending={isPendingLogin}
       />
 
       <div className={styles.wrapper}>
