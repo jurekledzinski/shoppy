@@ -72,8 +72,6 @@ const Shipping = async () => {
       ? await fetchOrder(urlGetOrder, headersFetch)
       : null;
 
-  console.log('resOrder page shipping', resOrder);
-
   const completedSteps = stepperCookieDecoded
     ? stepperCookieDecoded.payload.value.completed
     : [];
