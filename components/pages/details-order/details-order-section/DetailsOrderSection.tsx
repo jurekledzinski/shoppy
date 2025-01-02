@@ -11,8 +11,6 @@ export const DetailsOrderSection = ({
   children,
   orderData,
 }: DetailsOrderSectionProps) => {
-  console.log('DetailsOrderSection component', orderData);
-
   const [stateCheckoutOrder, formActionCheckoutOrder, isPendingCheckoutOrder] =
     useActionState(checkout, {
       message: '',
@@ -29,8 +27,6 @@ export const DetailsOrderSection = ({
         showToast(stateCheckoutOrder.message);
       },
     });
-
-  console.log('stateCheckoutOrder', stateCheckoutOrder);
 
   return (
     <section className={styles.section}>

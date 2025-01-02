@@ -48,7 +48,6 @@ export const ShippingSection = ({
         state={stateShipping}
         onCancel={(e) => {
           e.preventDefault();
-          console.log('userData', userData);
           router.replace('/');
         }}
       />

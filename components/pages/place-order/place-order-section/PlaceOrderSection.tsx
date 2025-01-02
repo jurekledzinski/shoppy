@@ -13,7 +13,6 @@ export const PlaceOrderSection = ({
   orderData,
 }: PlaceOrderSectionProps) => {
   const router = useRouter();
-  console.log('orderData place order section', orderData);
 
   const [statePlaceOrder, formActionPlaceOrder, isPendingPlaceOrder] =
     useActionState(placeOrder, {
