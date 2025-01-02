@@ -1,7 +1,7 @@
+import { Controller, useForm } from 'react-hook-form';
 import { Order } from '@/models';
-import { PlaceOrderFormInputs } from '@/components/shared';
+import { PlaceOrderFormInputs } from '@/components/pages';
 import { startTransition } from 'react';
-import { useForm, Controller } from 'react-hook-form';
 import { useResetForm } from './useResetForm';
 
 type UsePlaceOrderFormProps = {
@@ -19,7 +19,6 @@ export const usePlaceOrderForm = ({
   isSuccess,
   onSuccess,
 }: UsePlaceOrderFormProps) => {
-  console.log('defaultData --', defaultData);
   const methods = useForm<PlaceOrderFormInputs>({
     defaultValues: {
       methodDelivery: defaultData
