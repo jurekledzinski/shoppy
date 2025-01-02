@@ -1,7 +1,7 @@
 import { Aside as MainAside } from '@/components/shared';
 import { auth } from '@/auth';
-import { getDomain } from '../_helpers';
 import { cookies, headers } from 'next/headers';
+import { getDomain } from '../_helpers';
 import { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
 import { tryCatch } from '@/helpers';
 import { UserRegister } from '@/models';
@@ -39,8 +39,6 @@ const Aside = async () => {
   const guestCookieDecoded = guestCookie
     ? await verifyToken<{ value: string }>(guestCookie.value, secretGuest)
     : null;
-
-  //   console.log('guestId aside', guestCookieDecoded);
 
   return (
     <MainAside
