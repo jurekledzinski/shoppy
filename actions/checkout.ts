@@ -42,8 +42,6 @@ export const checkout = connectDBAction(
     const cookieStepper = cookieStore.get('stepper');
     const body = Object.fromEntries(formData);
 
-    console.log('body checkout', body);
-
     const token = await getToken({
       req: { headers: headersData },
       secret: secretAuth,
@@ -53,8 +51,6 @@ export const checkout = connectDBAction(
       ...body,
       termsConditions: body.termsConditions === 'true' ? true : false,
     });
-
-    console.log('parsedData checkout order action', parsedData);
 
     if (!token && !cookieGuest && !cookieStepper) {
       return errorMessageAction('Unauthorized');
