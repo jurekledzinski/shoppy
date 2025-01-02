@@ -6,7 +6,6 @@ import { getDomain } from '@/app/_helpers';
 import nodemailer from 'nodemailer';
 import fs from 'fs';
 import path from 'path';
-// import Handlebars from 'handlebars';
 import juice from 'juice';
 import forgetPasswordTemplate from '../templates/forgetPassword.hbs';
 
@@ -29,18 +28,12 @@ export const forgetPassword = connectDBAction(
 
     if (!user) return errorMessageAction('Incorrect credentials');
 
-    const token = createToken(user.email, secret, lifeTimeAccessToken);
+    const token = await createToken(user.email, secret, lifeTimeAccessToken);
 
     const domain = await getDomain();
 
     const resetUrl = `${domain}/?token=${token}&action_type=reset_password`;
 
-    // const templatePath = path.join(
-    //   process.cwd(),
-    //   'templates/forgetPassword.hbs'
-    // );
-    // const templateContent = fs.readFileSync(templatePath, 'utf-8');
-    // const template = Handlebars.compile(templateContent);
     const currentYear = new Date().getFullYear();
     const htmlContent = forgetPasswordTemplate({
       currentYear,
