@@ -8,13 +8,13 @@ export const SessionContext = createContext<SessionContextType>({
 });
 
 export const useSessionUser = () => {
-  const theme = useContext(SessionContext);
+  const context = useContext(SessionContext);
 
-  if (!theme) {
+  if (!context) {
     throw new Error('Place is not wrapped by session user provider');
   }
 
-  return theme;
+  return context;
 };
 
 const SessionUserProvider = ({ children }: SessionUserProviderProps) => {
