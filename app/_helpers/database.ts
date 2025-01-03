@@ -1,6 +1,12 @@
 import { Collection } from 'mongodb';
 import { ObjectId } from 'mongodb';
-import { Order, OrderCheckout, OrderPlaceOrder, OrderShipping } from '@/models';
+import {
+  Cart,
+  Order,
+  OrderCheckout,
+  OrderPlaceOrder,
+  OrderShipping,
+} from '@/models';
 
 export const updateShipping = async (
   collection: Collection<Omit<Order, '_id'>>,
@@ -41,4 +47,25 @@ export const updateCheckoutOrder = async (
   const id = new ObjectId(_id);
 
   await collection.updateOne({ _id: id }, { $set: { ...rest } });
+};
+
+export const updateCart = async (
+  collection: Collection<Omit<Cart, '_id'>>,
+  parsedData: Cart,
+  userIdKey: 'userId' | 'guestId'
+) => {
+  const id = new ObjectId(parsedData._id);
+
+  await collection.updateOne(
+    { _id: id },
+    {
+      $set: {
+        ...parsedData,
+        ...(parsedData[userIdKey as keyof typeof parsedData] && {
+          [userIdKey]: parsedData[userIdKey as keyof typeof parsedData],
+        }),
+      },
+    },
+    { upsert: true }
+  );
 };
