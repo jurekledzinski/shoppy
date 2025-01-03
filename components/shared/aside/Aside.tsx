@@ -21,7 +21,7 @@ import {
   ProccedCheckoutPanel,
 } from '@/components/pages';
 
-export const Aside = ({ guestId, userData }: AsideProps) => {
+export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
   const context = useAside();
   const actionElement = context.type;
   const stateOpen = context.value;
@@ -48,6 +48,8 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
       router.replace(`/shipping`);
     }
   }, [stateGuest.success, isPendingGuest, router]);
+
+  console.log('cartData aside from db', cartData);
 
   return (
     <aside
