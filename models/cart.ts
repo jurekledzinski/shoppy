@@ -3,7 +3,7 @@ import { ProductCartSchema } from './product';
 
 export const CartSchema = z.object({
   _id: z.string().optional(),
-  cartId: z.string().nullable(),
+  cartId: z.string().nullable().optional(),
   expiredAt: z.date().optional(),
   products: z.array(ProductCartSchema, {
     required_error: 'Products are requried',
