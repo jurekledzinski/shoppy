@@ -20,9 +20,11 @@ import {
   ResetPasswordPanel,
   ProccedCheckoutPanel,
 } from '@/components/pages';
+import { useSessionUser } from '@/store/session/SessionUserProvider';
 
 export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
   const context = useAside();
+  const sessionUser = useSessionUser();
   const actionElement = context.type;
   const stateOpen = context.value;
   const optionCheckout = context.checkout;
@@ -50,6 +52,16 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
   }, [stateGuest.success, isPendingGuest, router]);
 
   console.log('cartData aside from db', cartData);
+
+  // set userId or guestId session user store
+  useEffect(() => {
+    if (guestId && sessionUser.setSessionUser) {
+      sessionUser?.setSessionUser((prev) => ({ ...prev, guestUser: guestId }));
+    }
+    if (userId && sessionUser?.setSessionUser) {
+      sessionUser?.setSessionUser((prev) => ({ ...prev, userSession: userId }));
+    }
+  }, [guestId, userId, sessionUser]);
 
   return (
     <aside
