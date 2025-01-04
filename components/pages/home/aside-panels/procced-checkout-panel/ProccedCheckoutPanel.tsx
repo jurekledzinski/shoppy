@@ -10,10 +10,12 @@ import {
   AccordionContent,
   AccordionHeader,
   Button,
+  Loader,
 } from '@/components/shared';
 import { ProccedCheckoutPanelProps } from './types';
 
 export const ProccedCheckoutPanel = ({
+  isPending,
   onCancelAction,
   onContinueAction,
 }: ProccedCheckoutPanelProps) => {
@@ -83,7 +85,7 @@ export const ProccedCheckoutPanel = ({
         </Accordion>
         <Button
           className={classNames(stylesButton.buttonConfirmFullWidth)}
-          disabled={false}
+          disabled={isPending}
           text="Continue"
           onClick={() => {
             const selected = Object.entries(open).find((value) => value[1]);
@@ -91,7 +93,9 @@ export const ProccedCheckoutPanel = ({
             const option = selected[0];
             onContinueAction(option);
           }}
-        />
+        >
+          {isPending && <Loader />}
+        </Button>
         <Button
           className={classNames(stylesButton.buttonCancelFullWidth)}
           disabled={false}
