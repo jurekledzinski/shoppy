@@ -18,12 +18,17 @@ export const useSyncCart = ({
   onUser,
 }: UseSyncCartProps) => {
   const prevCartRef = useRef(0);
+  const prevSessionUser = useRef(false);
 
   useEffect(() => {
     console.log('prevCartRef', prevCartRef.current);
     console.log('state.totalAmountCart', state.totalAmountCart);
 
-    if (prevCartRef.current === state.totalAmountCart) return; // Skip syncing if the cart hasn't changed
+    if (
+      prevCartRef.current === state.totalAmountCart &&
+      prevSessionUser.current
+    )
+      return; // Skip syncing if the cart hasn't changed
     // Store the current cart state for future comparison
     prevCartRef.current = state.totalAmountCart;
 
@@ -32,6 +37,7 @@ export const useSyncCart = ({
     if (sessionUser) {
       // gdy user jest normalnie zalogowany do app
       onUser();
+      prevSessionUser.current = true;
       if (localData) localStorage.removeItem('cart');
       return;
     }
@@ -39,6 +45,7 @@ export const useSyncCart = ({
     // gdy user normalny nie jest zalogowany tylko jako guest checkout
     if (guestUser) {
       onGuest();
+      prevSessionUser.current = true;
       if (localData) localStorage.removeItem('cart');
       return;
     }
