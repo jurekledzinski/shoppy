@@ -37,3 +37,4 @@ export * from './select-button';
 export * from './order-address';
 export * from './order-products-list';
 export * from './order-summary';
+export * from './modal-expire';
