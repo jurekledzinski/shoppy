@@ -5,6 +5,7 @@ import { SessionContextType, SessionUserProviderProps } from './types';
 export const SessionContext = createContext<SessionContextType>({
   guestUser: null,
   userSession: null,
+  onSetValue: () => {},
 });
 
 export const useSessionUser = () => {
@@ -18,7 +19,9 @@ export const useSessionUser = () => {
 };
 
 const SessionUserProvider = ({ children }: SessionUserProviderProps) => {
-  const [sessionUser, setSessionUser] = useState<SessionContextType>({
+  const [sessionUser, setSessionUser] = useState<
+    Omit<SessionContextType, 'onSetValue'>
+  >({
     guestUser: null,
     userSession: null,
   });
@@ -27,7 +30,12 @@ const SessionUserProvider = ({ children }: SessionUserProviderProps) => {
     () => ({
       guestUser: sessionUser.guestUser,
       userSession: sessionUser.userSession,
-      setSessionUser,
+      onSetValue: (key: string, value: string | null) => {
+        setSessionUser((prev) => ({
+          ...prev,
+          [key]: value,
+        }));
+      },
     }),
     [sessionUser]
   );

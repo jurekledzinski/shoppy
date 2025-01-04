@@ -1,9 +1,7 @@
-import { Dispatch, SetStateAction } from 'react';
-
 export type SessionContextType = {
   guestUser: string | null;
   userSession: string | null;
-  setSessionUser?: Dispatch<SetStateAction<SessionContextType>>;
+  onSetValue: (key: string, value: string | null) => void;
 };
 
 export type SessionUserProviderProps = {
