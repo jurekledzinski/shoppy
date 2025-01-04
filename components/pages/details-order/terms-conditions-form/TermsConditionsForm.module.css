@@ -1,3 +1,9 @@
 .form {
   padding: initial;
 }
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

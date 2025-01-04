@@ -14,8 +14,16 @@ export const TermsConditionsForm = ({
   const { errors } = formState;
   return (
     <form className={styles.form} onSubmit={onSubmit}>
-      <label htmlFor="termsConditions">
-        <span>Terms conditions</span>
+      <Button
+        className={stylesButton.buttonConfirmFullWidth}
+        disabled={isPending}
+        type="submit"
+        text={textSubmit}
+      >
+        {isPending && <Loader />}
+      </Button>
+
+      <label className={styles.label} htmlFor="termsConditions">
         <input
           type="checkbox"
           id="termsConditions"
@@ -26,6 +34,7 @@ export const TermsConditionsForm = ({
             },
           })}
         />
+        <span>Terms conditions</span>
       </label>
 
       {errors.termsConditions && (
@@ -35,15 +44,6 @@ export const TermsConditionsForm = ({
       {!state.success && state.message && (
         <AlertError>{state.message}</AlertError>
       )}
-
-      <Button
-        className={stylesButton.buttonConfirmFullWidth}
-        disabled={isPending}
-        type="submit"
-        text={textSubmit}
-      >
-        {isPending && <Loader />}
-      </Button>
     </form>
   );
 };
