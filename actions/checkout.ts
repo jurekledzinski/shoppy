@@ -2,12 +2,13 @@
 import { cookies, headers } from 'next/headers';
 import { errorMessageAction } from '@/helpers';
 import { getToken } from 'next-auth/jwt';
-import { Order, OrderCheckoutSchema } from '@/models';
+import { Cart, Order, OrderCheckoutSchema } from '@/models';
 import { revalidateTag } from 'next/cache';
 
 import {
   setCookieGuestId,
   setCookieStepper,
+  updateCartExpiryAt,
   updateCheckoutOrder,
 } from '@/app/_helpers';
 
@@ -34,6 +35,8 @@ const payloadStepper = {
   ],
 };
 
+// if as guest and paid will be remove expire at property and change isPaid na true
+
 export const checkout = connectDBAction(
   async (prevState: unknown, formData: FormData) => {
     const cookieStore = await cookies();
@@ -41,6 +44,9 @@ export const checkout = connectDBAction(
     const cookieGuest = cookieStore.get('guestId');
     const cookieStepper = cookieStore.get('stepper');
     const body = Object.fromEntries(formData);
+    const cartProducts = JSON.parse(body.products as string);
+    const totalAmountCart = parseInt(body.totalAmountCart as string);
+    const totalPriceCart = parseFloat(body.totalPriceCart as string);
 
     const token = await getToken({
       req: { headers: headersData },
@@ -49,6 +55,12 @@ export const checkout = connectDBAction(
 
     const parsedData = OrderCheckoutSchema.parse({
       ...body,
+      cart: {
+        _id: body.cartId,
+        products: cartProducts,
+        totalAmountCart: totalAmountCart,
+        totalPriceCart: totalPriceCart,
+      },
       termsConditions: body.termsConditions === 'true' ? true : false,
     });
 
@@ -82,6 +94,11 @@ export const checkout = connectDBAction(
         secretGuest,
         expireGuestToken
       );
+
+      const collectionCarts = getCollectionDb<Omit<Cart, '_id'>>('carts');
+      if (!collectionCarts) return errorMessageAction('Internal server error');
+
+      await updateCartExpiryAt(collectionCarts, dataGuest.payload.value);
 
       await updateCheckoutOrder(collection, parsedData);
 
