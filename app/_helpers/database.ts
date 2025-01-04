@@ -71,3 +71,11 @@ export const updateCart = async (
     { upsert: true }
   );
 };
+
+export const updateCartExpiryAt = async (
+  collection: Collection<Omit<Cart, '_id'>>,
+  guestId: string
+) => {
+  const expiryAt = new Date(Date.now() + 30 * 60 * 1000);
+  await collection.updateOne({ guestId }, { $set: { expiryAt } });
+};
