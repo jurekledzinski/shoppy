@@ -27,7 +27,6 @@ export const cart = connectDBAction(
     const cookieStepper = cookieStore.get('stepper');
     const body = Object.fromEntries(formData);
     const cart = JSON.parse(body.cart as string);
-    console.log('BODY CART ACTION ---- ', body);
 
     const token = await getToken({
       req: { headers: headersData },
