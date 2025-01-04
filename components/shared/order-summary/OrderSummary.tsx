@@ -7,6 +7,7 @@ export const OrderSummary = ({
   priceDelivery,
   titleSummary,
   timeDelivery,
+  totalPrice,
 }: OrderSummaryProps) => {
   return (
     <>
@@ -28,7 +29,7 @@ export const OrderSummary = ({
         <span>{timeDelivery}</span>
         <span>{timeDelivery > 1 ? 'days' : 'day'}</span>
       </p>
-      <p>Total price: sum total price</p>
+      <p>Total price: {totalPrice + priceDelivery}€</p>
     </>
   );
 };

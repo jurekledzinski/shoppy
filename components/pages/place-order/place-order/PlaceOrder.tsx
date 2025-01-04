@@ -56,6 +56,7 @@ export const PlaceOrder = ({
             priceDelivery={methods.watch('priceDelivery')}
             timeDelivery={methods.watch('timeDelivery')}
             titleSummary={titleSummary}
+            totalPrice={cartData?.totalPriceCart ?? 0}
           />
 
           <Button
