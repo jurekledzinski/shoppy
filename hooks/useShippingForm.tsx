@@ -55,14 +55,6 @@ export const useShippingForm = ({
     isPending,
     isSuccess,
     methods,
-    defaultValues: {
-      city: '',
-      country: '',
-      name: '',
-      postCode: '',
-      street: '',
-      surname: '',
-    },
     onSuccess,
   });
 
