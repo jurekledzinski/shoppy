@@ -1,7 +1,7 @@
-import { NextResponse } from 'next/server';
-
 import { auth } from '@/auth';
 import { jwtVerify } from 'jose';
+import { NextResponse } from 'next/server';
+
 
 const checkoutProcess = ['/shipping', '/place-order', '/details-order'];
 
@@ -28,6 +28,29 @@ export default auth(async (request) => {
         )
       : null;
 
+    //   ----------------
+
+    if (guestCookieValue) {
+      const guestUserExpire = guestCookieValue.payload.exp! * 1000;
+      const alertTime = new Date(guestUserExpire - 28 * 60 * 1000).getTime();
+      const currentTime = Date.now();
+
+      console.log('Alert time', new Date(guestUserExpire - 28 * 60 * 1000));
+      console.log('Current time', new Date());
+
+      if (currentTime >= alertTime) {
+        console.log('------ GUEST EXPIRED IN 28 MINUTES ------');
+        const url = new URL(request.url);
+        if (!url.searchParams.has('guest-user-expired')) {
+          url.searchParams.set('guest-user-expired', 'true');
+          return NextResponse.redirect(url);
+        }
+      }
+    }
+    console.log('guestCookieValue middleware', guestCookieValue);
+
+    // ----------------
+
     //   prevent when user normal not login in
     if (
       (!request.auth && pathname.startsWith('/profile')) ||
@@ -44,10 +67,8 @@ export default auth(async (request) => {
 
     //Kiedy nie zalogowany user normalnie
     if (!request.auth && isProtectedCheckout) {
-      //   console.log('check 1');
       if (!guestCookieValue || !stepperCookieValue) {
         // gdy nie jest także zalogowany jako guest user i nie ma stepper cookie to redirect do home page
-        // console.log('check 2');
         const newUrl = new URL('/', request.nextUrl.origin);
         return NextResponse.redirect(newUrl);
       }
@@ -62,33 +83,26 @@ export default auth(async (request) => {
       const isNotAllowedStep = restProtectedSteps.some((item) =>
         pathname.includes(item)
       );
-      //   console.log('check 3');
-      //   console.log('isNotAllowedStep', isNotAllowedStep);
+
       if (isNotAllowedStep) {
-        // console.log('check 4');
         const newUrl = new URL(allowedPath, request.nextUrl.origin);
         return NextResponse.redirect(newUrl);
       }
 
-      //   console.log('check 5');
       return NextResponse.next();
     }
 
     // Kiedy zalogowany normalnie user i jest któraś ze stron ['/shipping', '/place-order', '/details-order'] i nie ma cookie stepper
 
     if (request.auth && isProtectedCheckout) {
-      //   console.log('check 6');
       // kiedy normalnie zalogowany user ale nie ma cookie stepper to
       if (!stepperCookieValue) {
-        // console.log('check 7');
         const newUrl = new URL('/', request.nextUrl.origin);
         return NextResponse.redirect(newUrl);
       }
 
       // kiedy normalnie zalogowany user to
       const allowedPath = stepperCookieValue.payload.value.allowed;
-
-      //   console.log('jako zalogowany allowed path --------- ', allowedPath);
 
       const restProtectedSteps = checkoutProcess.filter(
         (item) => !allowedPath.includes(item)
@@ -97,22 +111,16 @@ export default auth(async (request) => {
       const isNotAllowedStep = restProtectedSteps.some((item) =>
         pathname.includes(item)
       );
-      //   console.log('check 8');
 
       if (isNotAllowedStep) {
-        // console.log('check 9');
         const newUrl = new URL(allowedPath, request.nextUrl.origin);
         return NextResponse.redirect(newUrl);
       }
-      //   console.log('check 10');
       return NextResponse.next();
     }
 
-    // console.log('check 11');
-
     return NextResponse.next();
-  } catch (error) {
-    console.log('error try catch middleware', error);
+  } catch {
     const newUrl = new URL('/', request.nextUrl.origin);
     return NextResponse.redirect(newUrl);
   }
@@ -120,11 +128,4 @@ export default auth(async (request) => {
 
 export const config = {
   matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
-  //   matcher: [
-  //     '/profile',
-  //     '/orders',
-  //     '/shipping',
-  //     '/place-order',
-  //     '/details-order',
-  //   ],
 };
