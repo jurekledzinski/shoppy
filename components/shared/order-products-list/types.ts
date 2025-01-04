@@ -1,4 +1,6 @@
+import { Cart } from '@/models';
+
 export type OrderProductsListProps = {
-  items: [];
+  items: Cart['products'];
   titleOrders: string;
 };
