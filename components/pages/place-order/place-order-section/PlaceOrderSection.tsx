@@ -9,6 +9,7 @@ import { usePlaceOrderForm } from '@/hooks';
 import { useRouter } from 'next/navigation';
 
 export const PlaceOrderSection = ({
+  cartData,
   children,
   orderData,
 }: PlaceOrderSectionProps) => {
@@ -36,6 +37,7 @@ export const PlaceOrderSection = ({
     <section className={styles.section}>
       {children}
       <PlaceOrder
+        cartData={cartData}
         Controller={Controller}
         dataOrder={orderData}
         isPending={isPendingPlaceOrder}

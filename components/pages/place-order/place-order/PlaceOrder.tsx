@@ -12,6 +12,7 @@ import {
 } from '@/components/shared';
 
 export const PlaceOrder = ({
+  cartData,
   Controller,
   dataOrder,
   isPending,
@@ -42,7 +43,10 @@ export const PlaceOrder = ({
             titlePayment={titlePayment}
           />
           <OrderAddress dataOrder={dataOrder} titleAddress={titleAddress} />
-          <OrderProductsList items={[]} titleOrders={titleOrders} />
+          <OrderProductsList
+            items={cartData?.products ?? []}
+            titleOrders={titleOrders}
+          />
         </div>
         <div className={styles.right}>
           <OrderSummary

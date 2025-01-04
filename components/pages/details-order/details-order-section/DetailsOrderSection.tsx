@@ -8,6 +8,7 @@ import { useActionState } from 'react';
 import { useTermsConditionsForm } from '@/hooks';
 
 export const DetailsOrderSection = ({
+  cartData,
   children,
   orderData,
 }: DetailsOrderSectionProps) => {
@@ -32,6 +33,7 @@ export const DetailsOrderSection = ({
     <section className={styles.section}>
       {children}
       <DetailsOrder
+        cartData={cartData}
         dataOrder={orderData}
         isPending={isPendingCheckoutOrder}
         methods={methodsCheckoutOrder}

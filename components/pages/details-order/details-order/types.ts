@@ -1,9 +1,10 @@
-import { Order } from '@/models';
+import { Cart, Order } from '@/models';
 import { State } from '@/helpers';
 import { TermsConditionsFormInputs } from '../terms-conditions-form';
 import { UseFormReturn } from 'react-hook-form';
 
 export type DetailsOrderProps = {
+  cartData: Cart | null;
   dataOrder: Order | null;
   methods: UseFormReturn<TermsConditionsFormInputs, unknown, undefined>;
   onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;

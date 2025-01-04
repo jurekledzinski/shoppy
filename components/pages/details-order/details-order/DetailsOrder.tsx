@@ -9,6 +9,7 @@ import {
 } from '@/components/shared';
 
 export const DetailsOrder = ({
+  cartData,
   dataOrder,
   isPending,
   methods,
@@ -34,7 +35,10 @@ export const DetailsOrder = ({
 
           <OrderAddress dataOrder={dataOrder} titleAddress={titleAddress} />
 
-          <OrderProductsList items={[]} titleOrders={titleOrders} />
+          <OrderProductsList
+            items={cartData?.products ?? []}
+            titleOrders={titleOrders}
+          />
         </div>
         <div className={styles.right}>
           <OrderSummary

@@ -1,7 +1,7 @@
 import { auth } from '@/auth';
 import { cookies, headers } from 'next/headers';
 import { getDomain, tokenVerify } from '@/app/_helpers';
-import { Order } from '@/models';
+import { Cart, Order } from '@/models';
 import { PlaceOrderSection } from '@/components/pages';
 import { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
 import { Step, Stepper } from '@/components/shared';
@@ -14,6 +14,22 @@ const fetchOrder = tryCatch<Order>(
       method: 'GET',
       headers,
       next: { revalidate: 3600, tags: ['get_order'] },
+    });
+
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+
+    return await response.json();
+  }
+);
+
+const fetchCart = tryCatch<Cart>(
+  async (url: string, headers?: ReadonlyHeaders) => {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers,
+      next: { revalidate: 3600, tags: ['get_cart'] },
     });
 
     if (!response.ok) {
@@ -56,8 +72,16 @@ const PlaceOrder = async () => {
     ? stepperCookieDecoded.payload.value.completed
     : [];
 
+  const urlGetCart = `${domain}/api/v1/cart`;
+
+  const resCart =
+    session || guestCookieDecoded
+      ? await fetchCart(urlGetCart, headersFetch)
+      : null;
+
   return (
     <PlaceOrderSection
+      cartData={resCart && resCart.success ? resCart.data : null}
       orderData={resOrder && resOrder.success ? resOrder.data : null}
     >
       <Stepper>
