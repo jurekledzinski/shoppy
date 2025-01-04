@@ -77,9 +77,9 @@ const CartProvider = ({ children }: CartProviderProps) => {
   });
 
   useSetCartOnRefresh({
-    onSetCart: (localData) => {
+    onSetCart: useCallback((localData) => {
       dispatch({ type: 'SET_CART', payload: localData });
-    },
+    }, []),
   });
 
   return <CartContext.Provider value={values}>{children}</CartContext.Provider>;

@@ -4,7 +4,7 @@ import { AsideProps } from './types';
 import { controlAside, showToast } from '@/helpers';
 import { guestCheckout } from '@/actions';
 import { ModalExpire } from '../modal-expire';
-import { startTransition, useActionState, useEffect } from 'react';
+import { startTransition, useActionState, useCallback, useEffect } from 'react';
 import { useAside } from '@/store/aside';
 import { useCart } from '@/store/cart';
 import { useLoadResetPasswordForm, useSetUserSession } from '@/hooks';
@@ -56,22 +56,34 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
     guestId,
     sessionUser,
     userId,
-    onLoggedGuest: (guestId) => {
-      if (!sessionUser?.setSessionUser) return;
-      sessionUser?.setSessionUser((prev) => ({ ...prev, guestUser: guestId }));
-    },
-    onNotLoggedGuest: () => {
+    onLoggedGuest: useCallback(
+      (guestId) => {
+        if (!sessionUser?.setSessionUser) return;
+        sessionUser?.setSessionUser((prev) => ({
+          ...prev,
+          guestUser: guestId,
+        }));
+      },
+      [sessionUser]
+    ),
+    onNotLoggedGuest: useCallback(() => {
       if (!sessionUser?.setSessionUser) return;
       sessionUser?.setSessionUser((prev) => ({ ...prev, guestUser: null }));
-    },
-    onLoggedUser: (userId) => {
-      if (!sessionUser?.setSessionUser) return;
-      sessionUser?.setSessionUser((prev) => ({ ...prev, userSession: userId }));
-    },
-    onNotLoggedUser: () => {
+    }, [sessionUser]),
+    onLoggedUser: useCallback(
+      (userId) => {
+        if (!sessionUser?.setSessionUser) return;
+        sessionUser?.setSessionUser((prev) => ({
+          ...prev,
+          userSession: userId,
+        }));
+      },
+      [sessionUser]
+    ),
+    onNotLoggedUser: useCallback(() => {
       if (!sessionUser?.setSessionUser) return;
       sessionUser?.setSessionUser((prev) => ({ ...prev, userSession: null }));
-    },
+    }, [sessionUser]),
   });
 
   //   ----update cart after change

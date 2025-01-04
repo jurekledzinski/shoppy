@@ -6,11 +6,6 @@ export type SessionContextType = {
   setSessionUser?: Dispatch<SetStateAction<SessionContextType>>;
 };
 
-// type SessionUser = {
-//   guestUser: string | null;
-//   user: string | null;
-// };
-
 export type SessionUserProviderProps = {
   children: React.ReactNode;
 };
