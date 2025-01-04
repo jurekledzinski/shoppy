@@ -13,15 +13,16 @@ export const updateShipping = async (
   parsedData: OrderShipping,
   userIdKey: 'userId' | 'guestId'
 ) => {
-  const id = new ObjectId(parsedData._id);
+  const { _id, ...rest } = parsedData;
+  const id = new ObjectId(_id);
 
   await collection.updateOne(
     { _id: id },
     {
       $set: {
-        ...parsedData,
-        ...(parsedData[userIdKey as keyof typeof parsedData] && {
-          [userIdKey]: parsedData[userIdKey as keyof typeof parsedData],
+        ...rest,
+        ...(rest[userIdKey as keyof typeof rest] && {
+          [userIdKey]: rest[userIdKey as keyof typeof rest],
         }),
       },
     },
@@ -54,15 +55,16 @@ export const updateCart = async (
   parsedData: Cart,
   userIdKey: 'userId' | 'guestId'
 ) => {
-  const id = new ObjectId(parsedData._id);
+  const { _id, ...rest } = parsedData;
+  const id = new ObjectId(_id);
 
   await collection.updateOne(
     { _id: id },
     {
       $set: {
-        ...parsedData,
-        ...(parsedData[userIdKey as keyof typeof parsedData] && {
-          [userIdKey]: parsedData[userIdKey as keyof typeof parsedData],
+        ...rest,
+        ...(rest[userIdKey as keyof typeof rest] && {
+          [userIdKey]: rest[userIdKey as keyof typeof rest],
         }),
       },
     },
