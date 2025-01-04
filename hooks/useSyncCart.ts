@@ -1,5 +1,5 @@
 import { Cart } from '@/models';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 type UseSyncCartProps = {
   guestUser: string | null;
@@ -17,8 +17,19 @@ export const useSyncCart = ({
   onNoUser,
   onUser,
 }: UseSyncCartProps) => {
+  const prevCartRef = useRef(0);
+
   useEffect(() => {
-    const localData = JSON.stringify(localStorage.getItem('cart') || 'null');
+    console.log('prevCartRef', prevCartRef.current);
+    console.log('state.totalAmountCart', state.totalAmountCart);
+
+    if (prevCartRef.current === state.totalAmountCart) return; // Skip syncing if the cart hasn't changed
+    // Store the current cart state for future comparison
+    prevCartRef.current = state.totalAmountCart;
+
+    // ----------
+
+    const localData = JSON.parse(localStorage.getItem('cart') || 'null');
     console.log('sessionUser hook ----------- 1', sessionUser);
     console.log('guestUser hook ------------- 2', guestUser);
 
@@ -42,5 +53,12 @@ export const useSyncCart = ({
     // on refresh when maybe will set cart
 
     // gdy jest nie jest zalogowany w żaden inny sposób to zapisuje w localstorage
-  }, [guestUser, sessionUser, state, onGuest, onNoUser, onUser]);
+  }, [
+    guestUser,
+    sessionUser,
+    state.totalAmountCart,
+    onGuest,
+    onNoUser,
+    onUser,
+  ]);
 };

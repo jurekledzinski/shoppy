@@ -13,3 +13,4 @@ export * from './useShippingForm';
 export * from './usePlaceOrderForm';
 export * from './useTermsConditionsForm';
 export * from './useSyncCart';
+export * from './useSetCartOnRefresh';

@@ -24,7 +24,9 @@ export const usePlaceOrderForm = ({
       methodDelivery: defaultData
         ? defaultData.methodDelivery ?? 'standard'
         : 'standard',
-      methodPayment: defaultData ? defaultData.methodPayment ?? '' : '',
+      methodPayment: defaultData
+        ? defaultData.methodPayment ?? 'credit card'
+        : 'credit card',
       priceDelivery: defaultData ? defaultData.priceDelivery ?? 3 : 3,
       timeDelivery: defaultData ? defaultData.timeDelivery ?? 3 : 3,
     },
