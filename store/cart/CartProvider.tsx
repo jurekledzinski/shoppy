@@ -1,9 +1,18 @@
 'use client';
-import { CartProviderProps, CartStoreContext } from './types';
+import { CartProviderProps, CartState, CartStoreContext } from './types';
 import { cartReducer } from './CartReducer';
-// import { getItemFromLocalStorage, setItemToLocalStorage } from '@/helpers';
+import { cart } from '@/actions';
 
-import { createContext, useContext, useMemo, useReducer } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useReducer,
+} from 'react';
+import { useSessionUser } from '../session/SessionUserProvider';
+import { useSetCartOnRefresh, useSyncCart } from '@/hooks';
+import { setItemToLocalStorage } from '@/helpers';
 
 export const initialState = {
   cart: {
@@ -26,6 +35,7 @@ export const useCart = () => {
 };
 
 const CartProvider = ({ children }: CartProviderProps) => {
+  const sessionUser = useSessionUser();
   const [state, dispatch] = useReducer(cartReducer, initialState);
 
   const values = useMemo<CartStoreContext>(
@@ -33,39 +43,44 @@ const CartProvider = ({ children }: CartProviderProps) => {
     [state, dispatch]
   );
 
-  //   useEffect(() => {
-  //     if (state.cart.totalAmountCart) {
-  //       setItemToLocalStorage<CartState['cart']>('cart', state.cart);
-  //     }
-  //   }, [state]);
+  useSyncCart({
+    guestUser: sessionUser.guestUser,
+    sessionUser: sessionUser.userSession,
+    state: state.cart,
+    onGuest: useCallback(() => {
+      console.log('ACTION SAVE CART FOR GUEST');
+      const expiresIn = new Date(Date.now() + 30 * 60 * 1000);
+      const formData = new FormData();
+      formData.set('guestId', sessionUser.guestUser!);
+      formData.set('expiryAt', expiresIn.toISOString());
+      formData.set('cart', JSON.stringify(state.cart));
 
-  //   useEffect(() => {
-  //     const navigationEntries = window.performance.getEntriesByType('navigation');
-  //     const amountNavEntries = navigationEntries.length > 0;
-  //     const isReloadPage =
-  //       (navigationEntries[0] as PerformanceNavigationTiming).type === 'reload';
-  //     const localData = getItemFromLocalStorage('cart', 'null');
+      cart('', formData);
+    }, [sessionUser.guestUser, state.cart]),
 
-  //     if (amountNavEntries && isReloadPage && localData) {
-  //       dispatch({ type: 'SET_CART', payload: localData });
-  //     }
-  //   }, []);
+    onUser: useCallback(async () => {
+      console.log('ACTION SAVE CART FOR LOGGED IN USER');
+      const formData = new FormData();
+      formData.set('userId', sessionUser.userSession!);
+      formData.set('cart', JSON.stringify(state.cart));
 
-  //   useSyncCart({
-  //     guestUser: value.guestUser,
-  //     sessionUser: value.userSession,
-  //     state: cartData.state.cart,
-  //     onGuest: useCallback(() => {
-  //       // call action to create and update cart for guest
-  //     }, []),
-  //     onNoUser: useCallback(() => {
-  //       //   const localData = JSON.stringify(localStorage.getItem('cart') || 'null');
-  //       // call to save state cart in localstorage also on refresh page
-  //     }, []),
-  //     onUser: useCallback(() => {
-  //       // call action to create and update cart for user logged in
-  //     }, []),
-  //   });
+      cart('', formData);
+    }, [sessionUser.userSession, state.cart]),
+
+    onNoUser: useCallback(() => {
+      console.log('NO USER TO LOCALSTORAGE');
+
+      if (state.cart.totalAmountCart) {
+        setItemToLocalStorage<CartState['cart']>('cart', state.cart);
+      }
+    }, [state.cart]),
+  });
+
+  useSetCartOnRefresh({
+    onSetCart: (localData) => {
+      dispatch({ type: 'SET_CART', payload: localData });
+    },
+  });
 
   return <CartContext.Provider value={values}>{children}</CartContext.Provider>;
 };
