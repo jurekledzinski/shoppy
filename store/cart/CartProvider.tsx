@@ -1,7 +1,10 @@
 'use client';
+import { cart } from '@/actions';
 import { CartProviderProps, CartState, CartStoreContext } from './types';
 import { cartReducer } from './CartReducer';
-import { cart } from '@/actions';
+import { setItemToLocalStorage } from '@/helpers';
+import { useSessionUser } from '../session/SessionUserProvider';
+import { useSetCartOnRefresh, useSyncCart } from '@/hooks';
 
 import {
   createContext,
@@ -10,9 +13,6 @@ import {
   useMemo,
   useReducer,
 } from 'react';
-import { useSessionUser } from '../session/SessionUserProvider';
-import { useSetCartOnRefresh, useSyncCart } from '@/hooks';
-import { setItemToLocalStorage } from '@/helpers';
 
 export const initialState = {
   cart: {
