@@ -4,7 +4,7 @@ import { ProductCartSchema } from './product';
 export const CartSchema = z.object({
   _id: z.string().optional(),
   cartId: z.string().nullable().optional(),
-  expiredAt: z.date().optional(),
+  expiryAt: z.date().optional(),
   products: z.array(ProductCartSchema, {
     required_error: 'Products are requried',
   }),
@@ -15,3 +15,10 @@ export const CartSchema = z.object({
 });
 
 export type Cart = z.infer<typeof CartSchema>;
+
+export const CartOrderSchema = CartSchema.pick({
+  _id: true,
+  products: true,
+  totalAmountCart: true,
+  totalPriceCart: true,
+});
