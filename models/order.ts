@@ -1,3 +1,4 @@
+import { CartOrderSchema } from './cart';
 import { z } from 'zod';
 
 export const OrderSchema = z.object({
@@ -21,6 +22,8 @@ export const OrderSchema = z.object({
   termsConditions: z.boolean({
     required_error: 'Terms conditions are required',
   }),
+  expiryAt: z.date().optional(),
+  cart: CartOrderSchema.optional(),
 });
 
 export const OrderShippingSchema = OrderSchema.pick({
@@ -35,6 +38,7 @@ export const OrderShippingSchema = OrderSchema.pick({
   userId: true,
   createdAt: true,
   isPaid: true,
+  expiryAt: true,
 });
 
 export const OrderPlaceOrderSchema = OrderSchema.pick({
@@ -43,10 +47,12 @@ export const OrderPlaceOrderSchema = OrderSchema.pick({
   methodPayment: true,
   priceDelivery: true,
   timeDelivery: true,
+  expiryAt: true,
 });
 
 export const OrderCheckoutSchema = OrderSchema.pick({
   _id: true,
+  cart: true,
   termsConditions: true,
 });
 
