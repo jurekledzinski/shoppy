@@ -26,6 +26,7 @@ export const cart = connectDBAction(
     const cookieGuest = cookieStore.get('guestId');
     const cookieStepper = cookieStore.get('stepper');
     const body = Object.fromEntries(formData);
+    const cart = JSON.parse(body.cart as string);
     console.log('BODY CART ACTION ---- ', body);
 
     const token = await getToken({
@@ -34,8 +35,10 @@ export const cart = connectDBAction(
     });
 
     const parsedData = CartSchema.parse({
-      ...body,
-      expiredAt: new Date(body.expiredAt as string),
+      ...cart,
+      ...(body.userId && { userId: body.userId }),
+      ...(body.guestId && { guestId: body.guestId }),
+      ...(body.expiryAt && { expiryAt: new Date(body.expiryAt as string) }),
     });
 
     if (!token && !cookieGuest && !cookieStepper) {
@@ -102,6 +105,18 @@ export const cart = connectDBAction(
 
       return {
         message: 'Cart updated successful',
+        success: true,
+      };
+    }
+
+    // Gdy user zalogowany bez click procced to checkout
+    if (token && !cookieGuest && !cookieStepper) {
+      await updateCart(collection, parsedData, 'userId');
+
+      revalidateTag('get_cart');
+
+      return {
+        message: 'Cart updated bez click checkout successful',
         success: true,
       };
     }
