@@ -1,10 +1,10 @@
 import { Aside as MainAside } from '@/components/shared';
 import { auth } from '@/auth';
+import { Cart, UserRegister } from '@/models';
 import { cookies, headers } from 'next/headers';
 import { getDomain } from '../_helpers';
 import { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
 import { tryCatch } from '@/helpers';
-import { Cart, UserRegister } from '@/models';
 import { verifyToken } from '@/lib';
 
 const fetchUser = tryCatch<Omit<UserRegister, 'password' | 'email'>>(
