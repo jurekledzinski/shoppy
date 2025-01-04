@@ -46,6 +46,8 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
 
   useLoadResetPasswordForm({ context, paramActionType });
 
+  console.log('stateGuest', stateGuest, isPendingGuest);
+
   useEffect(() => {
     if (stateGuest.success && !isPendingGuest) {
       router.replace(`/shipping`);
@@ -58,31 +60,21 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
     userId,
     onLoggedGuest: useCallback(
       (guestId) => {
-        if (!sessionUser?.setSessionUser) return;
-        sessionUser?.setSessionUser((prev) => ({
-          ...prev,
-          guestUser: guestId,
-        }));
+        sessionUser.onSetValue('guestUser', guestId);
       },
       [sessionUser]
     ),
     onNotLoggedGuest: useCallback(() => {
-      if (!sessionUser?.setSessionUser) return;
-      sessionUser?.setSessionUser((prev) => ({ ...prev, guestUser: null }));
+      sessionUser.onSetValue('guestUser', null);
     }, [sessionUser]),
     onLoggedUser: useCallback(
       (userId) => {
-        if (!sessionUser?.setSessionUser) return;
-        sessionUser?.setSessionUser((prev) => ({
-          ...prev,
-          userSession: userId,
-        }));
+        sessionUser.onSetValue('userSession', userId);
       },
       [sessionUser]
     ),
     onNotLoggedUser: useCallback(() => {
-      if (!sessionUser?.setSessionUser) return;
-      sessionUser?.setSessionUser((prev) => ({ ...prev, userSession: null }));
+      sessionUser.onSetValue('userSession', null);
     }, [sessionUser]),
   });
 
@@ -107,7 +99,7 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
             context={context}
             stateOpen={stateOpen}
             user={{ id: userId, name: userName }}
-            onSuccess={() => router.replace(window.location.pathname)}
+            onSuccessAction={() => router.replace(window.location.pathname)}
           />
         ) : context.type === 'cart' ? (
           <CartPanel
@@ -123,7 +115,7 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
           />
         ) : context.type === 'contact' ? (
           <ContactPanel
-            onSuccess={(message) => {
+            onSuccessAction={(message) => {
               showToast(message);
               context.onChange(actionElement, false);
             }}
@@ -143,7 +135,7 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
               e.preventDefault();
               controlAside(context, 'register', actionElement, stateOpen);
             }}
-            onSuccess={() => {
+            onSuccessAction={() => {
               showToast('Login successful');
               context.onChange(actionElement, false);
 
@@ -160,7 +152,7 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
               e.preventDefault();
               controlAside(context, 'login', actionElement, stateOpen);
             }}
-            onSuccess={() => {
+            onSuccessAction={() => {
               showToast('Register successful');
               context.onChange(actionElement, false);
               if (optionCheckout === 'register') {
@@ -176,7 +168,7 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
           />
         ) : context.type === 'forget-password' ? (
           <ForgetPasswordPanel
-            onSuccess={(message) => {
+            onSuccessAction={(message) => {
               showToast(message, 10000);
               context.onChange(actionElement, false);
             }}
@@ -191,7 +183,7 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
                   context.onChange(actionElement, false);
                 }, 500);
               }}
-              onSuccess={(message) => {
+              onSuccessAction={(message) => {
                 router.replace(window.location.pathname);
                 showToast(message);
                 setTimeout(() => {
@@ -202,6 +194,7 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
           </>
         ) : context.type === 'procced-checkout-options' ? (
           <ProccedCheckoutPanel
+            isPending={isPendingGuest}
             onCancelAction={() => {
               context.onChange(actionElement, false);
             }}
@@ -209,7 +202,7 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
               const options = {
                 guest: () => {
                   startTransition(() => formActionGuest(new FormData()));
-                  context.onChange(actionElement, false);
+                  //   context.onChange(actionElement, false);
                 },
                 register: () => {
                   controlAside(
