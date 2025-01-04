@@ -48,6 +48,7 @@ export const DetailsOrder = ({
             priceDelivery={dataOrder?.priceDelivery ?? 0}
             timeDelivery={dataOrder?.timeDelivery ?? 0}
             titleSummary={titleSummary}
+            totalPrice={cartData?.totalPriceCart ?? 0}
           />
 
           <TermsConditionsForm
