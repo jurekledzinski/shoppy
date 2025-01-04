@@ -2,12 +2,13 @@
 import { cookies, headers } from 'next/headers';
 import { errorMessageAction } from '@/helpers';
 import { getToken } from 'next-auth/jwt';
-import { Order, OrderShippingSchema } from '@/models';
+import { Cart, Order, OrderShippingSchema } from '@/models';
 import { revalidateTag } from 'next/cache';
 
 import {
   setCookieGuestId,
   setCookieStepper,
+  updateCartExpiryAt,
   updateShipping,
 } from '@/app/_helpers';
 
@@ -42,12 +43,15 @@ export const shipping = connectDBAction(
       secret: secretAuth,
     });
 
+    const expiresIn = new Date(Date.now() + 30 * 60 * 1000);
+
     const parsedData = OrderShippingSchema.parse({
       ...body,
       createdAt: new Date(body.createdAt as string),
       isDelivered: false,
       isPaid: false,
       isSent: false,
+      ...(cookieGuest && { expiryAt: expiresIn }), //ustaw na 2 godziny dla order
     });
 
     if (!token && !cookieGuest && !cookieStepper) {
@@ -57,7 +61,6 @@ export const shipping = connectDBAction(
     const collection = getCollectionDb<Omit<Order, '_id'>>('orders');
     if (!collection) return errorMessageAction('Internal server error');
 
-    const expiresIn = new Date(Date.now() + 30 * 60 * 1000);
     const tokenStepper = await createToken(
       payloadStepper,
       secretStepper,
@@ -80,6 +83,11 @@ export const shipping = connectDBAction(
         secretGuest,
         expireGuestToken
       );
+
+      const collectionCarts = getCollectionDb<Omit<Cart, '_id'>>('carts');
+      if (!collectionCarts) return errorMessageAction('Internal server error');
+
+      await updateCartExpiryAt(collectionCarts, dataGuest.payload.value);
 
       await updateShipping(collection, parsedData, 'guestId');
 
