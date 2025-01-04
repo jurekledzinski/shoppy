@@ -1,3 +1,3 @@
 export type ForgetPasswordPanelProps = {
-  onSuccess: (message: string) => void;
+  onSuccessAction: (message: string) => void;
 };

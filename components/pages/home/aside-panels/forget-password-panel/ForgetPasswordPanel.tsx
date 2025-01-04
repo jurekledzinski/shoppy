@@ -1,4 +1,4 @@
-'use client';
+'use client'
 import stylesAside from '@/components/shared/aside/Aside.module.css';
 import { forgetPassword } from '@/actions';
 import { ForgetPasswordForm } from '../../forms';
@@ -7,7 +7,7 @@ import { useActionState } from 'react';
 import { useForgetPasswordForm } from '@/hooks';
 
 export const ForgetPasswordPanel = ({
-  onSuccess,
+    onSuccessAction,
 }: ForgetPasswordPanelProps) => {
   const [state, formAction, isPending] = useActionState(forgetPassword, {
     message: '',
@@ -19,7 +19,7 @@ export const ForgetPasswordPanel = ({
       formAction,
       isPending,
       isSuccess: state.success,
-      onSuccess: () => onSuccess(state.message),
+      onSuccess: () => onSuccessAction(state.message),
     });
   return (
     <>

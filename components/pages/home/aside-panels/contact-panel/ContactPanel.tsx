@@ -6,7 +6,7 @@ import { ContactPanelProps } from './types';
 import { useActionState } from 'react';
 import { useContactForm } from '@/hooks';
 
-export const ContactPanel = ({ onSuccess }: ContactPanelProps) => {
+export const ContactPanel = ({ onSuccessAction }: ContactPanelProps) => {
   const [stateContact, formActionContact, isPendingContact] = useActionState(
     contact,
     {
@@ -20,7 +20,7 @@ export const ContactPanel = ({ onSuccess }: ContactPanelProps) => {
     isPending: isPendingContact,
     isSuccess: stateContact.success,
     onSuccess: () => {
-      onSuccess(stateContact.message);
+      onSuccessAction(stateContact.message);
     },
   });
 

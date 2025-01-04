@@ -8,7 +8,7 @@ import { useResetPasswordForm } from '@/hooks';
 
 export const ResetPasswordPanel = ({
   onCancel,
-  onSuccess,
+  onSuccessAction,
 }: ResetPasswordPanelProps) => {
   const [state, formAction, isPending] = useActionState(resetPassword, {
     message: '',
@@ -19,7 +19,7 @@ export const ResetPasswordPanel = ({
     formAction,
     isPending,
     isSuccess: state.success,
-    onSuccess: () => onSuccess(state.message),
+    onSuccess: () => onSuccessAction(state.message),
   });
   return (
     <>

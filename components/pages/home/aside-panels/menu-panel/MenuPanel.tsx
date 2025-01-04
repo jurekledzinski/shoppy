@@ -10,7 +10,7 @@ export const MenuPanel = ({
   context,
   stateOpen,
   user,
-  onSuccess,
+  onSuccessAction,
 }: MenuPanelProps) => {
   const {
     onCloseAside,
@@ -18,7 +18,12 @@ export const MenuPanel = ({
     onRedirectContact,
     onRedirectLogin,
     onRedirectRegister,
-  } = useMenuPanel({ actionElement, context, stateOpen, onSuccess });
+  } = useMenuPanel({
+    actionElement,
+    context,
+    stateOpen,
+    onSuccess: onSuccessAction,
+  });
 
   return (
     <>

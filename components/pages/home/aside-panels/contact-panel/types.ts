@@ -1,3 +1,3 @@
 export type ContactPanelProps = {
-  onSuccess: (message: string) => void;
+  onSuccessAction: (message: string) => void;
 };

@@ -3,6 +3,6 @@ import { MouseEventHandler } from 'react';
 export type LoginPanelProps = {
   onRedirectRegister: MouseEventHandler<HTMLButtonElement>;
   onRedirectForgetPassword: MouseEventHandler<HTMLButtonElement>;
-  onSuccess: () => void;
+  onSuccessAction: () => void;
   optionCheckout?: string | null;
 };

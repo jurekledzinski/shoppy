@@ -9,7 +9,7 @@ import { register } from '@/actions';
 
 export const RegisterPanel = ({
   onRedirectLogin,
-  onSuccess,
+  onSuccessAction,
 }: RegisterPanelProps) => {
   const [stateRegister, formActionRegister, isPendingRegister] = useActionState(
     register,
@@ -23,7 +23,7 @@ export const RegisterPanel = ({
     formAction: formActionRegister,
     isPending: isPendingRegister,
     isSuccess: stateRegister.success,
-    onSuccess,
+    onSuccess: onSuccessAction,
   });
   return (
     <>

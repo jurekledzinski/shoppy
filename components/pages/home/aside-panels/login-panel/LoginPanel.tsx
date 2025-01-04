@@ -11,7 +11,7 @@ export const LoginPanel = ({
   onRedirectForgetPassword,
   onRedirectRegister,
   optionCheckout,
-  onSuccess,
+  onSuccessAction,
 }: LoginPanelProps) => {
   const [stateLogin, formActionLogin, isPendingLogin] = useActionState(login, {
     message: '',
@@ -22,7 +22,7 @@ export const LoginPanel = ({
     formAction: formActionLogin,
     isPending: isPendingLogin,
     isSuccess: stateLogin.success,
-    onSuccess,
+    onSuccess: onSuccessAction,
     optionCheckout,
   });
 

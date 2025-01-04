@@ -5,7 +5,7 @@ export type MenuPanelProps = {
   context: AsideState;
   stateOpen: boolean;
   user: { id: string; name: string };
-  onSuccess: () => void;
+  onSuccessAction: () => void;
 };
 
 export type UseMenuPanelProps = {
