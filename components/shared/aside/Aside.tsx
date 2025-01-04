@@ -1,15 +1,15 @@
 'use client';
 import styles from './Aside.module.css';
 import { AsideProps } from './types';
-import { controlAside } from '@/helpers';
+import { controlAside, showToast } from '@/helpers';
 import { guestCheckout } from '@/actions';
-import { showToast } from '@/helpers';
+import { ModalExpire } from '../modal-expire';
 import { startTransition, useActionState, useEffect } from 'react';
 import { useAside } from '@/store/aside';
 import { useCart } from '@/store/cart';
-import { useLoadResetPasswordForm } from '@/hooks';
+import { useLoadResetPasswordForm, useSetUserSession } from '@/hooks';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { ModalExpire } from '../modal-expire';
+import { useSessionUser } from '@/store/session';
 
 import {
   CartPanel,
@@ -21,7 +21,6 @@ import {
   ResetPasswordPanel,
   ProccedCheckoutPanel,
 } from '@/components/pages';
-import { useSessionUser } from '@/store/session/SessionUserProvider';
 
 export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
   const context = useAside();
@@ -53,29 +52,29 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
     }
   }, [stateGuest.success, isPendingGuest, router]);
 
-  console.log('cartData aside from db -------------------- ', cartData);
-
-  // set userId or guestId session user store
-  useEffect(() => {
-    if (guestId && sessionUser.setSessionUser && !sessionUser.guestUser) {
+  useSetUserSession({
+    guestId,
+    sessionUser,
+    userId,
+    onLoggedGuest: (guestId) => {
+      if (!sessionUser?.setSessionUser) return;
       sessionUser?.setSessionUser((prev) => ({ ...prev, guestUser: guestId }));
-    }
-
-    if (!guestId && sessionUser.setSessionUser && sessionUser.guestUser) {
+    },
+    onNotLoggedGuest: () => {
+      if (!sessionUser?.setSessionUser) return;
       sessionUser?.setSessionUser((prev) => ({ ...prev, guestUser: null }));
-    }
-
-    if (userId && sessionUser?.setSessionUser && !sessionUser.userSession) {
+    },
+    onLoggedUser: (userId) => {
+      if (!sessionUser?.setSessionUser) return;
       sessionUser?.setSessionUser((prev) => ({ ...prev, userSession: userId }));
-    }
-
-    if (!userId && sessionUser?.setSessionUser && sessionUser.userSession) {
+    },
+    onNotLoggedUser: () => {
+      if (!sessionUser?.setSessionUser) return;
       sessionUser?.setSessionUser((prev) => ({ ...prev, userSession: null }));
-    }
-  }, [guestId, userId, sessionUser]);
+    },
+  });
 
   //   ----update cart after change
-
   useEffect(() => {
     if (cartData) {
       dispatch({ type: 'SET_CART', payload: cartData });
@@ -228,6 +227,3 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
     </>
   );
 };
-
-// onmount check for option register i login to open form on refresh in case
-// custom hook to check for it

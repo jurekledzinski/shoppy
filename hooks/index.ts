@@ -14,3 +14,4 @@ export * from './usePlaceOrderForm';
 export * from './useTermsConditionsForm';
 export * from './useSyncCart';
 export * from './useSetCartOnRefresh';
+export * from './useSetUserSession';
