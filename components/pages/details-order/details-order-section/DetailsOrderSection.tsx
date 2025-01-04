@@ -20,6 +20,7 @@ export const DetailsOrderSection = ({
 
   const { methodsCheckoutOrder, onSubmitCheckoutOrder } =
     useTermsConditionsForm({
+      cartData,
       defaultData: orderData,
       formAction: formActionCheckoutOrder,
       isPending: isPendingCheckoutOrder,
