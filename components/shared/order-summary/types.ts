@@ -7,4 +7,5 @@ export type OrderSummaryProps = {
   methodDelivery: string;
   priceDelivery: number;
   timeDelivery: number;
+  totalPrice: number;
 };
