@@ -1,5 +1,6 @@
 .stepper {
-  width: min(575px, 100%);
+  /* width: min(575px, 100%); */
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -59,7 +60,7 @@
   color: var(--color-primary-hover);
 }
 
-/* from 575px */
+/* from 575px 35.938rem */
 @media (min-width: 35.938rem) {
   .label {
     font-size: 14px;
