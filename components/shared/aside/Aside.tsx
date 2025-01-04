@@ -9,6 +9,7 @@ import { useAside } from '@/store/aside';
 import { useCart } from '@/store/cart';
 import { useLoadResetPasswordForm } from '@/hooks';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { ModalExpire } from '../modal-expire';
 
 import {
   CartPanel,
@@ -32,6 +33,7 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
   const userName = userData?.name ?? '';
   const searchParams = useSearchParams();
   const paramActionType = searchParams.get('action_type');
+  const guestUserExpire = searchParams.get('guest-user-expired');
   const router = useRouter();
   const { dispatch, state } = useCart();
 
@@ -51,133 +53,106 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
     }
   }, [stateGuest.success, isPendingGuest, router]);
 
-  console.log('cartData aside from db', cartData);
+  console.log('cartData aside from db -------------------- ', cartData);
 
   // set userId or guestId session user store
   useEffect(() => {
-    if (guestId && sessionUser.setSessionUser) {
+    if (guestId && sessionUser.setSessionUser && !sessionUser.guestUser) {
       sessionUser?.setSessionUser((prev) => ({ ...prev, guestUser: guestId }));
     }
-    if (userId && sessionUser?.setSessionUser) {
+
+    if (!guestId && sessionUser.setSessionUser && sessionUser.guestUser) {
+      sessionUser?.setSessionUser((prev) => ({ ...prev, guestUser: null }));
+    }
+
+    if (userId && sessionUser?.setSessionUser && !sessionUser.userSession) {
       sessionUser?.setSessionUser((prev) => ({ ...prev, userSession: userId }));
+    }
+
+    if (!userId && sessionUser?.setSessionUser && sessionUser.userSession) {
+      sessionUser?.setSessionUser((prev) => ({ ...prev, userSession: null }));
     }
   }, [guestId, userId, sessionUser]);
 
-  return (
-    <aside
-      className={`${styles.aside} ${
-        context.value ? styles.show : styles.aside
-      }`}
-    >
-      {context.type === 'menu' ? (
-        <MenuPanel
-          actionElement={actionElement}
-          context={context}
-          stateOpen={stateOpen}
-          user={{ id: userId, name: userName }}
-          onSuccess={() => router.replace(window.location.pathname)}
-        />
-      ) : context.type === 'cart' ? (
-        <CartPanel
-          actionElement={actionElement}
-          context={context}
-          data={state}
-          dispatch={dispatch}
-          guestId={guestId}
-          onSuccess={() => router.replace('/shipping')}
-          stateOpen={stateOpen}
-          userId={userId}
-          userName={userName}
-        />
-      ) : context.type === 'contact' ? (
-        <ContactPanel
-          onSuccess={(message) => {
-            showToast(message);
-            context.onChange(actionElement, false);
-          }}
-        />
-      ) : context.type === 'login' ? (
-        <LoginPanel
-          onRedirectForgetPassword={(e) => {
-            e.preventDefault();
-            controlAside(context, 'forget-password', actionElement, stateOpen);
-          }}
-          onRedirectRegister={(e) => {
-            e.preventDefault();
-            controlAside(context, 'register', actionElement, stateOpen);
-          }}
-          onSuccess={() => {
-            showToast('Login successful');
-            context.onChange(actionElement, false);
+  //   ----update cart after change
 
-            if (optionCheckout === 'login') {
-              return router.replace(`/shipping`);
-            }
-            router.replace(window.location.pathname);
-          }}
-          optionCheckout={optionCheckout}
-        />
-      ) : context.type === 'register' ? (
-        <RegisterPanel
-          onRedirectLogin={(e) => {
-            e.preventDefault();
-            controlAside(context, 'login', actionElement, stateOpen);
-          }}
-          onSuccess={() => {
-            showToast('Register successful');
-            context.onChange(actionElement, false);
-            if (optionCheckout === 'register') {
-              controlAside(context, 'login', actionElement, stateOpen, 'login');
-            }
-          }}
-        />
-      ) : context.type === 'forget-password' ? (
-        <ForgetPasswordPanel
-          onSuccess={(message) => {
-            showToast(message, 10000);
-            context.onChange(actionElement, false);
-          }}
-        />
-      ) : context.type === 'reset_password' ? (
-        <>
-          <ResetPasswordPanel
-            onCancel={(e) => {
-              e.preventDefault();
-              router.replace(window.location.pathname);
-              setTimeout(() => {
-                context.onChange(actionElement, false);
-              }, 500);
-            }}
+  useEffect(() => {
+    if (cartData) {
+      dispatch({ type: 'SET_CART', payload: cartData });
+    }
+  }, [cartData, dispatch]);
+
+  return (
+    <>
+      <ModalExpire isOpen={guestUserExpire === 'true'} title="Modal expire" />
+      <aside
+        className={`${styles.aside} ${
+          context.value ? styles.show : styles.aside
+        }`}
+      >
+        {context.type === 'menu' ? (
+          <MenuPanel
+            actionElement={actionElement}
+            context={context}
+            stateOpen={stateOpen}
+            user={{ id: userId, name: userName }}
+            onSuccess={() => router.replace(window.location.pathname)}
+          />
+        ) : context.type === 'cart' ? (
+          <CartPanel
+            actionElement={actionElement}
+            context={context}
+            data={state}
+            dispatch={dispatch}
+            guestId={guestId}
+            onSuccess={() => router.replace('/shipping')}
+            stateOpen={stateOpen}
+            userId={userId}
+            userName={userName}
+          />
+        ) : context.type === 'contact' ? (
+          <ContactPanel
             onSuccess={(message) => {
-              router.replace(window.location.pathname);
               showToast(message);
-              setTimeout(() => {
-                controlAside(context, 'login', actionElement, stateOpen);
-              }, 500);
+              context.onChange(actionElement, false);
             }}
           />
-        </>
-      ) : context.type === 'procced-checkout-options' ? (
-        <ProccedCheckoutPanel
-          onCancelAction={() => {
-            context.onChange(actionElement, false);
-          }}
-          onContinueAction={(name) => {
-            const options = {
-              guest: () => {
-                startTransition(() => formActionGuest(new FormData()));
-                context.onChange(actionElement, false);
-              },
-              register: () => {
-                controlAside(
-                  context,
-                  'register',
-                  actionElement,
-                  stateOpen,
-                  'register'
-                );
-              },
-              login: () => {
+        ) : context.type === 'login' ? (
+          <LoginPanel
+            onRedirectForgetPassword={(e) => {
+              e.preventDefault();
+              controlAside(
+                context,
+                'forget-password',
+                actionElement,
+                stateOpen
+              );
+            }}
+            onRedirectRegister={(e) => {
+              e.preventDefault();
+              controlAside(context, 'register', actionElement, stateOpen);
+            }}
+            onSuccess={() => {
+              showToast('Login successful');
+              context.onChange(actionElement, false);
+
+              if (optionCheckout === 'login') {
+                return router.replace(`/shipping`);
+              }
+              router.replace(window.location.pathname);
+            }}
+            optionCheckout={optionCheckout}
+          />
+        ) : context.type === 'register' ? (
+          <RegisterPanel
+            onRedirectLogin={(e) => {
+              e.preventDefault();
+              controlAside(context, 'login', actionElement, stateOpen);
+            }}
+            onSuccess={() => {
+              showToast('Register successful');
+              context.onChange(actionElement, false);
+              if (optionCheckout === 'register') {
                 controlAside(
                   context,
                   'login',
@@ -185,14 +160,72 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
                   stateOpen,
                   'login'
                 );
-              },
-            };
+              }
+            }}
+          />
+        ) : context.type === 'forget-password' ? (
+          <ForgetPasswordPanel
+            onSuccess={(message) => {
+              showToast(message, 10000);
+              context.onChange(actionElement, false);
+            }}
+          />
+        ) : context.type === 'reset_password' ? (
+          <>
+            <ResetPasswordPanel
+              onCancel={(e) => {
+                e.preventDefault();
+                router.replace(window.location.pathname);
+                setTimeout(() => {
+                  context.onChange(actionElement, false);
+                }, 500);
+              }}
+              onSuccess={(message) => {
+                router.replace(window.location.pathname);
+                showToast(message);
+                setTimeout(() => {
+                  controlAside(context, 'login', actionElement, stateOpen);
+                }, 500);
+              }}
+            />
+          </>
+        ) : context.type === 'procced-checkout-options' ? (
+          <ProccedCheckoutPanel
+            onCancelAction={() => {
+              context.onChange(actionElement, false);
+            }}
+            onContinueAction={(name) => {
+              const options = {
+                guest: () => {
+                  startTransition(() => formActionGuest(new FormData()));
+                  context.onChange(actionElement, false);
+                },
+                register: () => {
+                  controlAside(
+                    context,
+                    'register',
+                    actionElement,
+                    stateOpen,
+                    'register'
+                  );
+                },
+                login: () => {
+                  controlAside(
+                    context,
+                    'login',
+                    actionElement,
+                    stateOpen,
+                    'login'
+                  );
+                },
+              };
 
-            options[name as keyof typeof options]();
-          }}
-        />
-      ) : null}
-    </aside>
+              options[name as keyof typeof options]();
+            }}
+          />
+        ) : null}
+      </aside>
+    </>
   );
 };
 
