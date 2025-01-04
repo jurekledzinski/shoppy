@@ -27,7 +27,7 @@ export const useSetUserSession = ({
 
     if (userId && !sessionUser.userSession) onLoggedUser(userId);
 
-    if (!userId && sessionUser?.setSessionUser && sessionUser.userSession) {
+    if (!userId && sessionUser.userSession) {
       onNotLoggedUser();
     }
   }, [
