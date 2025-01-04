@@ -12,3 +12,4 @@ export * from './shipping';
 export * from './guestCheckout';
 export * from './placeOrder';
 export * from './checkout';
+export * from './cart';
