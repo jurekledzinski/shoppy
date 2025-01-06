@@ -1,23 +1,20 @@
 'use client';
 import styles from './ProfileSection.module.css';
 import stylesButton from '@styles/buttons.module.css';
+import { AlertError, ModalDelete } from '@/components/shared';
 import { ChangePasswordForm, UpdateProfileForm } from '../forms';
+import { logOut } from '@/auth';
 import { ProfileSectionProps } from './types';
 import { showToast } from '@/helpers';
 import { startTransition, useActionState } from 'react';
 import { useChangePasswordForm, useUpdateProfileForm } from '@/hooks';
 import { useRouter } from 'next/navigation';
-import { logOut } from '@/auth';
 
 import {
   changeUserPassword,
   deleteUserAccount,
   updateUserProfile,
 } from '@/actions';
-import {
-  AlertError,
-  ModalContainer as ModalUserDelete,
-} from '@/components/shared';
 
 export const ProfileSection = ({ children, userData }: ProfileSectionProps) => {
   const router = useRouter();
@@ -91,7 +88,7 @@ export const ProfileSection = ({ children, userData }: ProfileSectionProps) => {
         Delete user account
       </header>
 
-      <ModalUserDelete
+      <ModalDelete
         isPending={isPendingDeleteAccount}
         isSuccess={stateDeleteAccount.success}
         classButton={stylesButton.buttonDelete}
@@ -108,11 +105,12 @@ export const ProfileSection = ({ children, userData }: ProfileSectionProps) => {
           showToast(stateDeleteAccount.message);
           router.replace('/');
         }}
+        textButton="Delete account"
       >
         <p className={styles.modalDeleteText}>
           Are you sure you want delete your account?
         </p>
-      </ModalUserDelete>
+      </ModalDelete>
 
       {!stateDeleteAccount.success && stateDeleteAccount.message && (
         <AlertError>{stateDeleteAccount.message}</AlertError>
