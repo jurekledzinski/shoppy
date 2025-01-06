@@ -1,30 +1,11 @@
 import { auth } from '@/auth';
 import { Breadcrumb, Breadcrumbs } from '@/components/shared';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import { getBreadcrumbsProfile, getDomain } from '@/app/_helpers';
+import { fetchUser, getBreadcrumbsProfile, getDomain } from '@/app/_helpers';
 import { headers } from 'next/headers';
 import { ProfileSection } from '@/components/pages';
-import { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
-import { tryCatch } from '@/helpers';
-import { UserRegister } from '@/models';
 
 type Params = Promise<{ id: string }>;
-
-const fetchUser = tryCatch<Omit<UserRegister, 'password'>>(
-  async (url: string, headers?: ReadonlyHeaders) => {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers,
-      next: { revalidate: 3600, tags: ['get_user'] },
-    });
-
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-
-    return await response.json();
-  }
-);
 
 const Profile = async (props: { params: Params }) => {
   const session = await auth();

@@ -1,21 +1,9 @@
 import styles from '@styles/HomePage.module.css';
 import { BasicSlider } from '@/components/shared';
-import { Brand } from '@/models';
-import { getDomain } from './_helpers';
+import { fetchBrands, getDomain } from './_helpers';
 import { TabsCategoriesContainer } from '@/components/pages';
-import { tryCatch } from '@/helpers';
 
 type SearchParams = Promise<{ category: string }>;
-
-const fetchBrands = tryCatch<Brand[]>(async (url: string) => {
-  const response = await fetch(url, { cache: 'force-cache' });
-
-  if (!response.ok) {
-    throw new Error(response.statusText);
-  }
-
-  return await response.json();
-});
 
 export default async function Home(props: { searchParams: SearchParams }) {
   const domain = await getDomain();

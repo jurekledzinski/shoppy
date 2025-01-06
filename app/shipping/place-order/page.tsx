@@ -1,44 +1,11 @@
 import { auth } from '@/auth';
 import { cookies, headers } from 'next/headers';
-import { getDomain, tokenVerify } from '@/app/_helpers';
-import { Cart, Order } from '@/models';
+import { fetchCart, fetchOrder } from '@/app/_helpers';
+import { getDomain } from '@/app/_helpers';
 import { PlaceOrderSection } from '@/components/pages';
-import { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
 import { Step, Stepper } from '@/components/shared';
 import { steps } from '@/data';
-import { tryCatch } from '@/helpers';
-
-const fetchOrder = tryCatch<Order>(
-  async (url: string, headers?: ReadonlyHeaders) => {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers,
-      next: { revalidate: 3600, tags: ['get_order'] },
-    });
-
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-
-    return await response.json();
-  }
-);
-
-const fetchCart = tryCatch<Cart>(
-  async (url: string, headers?: ReadonlyHeaders) => {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers,
-      next: { revalidate: 3600, tags: ['get_cart'] },
-    });
-
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-
-    return await response.json();
-  }
-);
+import { verifyToken } from '@/lib';
 
 const secretGuest = process.env.GUEST_SECRET!;
 const secretStepper = process.env.STEPPER_SECRET!;
@@ -51,12 +18,12 @@ const PlaceOrder = async () => {
   const guestCookie = cookieStore.get('guestId') ?? null;
   const stepperCookie = cookieStore.get('stepper') ?? null;
 
-  const guestCookieDecoded = guestCookie
-    ? await tokenVerify<{ value: string }>(guestCookie.value, secretGuest)
+  const guestCookieDecoded = guestCookie?.value
+    ? await verifyToken<{ value: string }>(guestCookie.value, secretGuest)
     : null;
 
-  const stepperCookieDecoded = stepperCookie
-    ? await tokenVerify<{ value: { allowed: string; completed: string[] } }>(
+  const stepperCookieDecoded = stepperCookie?.value
+    ? await verifyToken<{ value: { allowed: string; completed: string[] } }>(
         stepperCookie.value,
         secretStepper
       )

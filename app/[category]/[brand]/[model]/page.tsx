@@ -2,60 +2,17 @@ import { auth } from '@/auth';
 import { Breadcrumb, Breadcrumbs } from '@/components/shared';
 import { DetailsProductSection } from '@/components/pages';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import { getBreadcrumbsDetails, getDomain } from '@/app/_helpers';
 import { headers } from 'next/headers';
-import { Product, Review, UserRegister } from '@/models';
-import { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
-import { tryCatch } from '@/helpers';
+import {
+  fetchDetailsProduct,
+  fetchProductReviews,
+  fetchUser,
+  getBreadcrumbsDetails,
+  getDomain,
+} from '@/app/_helpers';
 
 type Params = Promise<{ category: string; brand: string; model: string }>;
 type SearchParams = Promise<{ id: string }>;
-
-const fetchUser = tryCatch<Omit<UserRegister, 'password'>>(
-  async (url: string, headers?: ReadonlyHeaders) => {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers,
-      next: { revalidate: 3600, tags: ['get_user'] },
-    });
-
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-
-    return await response.json();
-  }
-);
-
-const fetchProductReviews = tryCatch<Review[]>(async (url: string) => {
-  const response = await fetch(url, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    next: { revalidate: 3600, tags: ['get_product_reviews'] },
-  });
-
-  if (!response.ok) {
-    throw new Error(response.statusText);
-  }
-
-  return await response.json();
-});
-
-const fetchDetailsProduct = tryCatch<Product>(async (url: string) => {
-  const response = await fetch(url, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    next: { revalidate: 3600, tags: ['get_product'] },
-  });
-
-  if (!response.ok) {
-    throw new Error(response.statusText);
-  }
-
-  return await response.json();
-});
 
 const DetailsProduct = async (props: {
   params: Params;
