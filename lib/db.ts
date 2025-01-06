@@ -9,7 +9,7 @@ import type { NextRequest, NextResponse } from 'next/server';
 export type State = {
   message: string;
   success: boolean;
-  body?: { email: string; id: string; name: string };
+  payload?: { id: string };
 };
 
 if (!process.env.ATLAS_URL) {
