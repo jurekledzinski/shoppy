@@ -11,7 +11,7 @@ export const setCookieGuestId = (
     httpOnly: true,
     path: '/',
     expires: expiresIn,
-    sameSite: 'strict',
+    sameSite: 'lax',
     secure: process.env.NODE_ENV === 'production',
   });
 };
@@ -27,7 +27,14 @@ export const setCookieStepper = (
     httpOnly: true,
     path: '/',
     expires: expiresIn,
-    sameSite: 'strict',
+    sameSite: 'lax',
     secure: process.env.NODE_ENV === 'production',
   });
+};
+
+export const deleteCookie = (
+  cookieStore: ReadonlyRequestCookies,
+  name: string
+) => {
+  cookieStore.delete(name);
 };
