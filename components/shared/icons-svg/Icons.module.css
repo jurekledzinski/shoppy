@@ -1,0 +1,60 @@
+.tick,
+.cross {
+  width: 100px;
+  height: 100px;
+}
+
+.tick circle {
+  stroke: var(--color-success);
+  stroke-width: 4;
+  fill: none;
+  stroke-dasharray: 151;
+  stroke-dashoffset: 150;
+  animation: draw-circle 1s ease forwards;
+}
+
+.cross circle {
+  stroke: var(--color-negative);
+  stroke-width: 4;
+  fill: none;
+  stroke-dasharray: 151;
+  stroke-dashoffset: 150;
+  animation: draw-circle 1s ease forwards;
+}
+
+.tick path {
+  stroke: var(--color-success);
+  stroke-width: 5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: draw-path 1s ease forwards;
+}
+
+.cross path {
+  stroke: var(--color-negative);
+  stroke-width: 5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: draw-path 1s ease forwards;
+}
+
+.cross path:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+@keyframes draw-path {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes draw-circle {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
