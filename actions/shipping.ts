@@ -6,6 +6,7 @@ import { Cart, Order, OrderShippingSchema } from '@/models';
 import { revalidateTag } from 'next/cache';
 
 import {
+  getExpireInCookie,
   setCookieGuestId,
   setCookieStepper,
   updateCartExpiryAt,
@@ -43,7 +44,7 @@ export const shipping = connectDBAction(
       secret: secretAuth,
     });
 
-    const expiresIn = new Date(Date.now() + 30 * 60 * 1000);
+    const expiresIn = getExpireInCookie();
 
     const parsedData = OrderShippingSchema.parse({
       ...body,
@@ -87,7 +88,11 @@ export const shipping = connectDBAction(
       const collectionCarts = getCollectionDb<Omit<Cart, '_id'>>('carts');
       if (!collectionCarts) return errorMessageAction('Internal server error');
 
-      await updateCartExpiryAt(collectionCarts, dataGuest.payload.value);
+      await updateCartExpiryAt(
+        collectionCarts,
+        dataGuest.payload.value,
+        expiresIn
+      );
 
       await updateShipping(collection, parsedData, 'guestId');
 
