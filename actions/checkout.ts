@@ -6,6 +6,10 @@ import { Cart, Order, OrderCheckoutSchema } from '@/models';
 import { revalidateTag } from 'next/cache';
 
 import {
+  createStripeSessionCheckout,
+  formatBuyedProducts,
+  formatShippingData,
+  getExpireInCookie,
   setCookieGuestId,
   setCookieStepper,
   updateCartExpiryAt,
@@ -45,8 +49,10 @@ export const checkout = connectDBAction(
     const cookieStepper = cookieStore.get('stepper');
     const body = Object.fromEntries(formData);
     const cartProducts = JSON.parse(body.products as string);
-    const totalAmountCart = parseInt(body.totalAmountCart as string);
-    const totalPriceCart = parseFloat(body.totalPriceCart as string);
+    const orderId = body._id as string;
+    const methodDelivery = body.methodDelivery as string;
+    const priceDelivery = parseFloat(body.priceDelivery as string);
+    const timeDelivery = parseInt(body.timeDelivery as string);
 
     const token = await getToken({
       req: { headers: headersData },
@@ -55,12 +61,9 @@ export const checkout = connectDBAction(
 
     const parsedData = OrderCheckoutSchema.parse({
       ...body,
-      cart: {
-        _id: body.cartId,
-        products: cartProducts,
-        totalAmountCart: totalAmountCart,
-        totalPriceCart: totalPriceCart,
-      },
+      methodDelivery,
+      timeDelivery,
+      priceDelivery,
       termsConditions: body.termsConditions === 'true' ? true : false,
     });
 
@@ -71,7 +74,7 @@ export const checkout = connectDBAction(
     const collection = getCollectionDb<Omit<Order, '_id'>>('orders');
     if (!collection) return errorMessageAction('Internal server error');
 
-    const expiresIn = new Date(Date.now() + 30 * 60 * 1000);
+    const expiresIn = getExpireInCookie();
     const tokenStepper = await createToken(
       payloadStepper,
       secretStepper,
@@ -98,18 +101,35 @@ export const checkout = connectDBAction(
       const collectionCarts = getCollectionDb<Omit<Cart, '_id'>>('carts');
       if (!collectionCarts) return errorMessageAction('Internal server error');
 
-      await updateCartExpiryAt(collectionCarts, dataGuest.payload.value);
+      await updateCartExpiryAt(
+        collectionCarts,
+        dataGuest.payload.value,
+        expiresIn
+      );
 
       await updateCheckoutOrder(collection, parsedData);
 
       setCookieGuestId(cookieStore, tokenGuest, expiresIn);
       setCookieStepper(cookieStore, tokenStepper, expiresIn);
 
+      const formattedProducts = formatBuyedProducts(cartProducts);
+      const shippingOptions = formatShippingData(
+        methodDelivery,
+        priceDelivery,
+        timeDelivery
+      );
+      const sessionStripe = await createStripeSessionCheckout(
+        formattedProducts,
+        orderId,
+        shippingOptions
+      );
+
       revalidateTag('get_order');
 
       return {
         message: 'Checkout order successful',
         success: true,
+        payload: { id: sessionStripe.id },
       };
     }
 
@@ -123,11 +143,24 @@ export const checkout = connectDBAction(
 
       setCookieStepper(cookieStore, tokenStepper, expiresIn);
 
+      const formattedProducts = formatBuyedProducts(cartProducts);
+      const shippingOptions = formatShippingData(
+        methodDelivery,
+        priceDelivery,
+        timeDelivery
+      );
+      const sessionStripe = await createStripeSessionCheckout(
+        formattedProducts,
+        orderId,
+        shippingOptions
+      );
+
       revalidateTag('get_order');
 
       return {
         message: 'Checkout order successful',
         success: true,
+        payload: { id: sessionStripe.id },
       };
     }
 
