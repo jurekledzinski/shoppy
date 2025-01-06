@@ -52,11 +52,19 @@ export const OrderPlaceOrderSchema = OrderSchema.pick({
 
 export const OrderCheckoutSchema = OrderSchema.pick({
   _id: true,
-  cart: true,
   termsConditions: true,
+  methodDelivery: true,
+  timeDelivery: true,
+  priceDelivery: true,
+});
+
+export const OrderSuccessSchema = OrderSchema.pick({
+  cart: true,
+  isPaid: true,
 });
 
 export type Order = z.infer<typeof OrderSchema>;
 export type OrderShipping = z.infer<typeof OrderShippingSchema>;
 export type OrderPlaceOrder = z.infer<typeof OrderPlaceOrderSchema>;
 export type OrderCheckout = z.infer<typeof OrderCheckoutSchema>;
+export type OrderSuccess = z.infer<typeof OrderSuccessSchema>;
