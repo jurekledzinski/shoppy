@@ -7,3 +7,6 @@ export const tokenVerify = async <T>(tokenValue: string, secret: string) => {
     return null;
   }
 };
+
+export const getExpireInCookie = (time: number = 30 * 60 * 1000) =>
+  new Date(Date.now() + time);
