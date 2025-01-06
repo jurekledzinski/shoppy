@@ -15,6 +15,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@splidejs/react-splide": "^0.7.12",
+    "@stripe/stripe-js": "^5.4.0",
     "@types/bcrypt": "^5.0.2",
     "bcrypt": "^5.1.1",
     "handlebars": "^4.7.8",
@@ -31,6 +32,7 @@
     "react-simple-star-rating": "^5.1.7",
     "react-toastify": "^10.0.6",
     "react-transition-group": "^4.4.5",
+    "stripe": "^17.5.0",
     "uuid": "^11.0.3",
     "xss": "^1.0.15",
     "zod": "^3.23.8"
