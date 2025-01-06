@@ -3,11 +3,14 @@ import styles from './Aside.module.css';
 import { AsideProps } from './types';
 import { controlAside, showToast } from '@/helpers';
 import { guestCheckout } from '@/actions';
-import { ModalExpire } from '../modal-expire';
-import { startTransition, useActionState, useCallback, useEffect } from 'react';
+import { startTransition, useCallback, useEffect } from 'react';
 import { useAside } from '@/store/aside';
 import { useCart } from '@/store/cart';
-import { useLoadResetPasswordForm, useSetUserSession } from '@/hooks';
+import {
+  useActionStateAndReset,
+  useLoadResetPasswordForm,
+  useSetUserSession,
+} from '@/hooks';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useSessionUser } from '@/store/session';
 
@@ -21,6 +24,7 @@ import {
   ResetPasswordPanel,
   ProccedCheckoutPanel,
 } from '@/components/pages';
+import { ModalWarning } from '../modal-warning';
 
 export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
   const context = useAside();
@@ -36,23 +40,23 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
   const router = useRouter();
   const { dispatch, state } = useCart();
 
-  const [stateGuest, formActionGuest, isPendingGuest] = useActionState(
-    guestCheckout,
-    {
-      message: '',
-      success: false,
-    }
-  );
-
-  useLoadResetPasswordForm({ context, paramActionType });
-
-  console.log('stateGuest', stateGuest, isPendingGuest);
+  const { action, resetStateAction } = useActionStateAndReset({
+    fnAction: guestCheckout,
+    onResetAction: () => {
+      context.onChange(actionElement, false);
+      setTimeout(() => {
+        router.replace('/shipping');
+      }, 200);
+    },
+  });
 
   useEffect(() => {
-    if (stateGuest.success && !isPendingGuest) {
-      router.replace(`/shipping`);
+    if (action.state.success && !action.isPending) {
+      resetStateAction();
     }
-  }, [stateGuest.success, isPendingGuest, router]);
+  }, [action, resetStateAction]);
+
+  useLoadResetPasswordForm({ context, paramActionType });
 
   useSetUserSession({
     guestId,
@@ -78,7 +82,6 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
     }, [sessionUser]),
   });
 
-  //   ----update cart after change
   useEffect(() => {
     if (cartData) {
       dispatch({ type: 'SET_CART', payload: cartData });
@@ -87,7 +90,18 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
 
   return (
     <>
-      <ModalExpire isOpen={guestUserExpire === 'true'} title="Modal expire" />
+      <ModalWarning
+        isOpen={guestUserExpire === 'true'}
+        title="Session Expired"
+        cancel=""
+        confirm=""
+        onConfirm={() => {}}
+      >
+        <p>
+          Your guest session will expire in 15 minutes. Please click extend
+          session button to stay logged in as guest user.
+        </p>
+      </ModalWarning>
       <aside
         className={`${styles.aside} ${
           context.value ? styles.show : styles.aside
@@ -194,15 +208,14 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
           </>
         ) : context.type === 'procced-checkout-options' ? (
           <ProccedCheckoutPanel
-            isPending={isPendingGuest}
+            isPending={action.isPending}
             onCancelAction={() => {
               context.onChange(actionElement, false);
             }}
             onContinueAction={(name) => {
               const options = {
                 guest: () => {
-                  startTransition(() => formActionGuest(new FormData()));
-                  //   context.onChange(actionElement, false);
+                  startTransition(() => action.formAction(new FormData()));
                 },
                 register: () => {
                   controlAside(
