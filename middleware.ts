@@ -2,7 +2,6 @@ import { auth } from '@/auth';
 import { jwtVerify } from 'jose';
 import { NextResponse } from 'next/server';
 
-
 const checkoutProcess = ['/shipping', '/place-order', '/details-order'];
 
 const secretGuest = process.env.GUEST_SECRET!;
@@ -30,24 +29,24 @@ export default auth(async (request) => {
 
     //   ----------------
 
-    if (guestCookieValue) {
-      const guestUserExpire = guestCookieValue.payload.exp! * 1000;
-      const alertTime = new Date(guestUserExpire - 28 * 60 * 1000).getTime();
-      const currentTime = Date.now();
+    // if (guestCookieValue) {
+    //   const guestUserExpire = guestCookieValue.payload.exp! * 1000;
+    //   const alertTime = new Date(guestUserExpire - 28 * 60 * 1000).getTime();
+    //   const currentTime = Date.now();
 
-      console.log('Alert time', new Date(guestUserExpire - 28 * 60 * 1000));
-      console.log('Current time', new Date());
+    //   console.log('Alert time', new Date(guestUserExpire - 28 * 60 * 1000));
+    //   console.log('Current time', new Date());
 
-      if (currentTime >= alertTime) {
-        console.log('------ GUEST EXPIRED IN 28 MINUTES ------');
-        const url = new URL(request.url);
-        if (!url.searchParams.has('guest-user-expired')) {
-          url.searchParams.set('guest-user-expired', 'true');
-          return NextResponse.redirect(url);
-        }
-      }
-    }
-    console.log('guestCookieValue middleware', guestCookieValue);
+    //   if (currentTime >= alertTime) {
+    //     console.log('------ GUEST EXPIRED IN 28 MINUTES ------');
+    //     const url = new URL(request.url);
+    //     if (!url.searchParams.has('guest-user-expired')) {
+    //       url.searchParams.set('guest-user-expired', 'true');
+    //       return NextResponse.redirect(url);
+    //     }
+    //   }
+    // }
+    // console.log('guestCookieValue middleware', guestCookieValue);
 
     // ----------------
 
