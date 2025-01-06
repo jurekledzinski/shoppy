@@ -21,8 +21,8 @@ export const useSyncCart = ({
   const prevSessionUser = useRef(false);
 
   useEffect(() => {
-    console.log('prevCartRef', prevCartRef.current);
-    console.log('state.totalAmountCart', state.totalAmountCart);
+    // console.log('prevCartRef', prevCartRef.current);
+    // console.log('state.totalAmountCart', state.totalAmountCart);
 
     if (
       prevCartRef.current === state.totalAmountCart &&
