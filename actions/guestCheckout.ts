@@ -1,9 +1,9 @@
 'use server';
-// import { connectDBAction } from '@/lib';
 import { createToken } from '@/lib';
 import { v4 as uuidv4 } from 'uuid';
 import { cookies } from 'next/headers';
-// import { redirect } from 'next/navigation';
+import { setCookieGuestId, setCookieStepper } from '@/app/_helpers';
+// import { redirect, RedirectType } from 'next/navigation';
 
 const secretGuest = process.env.GUEST_SECRET!;
 const secretStepper = process.env.STEPPER_SECRET!;
@@ -24,37 +24,11 @@ export const guestCheckout = async (prevState: unknown, formData: FormData) => {
     expireStepperToken
   );
 
-  cookieStore.set({
-    name: 'stepper',
-    value: tokenStepper,
-    httpOnly: true,
-    path: '/',
-    expires: expiresIn,
-    sameSite: 'strict',
-    secure: process.env.NODE_ENV === 'production',
-  });
-
-  cookieStore.set({
-    name: 'guestId',
-    value: tokenGuest,
-    httpOnly: true,
-    path: '/',
-    expires: expiresIn,
-    sameSite: 'strict',
-    secure: process.env.NODE_ENV === 'production',
-  });
-
-  //   redirect('/shipping');
+  setCookieGuestId(cookieStore, tokenGuest, expiresIn);
+  setCookieStepper(cookieStore, tokenStepper, expiresIn);
 
   return {
     message: 'Procces checkout as guest successful',
     success: true,
   };
 };
-
-//   redirect('/shipping', RedirectType.replace);
-
-//   return {
-//     message: 'Procces checkout as guest successful',
-//     success: true,
-//   };
