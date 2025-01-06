@@ -7,3 +7,5 @@ export * from './shipping';
 export * from './details-order/details-order-section';
 export * from './place-order';
 export * from './details-order';
+export * from './success';
+export * from './cancel';
