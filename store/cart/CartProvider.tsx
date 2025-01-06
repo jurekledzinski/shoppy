@@ -48,7 +48,7 @@ const CartProvider = ({ children }: CartProviderProps) => {
     sessionUser: sessionUser.userSession,
     state: state.cart,
     onGuest: useCallback(() => {
-      console.log('ACTION SAVE CART FOR GUEST');
+      //   console.log('ACTION SAVE CART FOR GUEST');
       const expiresIn = new Date(Date.now() + 30 * 60 * 1000);
       const formData = new FormData();
       formData.set('guestId', sessionUser.guestUser!);
@@ -59,7 +59,7 @@ const CartProvider = ({ children }: CartProviderProps) => {
     }, [sessionUser.guestUser, state.cart]),
 
     onUser: useCallback(async () => {
-      console.log('ACTION SAVE CART FOR LOGGED IN USER');
+      //   console.log('ACTION SAVE CART FOR LOGGED IN USER');
       const formData = new FormData();
       formData.set('userId', sessionUser.userSession!);
       formData.set('cart', JSON.stringify(state.cart));
@@ -68,7 +68,7 @@ const CartProvider = ({ children }: CartProviderProps) => {
     }, [sessionUser.userSession, state.cart]),
 
     onNoUser: useCallback(() => {
-      console.log('NO USER TO LOCALSTORAGE');
+      //   console.log('NO USER TO LOCALSTORAGE');
 
       if (state.cart.totalAmountCart) {
         setItemToLocalStorage<CartState['cart']>('cart', state.cart);
