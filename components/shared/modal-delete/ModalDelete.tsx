@@ -2,26 +2,26 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from '../modal/Modal.module.css';
 import { Backdrop } from '../backdrop';
+import { Button } from '../button';
 import { CSSTransition } from 'react-transition-group';
-import { Modal } from '@/components/shared';
-import { ModalExpireProps } from './types';
+import { Modal, ModalDeleteContent } from '@/components/shared';
+import { ModalDeleteProps } from './types';
 
-export const ModalExpire = ({
-  cancel,
-  confirm,
+export const ModalDelete = ({
+  classButton,
+  cancel = 'Cancel',
+  confirm = 'Confirm',
   children,
   onConfirm,
+  textButton,
   title,
   isPending,
   isSuccess,
-  isOpen,
   onSuccess,
-}: ModalExpireProps) => {
+}: ModalDeleteProps) => {
   const nodeRef = useRef(null);
   const [showBackdrop, setShowBackdrop] = useState(false);
   const [showModal, setModal] = useState(false);
-
-  console.log('isOpen', isOpen);
 
   useEffect(() => {
     if (isSuccess) {
@@ -30,13 +30,13 @@ export const ModalExpire = ({
     }
   }, [isSuccess, onSuccess]);
 
-  useEffect(() => {
-    setShowBackdrop(isOpen);
-    setModal(isOpen);
-  }, [isOpen]);
-
   return (
     <>
+      <Button
+        className={classButton}
+        onClick={() => setModal(true)}
+        text={textButton}
+      />
       <Backdrop show={showBackdrop} />
       <CSSTransition
         in={showModal}
@@ -52,16 +52,18 @@ export const ModalExpire = ({
         onEnter={() => setShowBackdrop(true)}
         onExited={() => setShowBackdrop(false)}
       >
-        <Modal
-          ref={nodeRef}
-          title={title}
-          cancel={cancel}
-          confirm={confirm}
-          onClose={() => setModal(false)}
-          onConfirm={onConfirm}
-          isPending={isPending}
-        >
-          {children}
+        <Modal ref={nodeRef}>
+          <ModalDeleteContent
+            title={title}
+            cancel={cancel}
+            confirm={confirm}
+            isPending={isPending}
+            onCancel={() => setModal(false)}
+            onClose={() => setModal(false)}
+            onConfirm={onConfirm}
+          >
+            {children}
+          </ModalDeleteContent>
         </Modal>
       </CSSTransition>
     </>

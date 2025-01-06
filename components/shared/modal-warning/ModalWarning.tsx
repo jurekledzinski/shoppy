@@ -1,41 +1,32 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
-import styles from './Modal.module.css';
+import styles from '../modal/Modal.module.css';
 import { Backdrop } from '../backdrop';
-import { Button } from '../button';
 import { CSSTransition } from 'react-transition-group';
-import { Modal } from './Modal';
-import { ModalContainerProps } from './types';
+import { Modal, ModalWarningContent } from '@/components/shared';
+import { ModalWarningProps } from './types';
+import { useEffect, useRef, useState } from 'react';
 
-export const ModalContainer = ({
-  classButton,
+export const ModalWarning = ({
   cancel,
   confirm,
   children,
+  onCancel,
   onConfirm,
   title,
   isPending,
-  isSuccess,
-  onSuccess,
-}: ModalContainerProps) => {
+  isOpen,
+}: ModalWarningProps) => {
   const nodeRef = useRef(null);
   const [showBackdrop, setShowBackdrop] = useState(false);
   const [showModal, setModal] = useState(false);
 
   useEffect(() => {
-    if (isSuccess) {
-      if (onSuccess) onSuccess();
-      setModal(false);
-    }
-  }, [isSuccess, onSuccess]);
+    setShowBackdrop(isOpen);
+    setModal(isOpen);
+  }, [isOpen]);
 
   return (
     <>
-      <Button
-        className={classButton}
-        onClick={() => setModal(true)}
-        text="Delete account"
-      ></Button>
       <Backdrop show={showBackdrop} />
       <CSSTransition
         in={showModal}
@@ -51,16 +42,17 @@ export const ModalContainer = ({
         onEnter={() => setShowBackdrop(true)}
         onExited={() => setShowBackdrop(false)}
       >
-        <Modal
-          ref={nodeRef}
-          title={title}
-          cancel={cancel}
-          confirm={confirm}
-          onClose={() => setModal(false)}
-          onConfirm={onConfirm}
-          isPending={isPending}
-        >
-          {children}
+        <Modal ref={nodeRef}>
+          <ModalWarningContent
+            title={title}
+            cancel={cancel}
+            confirm={confirm}
+            isPending={isPending}
+            onCancel={onCancel}
+            onConfirm={onConfirm}
+          >
+            {children}
+          </ModalWarningContent>
         </Modal>
       </CSSTransition>
     </>
