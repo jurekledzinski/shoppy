@@ -31,12 +31,10 @@ export const useTermsConditionsForm = ({
     const formData = new FormData();
     formData.set('_id', defaultData?._id ?? '');
     formData.set('termsConditions', data.termsConditions.toString());
-    if (cartData) {
-      formData.set('cartId', cartData._id ?? '');
-      formData.set('products', JSON.stringify(cartData.products));
-      formData.set('totalAmountCart', cartData.totalAmountCart.toString());
-      formData.set('totalPriceCart', cartData.totalPriceCart.toString());
-    }
+    formData.set('methodDelivery', defaultData?.methodDelivery ?? 'standard');
+    formData.set('priceDelivery', defaultData?.priceDelivery.toString() ?? '3');
+    formData.set('timeDelivery', defaultData?.timeDelivery.toString() ?? '3');
+    if (cartData) formData.set('products', JSON.stringify(cartData.products));
 
     startTransition(() => {
       formAction(formData);
