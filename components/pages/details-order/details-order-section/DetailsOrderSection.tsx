@@ -6,27 +6,33 @@ import { DetailsOrderSectionProps } from './types';
 import { showToast } from '@/helpers';
 import { useActionState } from 'react';
 import { useTermsConditionsForm } from '@/hooks';
+import { loadStripe } from '@stripe/stripe-js';
 
 export const DetailsOrderSection = ({
   cartData,
   children,
   orderData,
 }: DetailsOrderSectionProps) => {
-  const [stateCheckoutOrder, formActionCheckoutOrder, isPendingCheckoutOrder] =
-    useActionState(checkout, {
-      message: '',
-      success: false,
-    });
+  const [state, formAction, isPending] = useActionState(checkout, {
+    message: '',
+    success: false,
+  });
 
   const { methodsCheckoutOrder, onSubmitCheckoutOrder } =
     useTermsConditionsForm({
       cartData,
       defaultData: orderData,
-      formAction: formActionCheckoutOrder,
-      isPending: isPendingCheckoutOrder,
-      isSuccess: stateCheckoutOrder.success,
-      onSuccess: () => {
-        showToast(stateCheckoutOrder.message);
+      formAction,
+      isPending,
+      isSuccess: state.success,
+      onSuccess: async () => {
+        showToast(state.message);
+        const stripePromise = await loadStripe(
+          process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+        );
+        await stripePromise?.redirectToCheckout({
+          sessionId: state.payload?.id ?? '',
+        });
       },
     });
 
@@ -36,10 +42,10 @@ export const DetailsOrderSection = ({
       <DetailsOrder
         cartData={cartData}
         dataOrder={orderData}
-        isPending={isPendingCheckoutOrder}
+        isPending={isPending}
         methods={methodsCheckoutOrder}
         onSubmit={onSubmitCheckoutOrder}
-        state={stateCheckoutOrder}
+        state={state}
         titleAddress="Shipping address"
         titlePayment="Method payment"
         titleDelivery="Method delivery"
