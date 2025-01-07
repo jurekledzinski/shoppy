@@ -11,11 +11,6 @@ const secretGuest = process.env.GUEST_SECRET!;
 const secretStepper = process.env.STEPPER_SECRET!;
 const secretAuth = process.env.AUTH_SECRET!;
 
-// usunąć cart z bazy danych
-// usunąć order z bazy danych
-// clear koszyk
-// delete cookie guest user i stepper
-
 export const cancelOrder = connectDBAction(
   async (prevState: unknown, formData: FormData) => {
     const cookieStore = await cookies();
@@ -62,6 +57,7 @@ export const cancelOrder = connectDBAction(
       deleteCookie(cookieStore, 'guestId');
       deleteCookie(cookieStore, 'stepper');
 
+      revalidateTag('get_cart');
       revalidateTag('get_order');
 
       return {
@@ -85,6 +81,7 @@ export const cancelOrder = connectDBAction(
       // Remove cookie stepper
       deleteCookie(cookieStore, 'stepper');
 
+      revalidateTag('get_cart');
       revalidateTag('get_order');
 
       return {
