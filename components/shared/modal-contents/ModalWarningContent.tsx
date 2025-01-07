@@ -6,10 +6,12 @@ import { ModalWarningContentProps } from './types';
 import { classNames } from '@/helpers';
 
 export const ModalWarningContent = ({
+  cancel,
   children,
   title,
   confirm,
   isPending,
+  onCancel,
   onConfirm,
 }: ModalWarningContentProps) => {
   return (
@@ -19,6 +21,9 @@ export const ModalWarningContent = ({
       </header>
       <div className={styles.body}>{children}</div>
       <footer className={styles.footer}>
+        <button className={stylesButton.buttonCancel} onClick={onCancel}>
+          {cancel}
+        </button>
         <Button
           className={stylesButton.buttonDelete}
           disabled={isPending}

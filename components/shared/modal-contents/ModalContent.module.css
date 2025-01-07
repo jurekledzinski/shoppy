@@ -10,6 +10,10 @@
   background-color: var(--color-negative);
 }
 
+.headerInfo {
+  background-color: var(--color-primary);
+}
+
 .headerWarning {
   background-color: #ff851b;
 }

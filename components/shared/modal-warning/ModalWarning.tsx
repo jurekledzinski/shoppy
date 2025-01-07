@@ -7,6 +7,7 @@ import { ModalWarningProps } from './types';
 import { useEffect, useRef, useState } from 'react';
 
 export const ModalWarning = ({
+  cancel,
   confirm,
   children,
   onConfirm,
@@ -48,9 +49,14 @@ export const ModalWarning = ({
       >
         <Modal ref={nodeRef}>
           <ModalWarningContent
+            cancel={cancel}
             title={title}
             confirm={confirm}
             isPending={isPending}
+            onCancel={() => {
+              setModal(false);
+              setShowBackdrop(false);
+            }}
             onConfirm={onConfirm}
           >
             {children}
