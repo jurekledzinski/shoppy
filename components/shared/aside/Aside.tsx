@@ -2,8 +2,8 @@
 import styles from './Aside.module.css';
 import { AsideProps } from './types';
 import { controlAside, showToast } from '@/helpers';
-import { guestCheckout } from '@/actions';
-import { startTransition, useCallback, useEffect } from 'react';
+import { extendGuestSession, guestCheckout } from '@/actions';
+import { startTransition, useActionState, useCallback, useEffect } from 'react';
 import { useAside } from '@/store/aside';
 import { useCart } from '@/store/cart';
 import {
@@ -39,6 +39,14 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
   const guestUserExpire = searchParams.get('guest-user-expired');
   const router = useRouter();
   const { dispatch, state } = useCart();
+
+  const [stateExtendGuestSession, formAction, isPending] = useActionState(
+    extendGuestSession,
+    {
+      message: '',
+      success: false,
+    }
+  );
 
   const { action, resetStateAction } = useActionStateAndReset({
     fnAction: guestCheckout,
@@ -91,11 +99,14 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
   return (
     <>
       <ModalWarning
+        isPending={isPending}
         isOpen={guestUserExpire === 'true'}
+        isSuccess={stateExtendGuestSession.success && !isPending}
         title="Session Expired"
-        cancel=""
-        confirm=""
-        onConfirm={() => {}}
+        confirm="Click to extend your guest session"
+        onConfirm={() => {
+          startTransition(() => formAction(new FormData()));
+        }}
       >
         <p>
           Your guest session will expire in 15 minutes. Please click extend
