@@ -96,7 +96,7 @@ export const successOrder = connectDBAction(
       await updateSuccessOrder(collectionOrders, parsedData, orderId);
 
       // delete cart
-      await deleteCart(collectionCarts, 'userId', 'user12312312');
+      await deleteCart(collectionCarts, 'userId', token.id as string);
 
       // update products quantity
       await updateProductsQuantity(collectionProducts, cart.products);

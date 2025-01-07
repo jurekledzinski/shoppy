@@ -80,7 +80,7 @@ export const cancelOrder = connectDBAction(
       await deleteOrder(collectionOrders, orderId);
 
       // delete cart
-      await deleteCart(collectionCarts, 'userId', 'userId1231');
+      await deleteCart(collectionCarts, 'userId', token.id as string);
 
       // Remove cookie stepper
       deleteCookie(cookieStore, 'stepper');
