@@ -13,10 +13,8 @@ export type ModalDeleteContentProps = {
 
 export type ModalWarningContentProps = {
   children: React.ReactNode;
-  cancel?: string;
   confirm?: string;
   isPending?: boolean;
-  onCancel?: MouseEventHandler<HTMLButtonElement>;
   onConfirm?: MouseEventHandler<HTMLButtonElement>;
   title: string;
 };

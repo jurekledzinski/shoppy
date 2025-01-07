@@ -7,13 +7,12 @@ import { ModalWarningProps } from './types';
 import { useEffect, useRef, useState } from 'react';
 
 export const ModalWarning = ({
-  cancel,
   confirm,
   children,
-  onCancel,
   onConfirm,
   title,
   isPending,
+  isSuccess,
   isOpen,
 }: ModalWarningProps) => {
   const nodeRef = useRef(null);
@@ -24,6 +23,11 @@ export const ModalWarning = ({
     setShowBackdrop(isOpen);
     setModal(isOpen);
   }, [isOpen]);
+
+  useEffect(() => {
+    if (!isSuccess) return;
+    setModal(false);
+  }, [isSuccess]);
 
   return (
     <>
@@ -45,10 +49,8 @@ export const ModalWarning = ({
         <Modal ref={nodeRef}>
           <ModalWarningContent
             title={title}
-            cancel={cancel}
             confirm={confirm}
             isPending={isPending}
-            onCancel={onCancel}
             onConfirm={onConfirm}
           >
             {children}
