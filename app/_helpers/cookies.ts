@@ -3,7 +3,8 @@ import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adap
 export const setCookieGuestId = (
   cookieStore: ReadonlyRequestCookies,
   tokenGuest: string,
-  expiresIn: Date
+  expiresIn: Date,
+  sameSite: 'lax' | 'strict' | 'none' = 'strict'
 ) => {
   cookieStore.set({
     name: 'guestId',
@@ -11,7 +12,7 @@ export const setCookieGuestId = (
     httpOnly: true,
     path: '/',
     expires: expiresIn,
-    sameSite: 'lax',
+    sameSite: sameSite,
     secure: process.env.NODE_ENV === 'production',
   });
 };
@@ -19,7 +20,8 @@ export const setCookieGuestId = (
 export const setCookieStepper = (
   cookieStore: ReadonlyRequestCookies,
   tokenStepper: string,
-  expiresIn: Date
+  expiresIn: Date,
+  sameSite: 'lax' | 'strict' | 'none' = 'strict'
 ) => {
   cookieStore.set({
     name: 'stepper',
@@ -27,7 +29,7 @@ export const setCookieStepper = (
     httpOnly: true,
     path: '/',
     expires: expiresIn,
-    sameSite: 'lax',
+    sameSite: sameSite,
     secure: process.env.NODE_ENV === 'production',
   });
 };
