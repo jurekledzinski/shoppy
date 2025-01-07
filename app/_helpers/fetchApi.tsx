@@ -101,3 +101,19 @@ export const fetchDetailsProduct = tryCatch<Product>(async (url: string) => {
 
   return await response.json();
 });
+
+export const fetchUserOrders = tryCatch<Order[]>(
+  async (url: string, headers?: ReadonlyHeaders) => {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers,
+      next: { revalidate: 3600, tags: ['get_user_orders'] },
+    });
+
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+
+    return await response.json();
+  }
+);
