@@ -4,4 +4,4 @@ export * from './cookies';
 export * from './database';
 export * from './tokens';
 export * from './checkout';
-export * from './fetch-api';
+export * from './fetchApi';
