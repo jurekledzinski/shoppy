@@ -4,7 +4,7 @@ import stylesButton from '@styles/buttons.module.css';
 import { AlertError, Button, CrossIcon, Loader } from '@/components/shared';
 import { cancelOrder, noCancelOrder } from '@/actions';
 import { SectionCancelProps } from './types';
-import { startTransition, useActionState } from 'react';
+import { startTransition, useActionState, useEffect } from 'react';
 import { useCart } from '@/store/cart';
 import { useRouter } from 'next/navigation';
 
@@ -18,11 +18,23 @@ export const SectionCancel = ({ orderId }: SectionCancelProps) => {
       success: false,
     });
 
+  useEffect(() => {
+    if (stateCancelOrder.success && !isPendingCancelOrder) {
+      router.replace('/');
+    }
+  }, [isPendingCancelOrder, stateCancelOrder.success, router]);
+
   const [stateNoCancelOrder, formActionNoCancelOrder, isPendingNoCancelOrder] =
     useActionState(noCancelOrder, {
       message: '',
       success: false,
     });
+
+  useEffect(() => {
+    if (stateNoCancelOrder.success && !isPendingNoCancelOrder) {
+      router.replace('/');
+    }
+  }, [isPendingNoCancelOrder, stateNoCancelOrder.success, router]);
 
   return (
     <section className={styles.section}>
@@ -41,8 +53,6 @@ export const SectionCancel = ({ orderId }: SectionCancelProps) => {
             const formData = new FormData();
             formData.set('orderId', orderId);
             startTransition(() => formActionNoCancelOrder(formData));
-
-            router.replace('/');
           }}
         >
           {isPendingNoCancelOrder && <Loader />}
@@ -54,12 +64,9 @@ export const SectionCancel = ({ orderId }: SectionCancelProps) => {
           text="No, I don't want to continue"
           onClick={() => {
             dispatch({ type: 'CLEAR_CART' });
-
             const formData = new FormData();
             formData.set('orderId', orderId);
             startTransition(() => formActionCancelOrder(formData));
-
-            router.replace('/');
           }}
         >
           {isPendingCancelOrder && <Loader />}
