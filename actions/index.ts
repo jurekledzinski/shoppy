@@ -16,3 +16,4 @@ export * from './cart';
 export * from './successOrder';
 export * from './cancelOrder';
 export * from './noCancelOrder';
+export * from './extendGuestSession';
