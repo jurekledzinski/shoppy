@@ -109,8 +109,8 @@ export const checkout = connectDBAction(
 
       await updateCheckoutOrder(collection, parsedData);
 
-      setCookieGuestId(cookieStore, tokenGuest, expiresIn);
-      setCookieStepper(cookieStore, tokenStepper, expiresIn);
+      setCookieGuestId(cookieStore, tokenGuest, expiresIn, 'lax');
+      setCookieStepper(cookieStore, tokenStepper, expiresIn, 'lax');
 
       const formattedProducts = formatBuyedProducts(cartProducts);
       const shippingOptions = formatShippingData(
@@ -141,7 +141,7 @@ export const checkout = connectDBAction(
 
       await updateCheckoutOrder(collection, parsedData);
 
-      setCookieStepper(cookieStore, tokenStepper, expiresIn);
+      setCookieStepper(cookieStore, tokenStepper, expiresIn, 'lax');
 
       const formattedProducts = formatBuyedProducts(cartProducts);
       const shippingOptions = formatShippingData(
