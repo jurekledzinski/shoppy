@@ -3,7 +3,6 @@ import { createToken } from '@/lib';
 import { v4 as uuidv4 } from 'uuid';
 import { cookies } from 'next/headers';
 import { setCookieGuestId, setCookieStepper } from '@/app/_helpers';
-// import { redirect, RedirectType } from 'next/navigation';
 
 const secretGuest = process.env.GUEST_SECRET!;
 const secretStepper = process.env.STEPPER_SECRET!;
