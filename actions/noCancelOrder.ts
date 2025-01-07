@@ -1,15 +1,16 @@
 'use server';
 import { Cart, Order } from '@/models';
+import { cookies, headers } from 'next/headers';
+import { errorMessageAction } from '@/helpers';
+import { getToken } from 'next-auth/jwt';
+import { revalidateTag } from 'next/cache';
+
 import {
   connectDBAction,
   createToken,
   getCollectionDb,
   verifyToken,
 } from '@/lib';
-import { cookies, headers } from 'next/headers';
-import { errorMessageAction } from '@/helpers';
-import { getToken } from 'next-auth/jwt';
-import { revalidateTag } from 'next/cache';
 
 import {
   getExpireInCookie,
@@ -107,6 +108,7 @@ export const noCancelOrder = connectDBAction(
       setCookieGuestId(cookieStore, tokenGuest, expiresIn);
       setCookieStepper(cookieStore, tokenStepper, expiresIn);
 
+      revalidateTag('get_cart');
       revalidateTag('get_order');
 
       return {
@@ -123,8 +125,6 @@ export const noCancelOrder = connectDBAction(
 
       // update cookie stepper
       setCookieStepper(cookieStore, tokenStepper, expiresIn);
-
-      revalidateTag('get_order');
 
       return {
         message: 'Order updated successful',
