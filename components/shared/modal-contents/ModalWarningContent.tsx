@@ -8,10 +8,8 @@ import { classNames } from '@/helpers';
 export const ModalWarningContent = ({
   children,
   title,
-  cancel,
   confirm,
   isPending,
-  onCancel,
   onConfirm,
 }: ModalWarningContentProps) => {
   return (
@@ -21,13 +19,9 @@ export const ModalWarningContent = ({
       </header>
       <div className={styles.body}>{children}</div>
       <footer className={styles.footer}>
-        <button className={stylesButton.buttonCancel} onClick={onCancel}>
-          {cancel}
-        </button>
         <Button
           className={stylesButton.buttonDelete}
           disabled={isPending}
-          type="button"
           text={confirm}
           onClick={onConfirm}
         >
