@@ -6,6 +6,7 @@ import {
   OrderAddress,
   OrderSummary,
   OrderProductsList,
+  AlertError,
 } from '@/components/shared';
 
 export const DetailsOrder = ({
@@ -35,10 +36,8 @@ export const DetailsOrder = ({
 
           <OrderAddress dataOrder={dataOrder} titleAddress={titleAddress} />
 
-          <OrderProductsList
-            items={cartData?.products ?? []}
-            titleOrders={titleOrders}
-          />
+          <h5>{titleOrders}</h5>
+          <OrderProductsList items={cartData?.products ?? []} />
         </div>
         <div className={styles.right}>
           <OrderSummary
@@ -52,12 +51,19 @@ export const DetailsOrder = ({
           />
 
           <TermsConditionsForm
+            isEmpty={!Boolean(cartData?.products.length)}
             isPending={isPending}
             methods={methods}
             onSubmit={onSubmit}
             state={state}
             textSubmit="Checkout"
           />
+
+          {cartData && !Boolean(cartData.products.length) && (
+            <AlertError>
+              Your shopping cart is empty, please add products.
+            </AlertError>
+          )}
         </div>
       </div>
     </>
