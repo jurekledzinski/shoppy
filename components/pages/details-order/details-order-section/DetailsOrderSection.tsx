@@ -3,55 +3,109 @@ import styles from './DetailsOrderSection.module.css';
 import { checkout } from '@/actions';
 import { DetailsOrder } from '../details-order/DetailsOrder';
 import { DetailsOrderSectionProps } from './types';
-import { showToast } from '@/helpers';
-import { useActionState } from 'react';
-import { useTermsConditionsForm } from '@/hooks';
 import { loadStripe } from '@stripe/stripe-js';
+import { ModalControlInventoryCheck } from './modal-control-inventory-check';
+import { showToast } from '@/helpers';
+import { useActionStateAndReset, useTermsConditionsForm } from '@/hooks';
+import { updateItem, updateSyncCart, useCart, removeItem } from '@/store/cart';
 
 export const DetailsOrderSection = ({
-  cartData,
   children,
   orderData,
+  guestSession,
+  userSession,
 }: DetailsOrderSectionProps) => {
-  const [state, formAction, isPending] = useActionState(checkout, {
-    message: '',
-    success: false,
+  const { dispatch, state } = useCart();
+  const { action, resetStateAction } = useActionStateAndReset({
+    fnAction: checkout,
   });
 
   const { methodsCheckoutOrder, onSubmitCheckoutOrder } =
     useTermsConditionsForm({
-      cartData,
+      cartData: state.cart,
       defaultData: orderData,
-      formAction,
-      isPending,
-      isSuccess: state.success,
+      formAction: action.formAction,
+      isPending: action.isPending,
+      isSuccess: action.state.success,
       onSuccess: async () => {
-        showToast(state.message);
+        showToast(action.state.message);
         const stripePromise = await loadStripe(
           process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
         );
-        await stripePromise?.redirectToCheckout({
-          sessionId: state.payload?.id ?? '',
-        });
+
+        if (
+          action.state &&
+          action.state.payload &&
+          'id' in action.state.payload
+        ) {
+          await stripePromise?.redirectToCheckout({
+            sessionId: action.state.payload.id ?? '',
+          });
+        }
       },
     });
 
   return (
-    <section className={styles.section}>
-      {children}
-      <DetailsOrder
-        cartData={cartData}
-        dataOrder={orderData}
-        isPending={isPending}
-        methods={methodsCheckoutOrder}
-        onSubmit={onSubmitCheckoutOrder}
-        state={state}
-        titleAddress="Shipping address"
-        titlePayment="Method payment"
-        titleDelivery="Method delivery"
-        titleOrders="Your orders"
-        titleSummary="Summary"
-      />
-    </section>
+    <>
+      {Array.isArray(action.state.payload) && action.state.payload.length ? (
+        <ModalControlInventoryCheck
+          cancel="Cancel"
+          confirm="Save in cart"
+          isPending={action.isPending}
+          inventoryData={
+            Array.isArray(action.state.payload) ? action.state.payload : []
+          }
+          onConfirm={(inventory, onClose) => {
+            Object.entries(inventory).forEach((item) => {
+              if (item[1] !== 0) {
+                const payload = { id: item[0], qunatity: item[1] };
+
+                dispatch({
+                  type: 'SET_QUANTITY',
+                  payload,
+                });
+
+                const resultUpdateCart = updateItem(state, {
+                  type: 'SET_QUANTITY',
+                  payload,
+                });
+
+                updateSyncCart(resultUpdateCart, userSession, guestSession);
+              } else {
+                const payload = { id: item[0] };
+
+                dispatch({ type: 'REMOVE_ITEM', payload });
+
+                const resultUpdateCart = removeItem(state, {
+                  type: 'REMOVE_ITEM',
+                  payload,
+                });
+
+                updateSyncCart(resultUpdateCart, userSession, guestSession);
+              }
+            });
+            onClose();
+            resetStateAction();
+          }}
+          title="Inventory check"
+        />
+      ) : null}
+      <section className={styles.section}>
+        {children}
+        <DetailsOrder
+          cartData={state.cart}
+          dataOrder={orderData}
+          isPending={action.isPending}
+          methods={methodsCheckoutOrder}
+          onSubmit={onSubmitCheckoutOrder}
+          state={action.state}
+          titleAddress="Shipping address"
+          titlePayment="Method payment"
+          titleDelivery="Method delivery"
+          titleOrders="Your orders"
+          titleSummary="Summary"
+        />
+      </section>
+    </>
   );
 };
