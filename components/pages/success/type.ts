@@ -1,6 +1,6 @@
-import { Cart } from '@/models';
-
 export type SectionSuccessProps = {
-  cartData: Cart | null;
+  isUserLogIn: boolean;
+  isGuestLogin: boolean;
+  isStepperLogin: boolean;
   orderId: string;
 };
