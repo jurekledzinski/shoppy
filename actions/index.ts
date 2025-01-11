@@ -17,3 +17,4 @@ export * from './successOrder';
 export * from './cancelOrder';
 export * from './noCancelOrder';
 export * from './extendGuestSession';
+export * from './userCheckout';
