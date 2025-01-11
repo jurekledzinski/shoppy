@@ -1,12 +1,20 @@
 'use client';
 import styles from './SectionCancel.module.css';
 import stylesButton from '@styles/buttons.module.css';
-import { AlertError, Button, CrossIcon, Loader } from '@/components/shared';
+import stylesSection from '@/components/shared/section/Section.module.css';
 import { cancelOrder, noCancelOrder } from '@/actions';
 import { SectionCancelProps } from './types';
 import { startTransition, useActionState, useEffect } from 'react';
 import { useCart } from '@/store/cart';
 import { useRouter } from 'next/navigation';
+
+import {
+  AlertError,
+  Button,
+  CrossIcon,
+  Loader,
+  Section,
+} from '@/components/shared';
 
 export const SectionCancel = ({ orderId }: SectionCancelProps) => {
   const router = useRouter();
@@ -37,7 +45,7 @@ export const SectionCancel = ({ orderId }: SectionCancelProps) => {
   }, [isPendingNoCancelOrder, stateNoCancelOrder.success, router]);
 
   return (
-    <section className={styles.section}>
+    <Section className={stylesSection.sectionCentered}>
       <h4 className={styles.title}>Your order has been canceled!</h4>
       <CrossIcon />
       <h4 className={styles.title}>
@@ -81,6 +89,6 @@ export const SectionCancel = ({ orderId }: SectionCancelProps) => {
       {!stateNoCancelOrder.success && stateNoCancelOrder.message && (
         <AlertError>{stateNoCancelOrder.message}</AlertError>
       )}
-    </section>
+    </Section>
   );
 };

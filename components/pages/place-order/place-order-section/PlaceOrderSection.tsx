@@ -1,5 +1,5 @@
 'use client';
-import styles from './PlaceOrderSection.module.css';
+// import styles from './PlaceOrderSection.module.css';
 import { PlaceOrder } from '../place-order/PlaceOrder';
 import { placeOrder } from '@/actions';
 import { PlaceOrderSectionProps } from './types';
@@ -8,6 +8,7 @@ import { useActionState } from 'react';
 import { usePlaceOrderForm } from '@/hooks';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/store/cart';
+import { Section } from '@/components/shared';
 
 export const PlaceOrderSection = ({
   children,
@@ -35,7 +36,7 @@ export const PlaceOrderSection = ({
     });
 
   return (
-    <section className={styles.section}>
+    <Section>
       {children}
       <PlaceOrder
         cartData={state.cart}
@@ -58,6 +59,6 @@ export const PlaceOrderSection = ({
         titleSummary="Summary"
         textSubmit="Place order"
       />
-    </section>
+    </Section>
   );
 };

@@ -1,6 +1,7 @@
 'use client';
 import { ShippingSectionProps } from './types';
-import styles from './ShippingSection.module.css';
+// import styles from './ShippingSection.module.css';
+import { Section } from '@/components/shared';
 import { useShippingForm } from '@/hooks';
 import { ShippingForm } from '../shipping-form';
 import { useActionState } from 'react';
@@ -39,7 +40,7 @@ export const ShippingSection = ({
   });
 
   return (
-    <section className={styles.section}>
+    <Section>
       {children}
       <ShippingForm
         isPending={isPendingShipping}
@@ -47,6 +48,6 @@ export const ShippingSection = ({
         onSubmit={onSubmitShipping}
         state={stateShipping}
       />
-    </section>
+    </Section>
   );
 };

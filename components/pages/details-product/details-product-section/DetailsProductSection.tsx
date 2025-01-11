@@ -7,6 +7,7 @@ import {
   ThumbnailsSlider,
   DisplayOnstock,
   AlertError,
+  Section,
 } from '@/components/shared';
 
 export const DetailsProductSection = ({
@@ -17,7 +18,7 @@ export const DetailsProductSection = ({
   errorReviews,
 }: DetailsProductSectionProps) => {
   return (
-    <section className={styles.section}>
+    <Section>
       {children}
 
       {dataProduct ? (
@@ -63,6 +64,6 @@ export const DetailsProductSection = ({
       ) : (
         <AlertError>Failed to load product details</AlertError>
       )}
-    </section>
+    </Section>
   );
 };

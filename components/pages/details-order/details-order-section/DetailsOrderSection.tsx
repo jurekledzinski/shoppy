@@ -1,5 +1,5 @@
 'use client';
-import styles from './DetailsOrderSection.module.css';
+// import styles from './DetailsOrderSection.module.css';
 import { checkout } from '@/actions';
 import { DetailsOrder } from '../details-order/DetailsOrder';
 import { DetailsOrderSectionProps } from './types';
@@ -8,6 +8,7 @@ import { ModalControlInventoryCheck } from './modal-control-inventory-check';
 import { showToast } from '@/helpers';
 import { useActionStateAndReset, useTermsConditionsForm } from '@/hooks';
 import { updateItem, updateSyncCart, useCart, removeItem } from '@/store/cart';
+import { Section } from '@/components/shared';
 
 export const DetailsOrderSection = ({
   children,
@@ -90,7 +91,7 @@ export const DetailsOrderSection = ({
           title="Inventory check"
         />
       ) : null}
-      <section className={styles.section}>
+      <Section>
         {children}
         <DetailsOrder
           cartData={state.cart}
@@ -105,7 +106,7 @@ export const DetailsOrderSection = ({
           titleOrders="Your orders"
           titleSummary="Summary"
         />
-      </section>
+      </Section>
     </>
   );
 };

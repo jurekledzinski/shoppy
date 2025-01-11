@@ -1,7 +1,7 @@
 'use client';
 import styles from './ProfileSection.module.css';
 import stylesButton from '@styles/buttons.module.css';
-import { AlertError, ModalDelete } from '@/components/shared';
+import { AlertError, ModalDelete, Section } from '@/components/shared';
 import { ChangePasswordForm, UpdateProfileForm } from '../forms';
 import { logOut } from '@/auth';
 import { ProfileSectionProps } from './types';
@@ -62,7 +62,7 @@ export const ProfileSection = ({ children, userData }: ProfileSectionProps) => {
     });
 
   return (
-    <section className={styles.section}>
+    <Section>
       {children}
       <header className={styles.headerUpdateProfile}>
         Update profile user
@@ -115,6 +115,6 @@ export const ProfileSection = ({ children, userData }: ProfileSectionProps) => {
       {!stateDeleteAccount.success && stateDeleteAccount.message && (
         <AlertError>{stateDeleteAccount.message}</AlertError>
       )}
-    </section>
+    </Section>
   );
 };

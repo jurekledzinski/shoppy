@@ -1,7 +1,8 @@
 'use client';
 import styles from './SectionSuccess.module.css';
 import stylesButton from '@styles/buttons.module.css';
-import { AlertError, Button, TickIcon } from '@/components/shared';
+import stylesSection from '@/components/shared/section/Section.module.css';
+import { AlertError, Button, Section, TickIcon } from '@/components/shared';
 import { successOrder } from '@/actions';
 import { SectionSuccessProps } from './type';
 import { startTransition, useActionState, useCallback, useEffect } from 'react';
@@ -44,7 +45,7 @@ export const SectionSuccess = ({
   }, [handelSuccessOrder, isUserLogIn, isGuestLogin, isStepperLogin]);
 
   return (
-    <section className={styles.section}>
+    <Section className={stylesSection.sectionCentered}>
       <h4 className={styles.title}>Thank you for your purchase!</h4>
       <TickIcon />
       <Button
@@ -56,6 +57,6 @@ export const SectionSuccess = ({
       {!state.success && state.message && (
         <AlertError>{state.message}</AlertError>
       )}
-    </section>
+    </Section>
   );
 };
