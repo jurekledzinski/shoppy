@@ -7,13 +7,14 @@ import { showToast } from '@/helpers';
 import { useActionState } from 'react';
 import { usePlaceOrderForm } from '@/hooks';
 import { useRouter } from 'next/navigation';
+import { useCart } from '@/store/cart';
 
 export const PlaceOrderSection = ({
-  cartData,
   children,
   orderData,
 }: PlaceOrderSectionProps) => {
   const router = useRouter();
+  const { state } = useCart();
 
   const [statePlaceOrder, formActionPlaceOrder, isPendingPlaceOrder] =
     useActionState(placeOrder, {
@@ -37,7 +38,7 @@ export const PlaceOrderSection = ({
     <section className={styles.section}>
       {children}
       <PlaceOrder
-        cartData={cartData}
+        cartData={state.cart}
         Controller={Controller}
         dataOrder={orderData}
         isPending={isPendingPlaceOrder}

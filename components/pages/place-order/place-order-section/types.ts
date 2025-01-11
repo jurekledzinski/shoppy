@@ -1,7 +1,6 @@
-import { Cart, Order } from '@/models';
+import { Order } from '@/models';
 
 export type PlaceOrderSectionProps = {
-  cartData: Cart | null;
   children: React.ReactNode;
   orderData: Order | null;
 };
