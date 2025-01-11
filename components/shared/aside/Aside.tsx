@@ -2,13 +2,14 @@
 import styles from './Aside.module.css';
 import { AsideProps } from './types';
 import { controlAside, showToast } from '@/helpers';
-import { extendGuestSession, guestCheckout } from '@/actions';
+import { extendGuestSession, guestCheckout, userCheckout } from '@/actions';
 import { startTransition, useActionState, useCallback, useEffect } from 'react';
 import { useAside } from '@/store/aside';
-import { useCart } from '@/store/cart';
+import { updateSyncCart, useCart } from '@/store/cart';
 import {
   useActionStateAndReset,
   useLoadResetPasswordForm,
+  useSetCartOnRefresh,
   useSetUserSession,
 } from '@/hooks';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -26,7 +27,7 @@ import {
 } from '@/components/pages';
 import { ModalWarning } from '../modal-warning';
 
-export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
+export const Aside = ({ guestId, userData }: AsideProps) => {
   const context = useAside();
   const sessionUser = useSessionUser();
   const actionElement = context.type;
@@ -48,13 +49,29 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
     }
   );
 
+  const {
+    action: actionUserCheckout,
+    resetStateAction: resetStateActionUserCheckout,
+  } = useActionStateAndReset({
+    fnAction: userCheckout,
+    onResetAction: () => {
+      context.onChange(actionElement, false);
+      setTimeout(() => router.replace('/shipping'), 200);
+    },
+  });
+
+  useEffect(() => {
+    if (actionUserCheckout.state.success && !actionUserCheckout.isPending) {
+      resetStateActionUserCheckout();
+    }
+  }, [actionUserCheckout, resetStateActionUserCheckout]);
+
   const { action, resetStateAction } = useActionStateAndReset({
     fnAction: guestCheckout,
     onResetAction: () => {
       context.onChange(actionElement, false);
-      setTimeout(() => {
-        router.replace('/shipping');
-      }, 200);
+      updateSyncCart(state, userData?._id, guestId);
+      setTimeout(() => router.replace('/shipping'), 200);
     },
   });
 
@@ -90,11 +107,14 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
     }, [sessionUser]),
   });
 
-  useEffect(() => {
-    if (cartData) {
-      dispatch({ type: 'SET_CART', payload: cartData });
-    }
-  }, [cartData, dispatch]);
+  useSetCartOnRefresh({
+    onLoad: (cart) => {
+      if (!cart) return;
+      dispatch({ type: 'SET_CART', payload: cart });
+    },
+    userSession: userId,
+    guestSession: guestId,
+  });
 
   return (
     <>
@@ -124,7 +144,10 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
             context={context}
             stateOpen={stateOpen}
             user={{ id: userId, name: userName }}
-            onSuccessAction={() => router.replace(window.location.pathname)}
+            onSuccessAction={() => {
+              dispatch({ type: 'CLEAR_CART' });
+              router.replace(window.location.pathname);
+            }}
           />
         ) : context.type === 'cart' ? (
           <CartPanel
@@ -133,10 +156,21 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
             data={state}
             dispatch={dispatch}
             guestId={guestId}
-            onSuccess={() => router.replace('/shipping')}
+            onSuccess={() => {
+              if (userName && userId) {
+                return startTransition(() =>
+                  actionUserCheckout.formAction(new FormData())
+                );
+              }
+
+              context.onChange(actionElement, false);
+              router.replace('/shipping');
+            }}
             stateOpen={stateOpen}
             userId={userId}
             userName={userName}
+            state={state}
+            isPending={actionUserCheckout.isPending}
           />
         ) : context.type === 'contact' ? (
           <ContactPanel
@@ -163,10 +197,16 @@ export const Aside = ({ cartData, guestId, userData }: AsideProps) => {
             onSuccessAction={() => {
               showToast('Login successful');
               context.onChange(actionElement, false);
+              console.log('log user', userId, guestId);
+              updateSyncCart(state, userId, guestId);
 
               if (optionCheckout === 'login') {
-                return router.replace(`/shipping`);
+                setTimeout(() => {
+                  router.replace('/shipping');
+                }, 200);
+                return;
               }
+
               router.replace(window.location.pathname);
             }}
             optionCheckout={optionCheckout}
