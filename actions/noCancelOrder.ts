@@ -36,15 +36,6 @@ const secretAuth = process.env.AUTH_SECRET!;
 const expireGuestToken = process.env.EXPIRE_GUEST_TOKEN!;
 const expireStepperToken = process.env.EXPIRE_STEPPER_TOKEN!;
 
-// guestUser:
-// extend cart expiryAt o 45 minut ok
-// extend guestId o 45 minut
-// extend stepper o 45 minut
-// extend order dla guestId o expiryAt o 45 minut
-
-// user normal logged in:
-// stepper dla user logged in to expire token next auth
-
 export const noCancelOrder = connectDBAction(
   async (prevState: unknown, formData: FormData) => {
     const cookieStore = await cookies();
@@ -78,7 +69,6 @@ export const noCancelOrder = connectDBAction(
     );
 
     if (!token && cookieGuest && cookieStepper) {
-      // gdy user normalny niezalogowany i guest user zalogowany i jest stepper
       const dataGuest = await verifyToken<{ value: string }>(
         cookieGuest.value,
         secretGuest
@@ -94,21 +84,17 @@ export const noCancelOrder = connectDBAction(
         expireGuestToken
       );
 
-      // Update expiry at w cart
       await updateCartExpiryAt(
         collectionCarts,
         dataGuest.payload.value,
         expiresIn
       );
 
-      // update order expireAt in order
       await updateExpiryAtOrder(collectionOrders, orderId, expiresIn);
 
-      // update cookie guestId i stepper
       setCookieGuestId(cookieStore, tokenGuest, expiresIn);
       setCookieStepper(cookieStore, tokenStepper, expiresIn);
 
-      revalidateTag('get_cart');
       revalidateTag('get_order');
 
       return {
@@ -118,12 +104,10 @@ export const noCancelOrder = connectDBAction(
     }
 
     if (token && !cookieGuest && cookieStepper) {
-      // gdy user normalny zalogowany i guest user nie zalogowany ale jest stepper
       await verifyToken<{
         value: { allowed: string; completed: string[] };
       }>(cookieStepper.value, secretStepper);
 
-      // update cookie stepper
       setCookieStepper(cookieStore, tokenStepper, expiresIn);
 
       return {
