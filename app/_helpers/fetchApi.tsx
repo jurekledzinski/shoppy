@@ -1,22 +1,6 @@
 import { tryCatch } from '@/helpers';
-import { Brand, Cart, Order, Product, Review, UserRegister } from '@/models';
+import { Brand, Order, Product, Review, UserRegister } from '@/models';
 import { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
-
-export const fetchCart = tryCatch<Cart>(
-  async (url: string, headers?: ReadonlyHeaders) => {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers,
-      next: { revalidate: 3600, tags: ['get_cart'] },
-    });
-
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-
-    return await response.json();
-  }
-);
 
 export const fetchOrder = tryCatch<Order>(
   async (url: string, headers?: ReadonlyHeaders) => {
