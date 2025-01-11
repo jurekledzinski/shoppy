@@ -3,7 +3,6 @@ import { Cart, CartSchema } from '@/models';
 import { cookies, headers } from 'next/headers';
 import { errorMessageAction } from '@/helpers';
 import { getToken } from 'next-auth/jwt';
-import { revalidateTag } from 'next/cache';
 import { setCookieGuestId, setCookieStepper, updateCart } from '@/app/_helpers';
 
 import {
@@ -59,7 +58,7 @@ export const cart = connectDBAction(
         secretStepper,
         expireStepperToken
       );
-      // gdy user normalny niezalogowany i guest user zalogowany i jest stepper
+
       const dataGuest = await verifyToken<{ value: string }>(
         cookieGuest.value,
         secretGuest
@@ -75,8 +74,6 @@ export const cart = connectDBAction(
 
       setCookieGuestId(cookieStore, tokenGuest, expiresIn);
       setCookieStepper(cookieStore, tokenStepper, expiresIn);
-
-      revalidateTag('get_cart');
 
       return {
         message: 'Cart updated successful',
@@ -94,13 +91,10 @@ export const cart = connectDBAction(
         secretStepper,
         expireStepperToken
       );
-      // gdy user normalny zalogowany i guest user nie zalogowany ale jest stepper
 
       await updateCart(collection, parsedData, 'userId');
 
       setCookieStepper(cookieStore, tokenStepper, expiresIn);
-
-      revalidateTag('get_cart');
 
       return {
         message: 'Cart updated successful',
@@ -108,11 +102,8 @@ export const cart = connectDBAction(
       };
     }
 
-    // Gdy user zalogowany bez click procced to checkout
     if (token && !cookieGuest && !cookieStepper) {
       await updateCart(collection, parsedData, 'userId');
-
-      revalidateTag('get_cart');
 
       return {
         message: 'Cart updated bez click checkout successful',
