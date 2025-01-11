@@ -47,7 +47,7 @@ export const SectionCancel = ({ orderId }: SectionCancelProps) => {
       <div className={styles.buttonGroup}>
         <Button
           className={stylesButton.buttonConfirm}
-          disabled={isPendingNoCancelOrder}
+          disabled={isPendingNoCancelOrder || isPendingCancelOrder}
           text="Yes, I want to continue"
           onClick={() => {
             const formData = new FormData();
@@ -60,10 +60,11 @@ export const SectionCancel = ({ orderId }: SectionCancelProps) => {
 
         <Button
           className={stylesButton.buttonConfirm}
-          disabled={isPendingCancelOrder}
+          disabled={isPendingCancelOrder || isPendingNoCancelOrder}
           text="No, I don't want to continue"
           onClick={() => {
             dispatch({ type: 'CLEAR_CART' });
+
             const formData = new FormData();
             formData.set('orderId', orderId);
             startTransition(() => formActionCancelOrder(formData));
