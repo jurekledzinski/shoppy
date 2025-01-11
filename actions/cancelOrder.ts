@@ -37,7 +37,6 @@ export const cancelOrder = connectDBAction(
     if (!collectionCarts) return errorMessageAction('Internal server error');
 
     if (!token && cookieGuest && cookieStepper) {
-      // gdy user normalny niezalogowany i guest user zalogowany i jest stepper
       const dataGuest = await verifyToken<{ value: string }>(
         cookieGuest.value,
         secretGuest
@@ -47,17 +46,13 @@ export const cancelOrder = connectDBAction(
         value: { allowed: string; completed: string[] };
       }>(cookieStepper.value, secretStepper);
 
-      // delete order
       await deleteOrder(collectionOrders, orderId);
 
-      // delete cart
       await deleteCart(collectionCarts, 'guestId', dataGuest.payload.value);
 
-      // Remove cookie guestId i stepper
       deleteCookie(cookieStore, 'guestId');
       deleteCookie(cookieStore, 'stepper');
 
-      revalidateTag('get_cart');
       revalidateTag('get_order');
 
       return {
@@ -67,21 +62,16 @@ export const cancelOrder = connectDBAction(
     }
 
     if (token && !cookieGuest && cookieStepper) {
-      // gdy user normalny zalogowany i guest user nie zalogowany ale jest stepper
       await verifyToken<{
         value: { allowed: string; completed: string[] };
       }>(cookieStepper.value, secretStepper);
 
-      // delete order
       await deleteOrder(collectionOrders, orderId);
 
-      // delete cart
       await deleteCart(collectionCarts, 'userId', token.id as string);
 
-      // Remove cookie stepper
       deleteCookie(cookieStore, 'stepper');
 
-      revalidateTag('get_cart');
       revalidateTag('get_order');
 
       return {
