@@ -11,6 +11,7 @@ export type CartProviderProps = {
 
 export type CartAction =
   | { type: 'ADD_ITEM'; payload: { data: ProductCart; id?: string } }
+  | { type: 'SET_QUANTITY'; payload: { id: string; qunatity: number } }
   | { type: 'INCREASE_ITEM'; payload: { id: string } }
   | { type: 'REMOVE_ITEM'; payload: { id: string } }
   | { type: 'SUBTRACT_ITEM'; payload: { id: string } }
@@ -21,3 +22,8 @@ export type CartStoreContext = {
   state: CartState;
   dispatch: Dispatch<CartAction>;
 };
+
+export type CartActionHandler = (
+  state: CartState,
+  action: CartAction
+) => CartState;
