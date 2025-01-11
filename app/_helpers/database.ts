@@ -9,6 +9,7 @@ import {
   OrderSuccess,
   ProductCard,
 } from '@/models';
+import { CartInventoryPayload } from '@/lib';
 
 export const updateShipping = async (
   collection: Collection<Omit<Order, '_id'>>,
@@ -57,21 +58,26 @@ export const updateCart = async (
   parsedData: Cart,
   userIdKey: 'userId' | 'guestId'
 ) => {
-  const { _id, ...rest } = parsedData;
-  const id = new ObjectId(_id);
+  const { cartId, ...rest } = parsedData;
+  const updateData = { ...rest };
+  delete updateData._id;
 
-  await collection.updateOne(
-    { _id: id },
-    {
-      $set: {
-        ...rest,
-        ...(rest[userIdKey as keyof typeof rest] && {
-          [userIdKey]: rest[userIdKey as keyof typeof rest],
-        }),
+  if (rest.totalAmountCart) {
+    await collection.updateOne(
+      { cartId },
+      {
+        $set: {
+          ...updateData,
+          ...(rest[userIdKey as keyof typeof rest] && {
+            [userIdKey]: rest[userIdKey as keyof typeof rest],
+          }),
+        },
       },
-    },
-    { upsert: true }
-  );
+      { upsert: true }
+    );
+  } else {
+    await collection.deleteOne({ cartId });
+  }
 };
 
 export const updateCartExpiryAt = async (
@@ -131,4 +137,63 @@ export const updateExpiryAtOrder = async (
     { _id: new ObjectId(orderId) },
     { $set: { expiryAt } }
   );
+};
+
+export const checkProductsInventory = async (
+  collection: Collection<Omit<ProductCard, '_id'>>,
+  products: Cart['products']
+) => {
+  const cartWithObjectId = products.map((item) => ({
+    productId: new ObjectId(item._id),
+    quantity: item.quantity,
+  }));
+
+  const pipeline = [
+    {
+      $match: {
+        _id: { $in: cartWithObjectId.map((item) => item.productId) },
+      },
+    },
+    {
+      $addFields: {
+        cartQuantity: {
+          $reduce: {
+            input: cartWithObjectId,
+            initialValue: 0,
+            in: {
+              $cond: [
+                { $eq: ['$$this.productId', '$_id'] },
+                '$$this.quantity',
+                '$$value',
+              ],
+            },
+          },
+        },
+      },
+    },
+    {
+      $match: {
+        $expr: { $gt: ['$cartQuantity', '$onStock'] },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        name: '$name',
+        productId: '$_id',
+        onStock: 1,
+        cartQuantity: 1,
+        image: { $arrayElemAt: ['$images', 0] },
+      },
+    },
+  ];
+
+  const result = await collection
+    .aggregate<CartInventoryPayload>(pipeline)
+    .toArray();
+
+  return result.map((product) => ({
+    ...product,
+    productId: product.productId.toString(),
+  }));
 };
