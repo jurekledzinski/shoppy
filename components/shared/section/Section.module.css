@@ -1,0 +1,17 @@
+.section {
+  position: relative;
+  flex: 1;
+  padding: 0 1rem 1rem;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 75rem;
+  max-height: 100vh;
+}
+
+.sectionCentered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
