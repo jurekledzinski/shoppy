@@ -46,10 +46,6 @@ export const ShippingSection = ({
         methods={methodsShipping}
         onSubmit={onSubmitShipping}
         state={stateShipping}
-        onCancel={(e) => {
-          e.preventDefault();
-          router.replace('/');
-        }}
       />
     </section>
   );

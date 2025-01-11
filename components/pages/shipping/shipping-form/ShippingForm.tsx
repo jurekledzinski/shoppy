@@ -12,7 +12,6 @@ import {
 
 export const ShippingForm = ({
   methods,
-  onCancel,
   onSubmit,
   state,
   isPending,
@@ -97,12 +96,6 @@ export const ShippingForm = ({
       )}
 
       <div className={stylesShipping.buttonGroup}>
-        <Button
-          className={stylesButton.buttonCancelFullWidth}
-          disabled={isPending}
-          text="Cancel"
-          onClick={onCancel}
-        />
         <Button
           className={stylesButton.buttonConfirmFullWidth}
           disabled={isPending}

@@ -1,5 +1,4 @@
 import { State } from '@/helpers';
-import { MouseEventHandler } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 
 export type ShippingFormInputs = {
@@ -13,7 +12,6 @@ export type ShippingFormInputs = {
 
 export type ShippingFormProps = {
   methods: UseFormReturn<ShippingFormInputs, unknown, undefined>;
-  onCancel: MouseEventHandler<HTMLButtonElement>;
   onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
   state: State;
   isPending: boolean;
