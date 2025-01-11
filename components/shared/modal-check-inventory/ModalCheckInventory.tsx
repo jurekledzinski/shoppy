@@ -7,13 +7,12 @@ import { ModalCheckInventoryProps } from './types';
 import { useEffect, useRef, useState } from 'react';
 
 export const ModalCheckInventory = ({
+  cancel,
   confirm,
   children,
+  isOpen,
   onConfirm,
   title,
-  isPending,
-  isSuccess,
-  isOpen,
 }: ModalCheckInventoryProps) => {
   const nodeRef = useRef(null);
   const [showBackdrop, setShowBackdrop] = useState(false);
@@ -23,11 +22,6 @@ export const ModalCheckInventory = ({
     setShowBackdrop(isOpen);
     setModal(isOpen);
   }, [isOpen]);
-
-  useEffect(() => {
-    if (!isSuccess) return;
-    setModal(false);
-  }, [isSuccess]);
 
   return (
     <>
@@ -48,10 +42,19 @@ export const ModalCheckInventory = ({
       >
         <Modal ref={nodeRef}>
           <ModalWarningContent
-            title={title}
+            cancel={cancel}
             confirm={confirm}
-            isPending={isPending}
-            onConfirm={onConfirm}
+            onCancel={() => {
+              setModal(false);
+              setShowBackdrop(false);
+            }}
+            onConfirm={() =>
+              onConfirm(() => {
+                setModal(false);
+                setShowBackdrop(false);
+              })
+            }
+            title={title}
           >
             {children}
           </ModalWarningContent>
