@@ -1,11 +1,8 @@
-import { MouseEventHandler } from 'react';
-
 export type ModalCheckInventoryProps = {
+  cancel?: string;
   confirm?: string;
   children?: React.ReactNode;
-  isPending?: boolean;
-  isSuccess?: boolean;
-  onConfirm?: MouseEventHandler<HTMLButtonElement>;
+  onConfirm: (onClose: () => void) => void;
   isOpen: boolean;
   title: string;
 };
