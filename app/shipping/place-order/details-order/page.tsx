@@ -1,7 +1,7 @@
 import { auth } from '@/auth';
 import { cookies, headers } from 'next/headers';
 import { DetailsOrderSection } from '@/components/pages';
-import { fetchCart, fetchOrder, getDomain } from '@/app/_helpers';
+import { fetchOrder, getDomain } from '@/app/_helpers';
 import { Step, Stepper } from '@/components/shared';
 import { steps } from '@/data';
 import { verifyToken } from '@/lib';
@@ -38,17 +38,13 @@ const DetailsOrder = async () => {
     ? stepperCookieDecoded.payload.value.completed
     : [];
 
-  const urlGetCart = `${domain}/api/v1/cart`;
-
-  const resCart =
-    session || guestCookieDecoded
-      ? await fetchCart(urlGetCart, headersFetch)
-      : null;
-
   return (
     <DetailsOrderSection
-      cartData={resCart && resCart.success ? resCart.data : null}
       orderData={resOrder && resOrder.success ? resOrder.data : null}
+      guestSession={
+        guestCookieDecoded ? guestCookieDecoded?.payload.value : null
+      }
+      userSession={session ? session.user.id : null}
     >
       <Stepper>
         {steps.map((step) => {

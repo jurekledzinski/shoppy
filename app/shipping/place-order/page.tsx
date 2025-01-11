@@ -1,6 +1,6 @@
 import { auth } from '@/auth';
 import { cookies, headers } from 'next/headers';
-import { fetchCart, fetchOrder } from '@/app/_helpers';
+import { fetchOrder } from '@/app/_helpers';
 import { getDomain } from '@/app/_helpers';
 import { PlaceOrderSection } from '@/components/pages';
 import { Step, Stepper } from '@/components/shared';
@@ -39,16 +39,8 @@ const PlaceOrder = async () => {
     ? stepperCookieDecoded.payload.value.completed
     : [];
 
-  const urlGetCart = `${domain}/api/v1/cart`;
-
-  const resCart =
-    session || guestCookieDecoded
-      ? await fetchCart(urlGetCart, headersFetch)
-      : null;
-
   return (
     <PlaceOrderSection
-      cartData={resCart && resCart.success ? resCart.data : null}
       orderData={resOrder && resOrder.success ? resOrder.data : null}
     >
       <Stepper>
