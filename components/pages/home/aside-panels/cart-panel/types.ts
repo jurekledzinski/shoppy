@@ -12,6 +12,8 @@ export type CartPanelProps = {
   guestId: string | null;
   stateOpen: boolean;
   onSuccess: () => void;
+  state: CartState;
+  isPending?: boolean;
 };
 
 export type UseCartPanelProps = {
@@ -23,4 +25,5 @@ export type UseCartPanelProps = {
   userId: string;
   userName: string;
   guestId: string | null;
+  state: CartState;
 };

@@ -1,9 +1,11 @@
+import { controlAside } from '@/helpers';
 import { UseCartPanelProps } from './types';
 import {
-  controlAside,
-  getItemFromLocalStorage,
-  removeItemFromLocalStorage,
-} from '@/helpers';
+  updateSyncCart,
+  increaseItem,
+  subtractItem,
+  removeItem as removeCartItem,
+} from '@/store/cart';
 
 export const useCartPanel = ({
   actionElement,
@@ -14,27 +16,43 @@ export const useCartPanel = ({
   userId,
   userName,
   stateOpen,
+  state,
 }: UseCartPanelProps) => {
   const addGlobalQuantity = (id: string) => {
-    dispatch({ type: 'INCREASE_ITEM', payload: { id } });
+    const payload = { id };
+    dispatch({ type: 'INCREASE_ITEM', payload });
+
+    const resultUpdateCart = increaseItem(state, {
+      type: 'INCREASE_ITEM',
+      payload,
+    });
+    updateSyncCart(resultUpdateCart, userId, guestId);
   };
 
   const removeItem = (id: string) => {
-    dispatch({ type: 'REMOVE_ITEM', payload: { id } });
+    const payload = { id };
+    dispatch({ type: 'REMOVE_ITEM', payload });
 
-    const localData = getItemFromLocalStorage('cart', 'null');
-    if (localData && localData.products.length === 1) {
-      removeItemFromLocalStorage('cart');
-    }
+    const resultUpdateCart = removeCartItem(state, {
+      type: 'REMOVE_ITEM',
+      payload,
+    });
+    updateSyncCart(resultUpdateCart, userId, guestId);
   };
   const subtractGlobalQuantity = (id: string) => {
-    dispatch({ type: 'SUBTRACT_ITEM', payload: { id } });
+    const payload = { id };
+    dispatch({ type: 'SUBTRACT_ITEM', payload });
+
+    const resultUpdateCart = subtractItem(state, {
+      type: 'SUBTRACT_ITEM',
+      payload,
+    });
+    updateSyncCart(resultUpdateCart, userId, guestId);
   };
 
   const onClick = () => {
     if ((userId && userName) || guestId) {
       // redirect to shipping page when logged in
-      context.onChange(actionElement, false);
       return onSuccess();
     }
 

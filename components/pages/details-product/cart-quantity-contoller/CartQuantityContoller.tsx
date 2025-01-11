@@ -2,10 +2,13 @@
 import React, { useState } from 'react';
 import { AddToCartButton, CartItemCounter } from '@/components/shared';
 import { CartQuantityContollerProps } from './types';
-import { useCart } from '@/store/cart';
+import { addItem, useCart } from '@/store/cart';
 import { v4 as uuidv4 } from 'uuid';
+import { useSessionUser } from '@/store/session';
+import { updateSyncCart } from '@/store/cart';
 
 export const CartQuantityContoller = ({ data }: CartQuantityContollerProps) => {
+  const sessionUser = useSessionUser();
   const [localQuanity, setLocalQuanity] = useState(1);
   const { state, dispatch } = useCart();
   const currentProductId = data._id!;
@@ -36,17 +39,32 @@ export const CartQuantityContoller = ({ data }: CartQuantityContollerProps) => {
       />
       <AddToCartButton
         onClick={() => {
+          const payload = {
+            data: { ...data, quantity: localQuanity },
+            ...(!productInCart && { id: uuidv4() }),
+          };
           dispatch({
             type: 'ADD_ITEM',
-            payload: {
-              data: { ...data, quantity: localQuanity },
-              ...(!productInCart && { id: uuidv4() }),
-            },
+            payload,
           });
+
+          const resultUpdateCart = addItem(state, {
+            type: 'ADD_ITEM',
+            payload,
+          });
+
+          updateSyncCart(
+            resultUpdateCart,
+            sessionUser.userSession,
+            sessionUser.guestUser
+          );
+
           setLocalQuanity(1);
         }}
         disabled={
-          productInCart ? data.onStock <= productInCart.quantity : false
+          data.onStock === 0 || data.onStock <= (productInCart?.quantity || 0)
+            ? true
+            : false
         }
       />
     </React.Fragment>

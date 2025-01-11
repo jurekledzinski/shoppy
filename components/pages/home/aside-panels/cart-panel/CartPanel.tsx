@@ -1,7 +1,7 @@
 import styles from './CartPanel.module.css';
 import stylesAside from '@/components/shared/aside/Aside.module.css';
 import stylesButton from '@styles/buttons.module.css';
-import { Button } from '@/components/shared';
+import { Button, Loader } from '@/components/shared';
 import { Cart } from '@/components/shared';
 import { CartPanelProps } from './types';
 import { classNames } from '@/helpers';
@@ -17,6 +17,8 @@ export const CartPanel = ({
   guestId,
   stateOpen,
   onSuccess,
+  state,
+  isPending,
 }: CartPanelProps) => {
   const { addGlobalQuantity, onClick, removeItem, subtractGlobalQuantity } =
     useCartPanel({
@@ -28,6 +30,7 @@ export const CartPanel = ({
       stateOpen,
       userId,
       userName,
+      state,
     });
 
   return (
@@ -49,8 +52,10 @@ export const CartPanel = ({
           className={classNames(stylesButton.buttonConfirmFullWidth)}
           onClick={onClick}
           text="Procced to checkout"
-          disabled={data.cart.products.length ? false : true}
-        />
+          disabled={!data.cart.products.length || isPending ? true : false}
+        >
+          {isPending && <Loader />}
+        </Button>
       </div>
     </>
   );

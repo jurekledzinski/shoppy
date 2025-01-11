@@ -20,7 +20,7 @@ export const CartButton = () => {
       }}
     >
       <FontAwesomeIcon icon={faCartShopping} />
-      {state.cart.products.length ? (
+      {state.cart && state.cart.products.length ? (
         <span className={styles.quantity}>
           {state.cart.totalAmountCart < 100
             ? state.cart.totalAmountCart
