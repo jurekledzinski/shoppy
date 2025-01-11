@@ -5,12 +5,7 @@ import { errorMessage, transformMessage } from '@/helpers';
 import { MongoClient } from 'mongodb';
 import { z } from 'zod';
 import type { NextRequest, NextResponse } from 'next/server';
-
-export type State = {
-  message: string;
-  success: boolean;
-  payload?: { id: string };
-};
+import { State } from './types';
 
 if (!process.env.ATLAS_URL) {
   throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
@@ -73,10 +68,10 @@ const connectDBAuth = (
   };
 };
 
-const connectDBAction = (
-  fn: (prevState: unknown, formData: FormData) => Promise<State>
+const connectDBAction = <T>(
+  fn: (prevState: unknown, formData: FormData) => Promise<State<T>>
 ) => {
-  return async (prevState: unknown, formData: FormData): Promise<State> => {
+  return async (prevState: unknown, formData: FormData): Promise<State<T>> => {
     try {
       await client.connect();
       return await fn(prevState, formData);
