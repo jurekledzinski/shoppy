@@ -4,6 +4,7 @@ import { AlertError, Button, ErrorMessage, Loader } from '@/components/shared';
 import { TermsConditionsFormProps } from './types';
 
 export const TermsConditionsForm = ({
+  isEmpty,
   isPending,
   methods,
   textSubmit,
@@ -16,7 +17,7 @@ export const TermsConditionsForm = ({
     <form className={styles.form} onSubmit={onSubmit}>
       <Button
         className={stylesButton.buttonConfirmFullWidth}
-        disabled={isPending}
+        disabled={isEmpty || isPending}
         type="submit"
         text={textSubmit}
       >
@@ -41,7 +42,7 @@ export const TermsConditionsForm = ({
         <ErrorMessage>{errors.termsConditions.message}</ErrorMessage>
       )}
 
-      {!state.success && state.message && (
+      {!state.success && state.message && !isEmpty && (
         <AlertError>{state.message}</AlertError>
       )}
     </form>
