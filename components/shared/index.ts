@@ -41,3 +41,4 @@ export * from './modal-warning';
 export * from './icons-svg';
 export * from './modal-contents';
 export * from './modal-delete';
+export * from './modal-check-inventory';
