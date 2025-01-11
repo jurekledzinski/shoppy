@@ -2,10 +2,11 @@
 import { cookies, headers } from 'next/headers';
 import { errorMessageAction } from '@/helpers';
 import { getToken } from 'next-auth/jwt';
-import { Cart, Order, OrderCheckoutSchema } from '@/models';
+import { Cart, Order, OrderCheckoutSchema, ProductCard } from '@/models';
 import { revalidateTag } from 'next/cache';
 
 import {
+  checkProductsInventory,
   createStripeSessionCheckout,
   formatBuyedProducts,
   formatShippingData,
@@ -17,9 +18,11 @@ import {
 } from '@/app/_helpers';
 
 import {
+  CartInventoryPayload,
   connectDBAction,
   createToken,
   getCollectionDb,
+  IdPayload,
   verifyToken,
 } from '@/lib';
 
@@ -39,9 +42,7 @@ const payloadStepper = {
   ],
 };
 
-// if as guest and paid will be remove expire at property and change isPaid na true
-
-export const checkout = connectDBAction(
+export const checkout = connectDBAction<IdPayload | CartInventoryPayload[]>(
   async (prevState: unknown, formData: FormData) => {
     const cookieStore = await cookies();
     const headersData = await headers();
@@ -53,6 +54,13 @@ export const checkout = connectDBAction(
     const methodDelivery = body.methodDelivery as string;
     const priceDelivery = parseFloat(body.priceDelivery as string);
     const timeDelivery = parseInt(body.timeDelivery as string);
+
+    if (cartProducts && !cartProducts.length) {
+      return {
+        message: "You've to add products to shopping cart",
+        success: false,
+      };
+    }
 
     const token = await getToken({
       req: { headers: headersData },
@@ -71,6 +79,23 @@ export const checkout = connectDBAction(
       return errorMessageAction('Unauthorized');
     }
 
+    const collectionProducts = getCollectionDb<ProductCard>('products');
+    if (!collectionProducts) return errorMessageAction('Internal server error');
+
+    const result = await checkProductsInventory(
+      collectionProducts,
+      cartProducts
+    );
+
+    if (result && result.length > 0) {
+      return {
+        message:
+          'Inventory check, Some products are in smaller quantities or unavailable',
+        success: false,
+        payload: result,
+      };
+    }
+
     const collection = getCollectionDb<Omit<Order, '_id'>>('orders');
     if (!collection) return errorMessageAction('Internal server error');
 
@@ -82,7 +107,6 @@ export const checkout = connectDBAction(
     );
 
     if (!token && cookieGuest && cookieStepper) {
-      // gdy user normalny niezalogowany i guest user zalogowany i jest stepper
       const dataGuest = await verifyToken<{ value: string }>(
         cookieGuest.value,
         secretGuest
@@ -134,7 +158,6 @@ export const checkout = connectDBAction(
     }
 
     if (token && !cookieGuest && cookieStepper) {
-      // gdy user normalny zalogowany i guest user nie zalogowany ale jest stepper
       await verifyToken<{
         value: { allowed: string; completed: string[] };
       }>(cookieStepper.value, secretStepper);
@@ -160,7 +183,7 @@ export const checkout = connectDBAction(
       return {
         message: 'Checkout order successful',
         success: true,
-        payload: { id: sessionStripe.id },
+        payload: { id: sessionStripe.id } as IdPayload,
       };
     }
 
