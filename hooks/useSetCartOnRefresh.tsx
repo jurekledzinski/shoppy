@@ -3,22 +3,41 @@ import { getItemFromLocalStorage } from '@/helpers';
 import { useEffect } from 'react';
 
 type UseSetCartOnRefreshProps = {
-  onSetCart: (localData: Cart) => void;
+  onLoad: (cart: Cart) => void;
+  guestSession: string | null;
+  userSession: string | null;
 };
 
+const urlGetCart = `/api/v1/cart`;
+
 export const useSetCartOnRefresh = ({
-  onSetCart,
+  onLoad,
+  guestSession,
+  userSession,
 }: UseSetCartOnRefreshProps) => {
+  const fetchCart = async () => {
+    try {
+      const response = await fetch(urlGetCart, {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+
+      const data = await response.json();
+      onLoad(data.payload);
+      console.log('DATA FETCH client', data);
+    } catch {}
+  };
+
   useEffect(() => {
-    const navigationEntries = window.performance.getEntriesByType('navigation');
-    const amountNavEntries = navigationEntries.length > 0;
-    const isReloadPage =
-      (navigationEntries[0] as PerformanceNavigationTiming).type === 'reload';
-
-    const localData = getItemFromLocalStorage('cart', 'null');
-
-    if (amountNavEntries && isReloadPage && localData) {
-      onSetCart(localData);
+    if (guestSession || userSession) {
+      fetchCart();
+    } else {
+      const localData = getItemFromLocalStorage('cart', 'null');
+      onLoad(localData);
     }
-  }, [onSetCart]);
+  }, [guestSession, userSession]);
 };
