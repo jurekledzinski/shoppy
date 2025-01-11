@@ -4,28 +4,44 @@ import stylesButton from '@styles/buttons.module.css';
 import { AlertError, Button, TickIcon } from '@/components/shared';
 import { successOrder } from '@/actions';
 import { SectionSuccessProps } from './type';
-import { startTransition, useActionState, useEffect } from 'react';
+import { startTransition, useActionState, useCallback, useEffect } from 'react';
 import { useCart } from '@/store/cart';
 import { useRouter } from 'next/navigation';
 
-export const SectionSuccess = ({ cartData, orderId }: SectionSuccessProps) => {
+export const SectionSuccess = ({
+  isGuestLogin,
+  isStepperLogin,
+  isUserLogIn,
+  orderId,
+}: SectionSuccessProps) => {
   const router = useRouter();
-  const { dispatch } = useCart();
+  const { dispatch, state: stateCart } = useCart();
+
   const [state, formAction, isPending] = useActionState(successOrder, {
     message: '',
     success: false,
   });
 
-  useEffect(() => {
-    dispatch({ type: 'CLEAR_CART' });
+  const handelSuccessOrder = useCallback(() => {
+    if (!stateCart.cart.products.length) return;
 
-    if (!cartData) return;
     const formData = new FormData();
-    formData.set('cart', JSON.stringify(cartData));
+    formData.set('cart', JSON.stringify(stateCart.cart));
     formData.set('orderId', orderId);
 
+    dispatch({ type: 'CLEAR_CART' });
     startTransition(() => formAction(formData));
-  }, [cartData, dispatch, formAction, orderId]);
+  }, [dispatch, formAction, orderId, stateCart]);
+
+  useEffect(() => {
+    if (!isUserLogIn && isGuestLogin && isStepperLogin) {
+      handelSuccessOrder();
+    }
+
+    if (!isGuestLogin && isUserLogIn && isStepperLogin) {
+      handelSuccessOrder();
+    }
+  }, [handelSuccessOrder, isUserLogIn, isGuestLogin, isStepperLogin]);
 
   return (
     <section className={styles.section}>
