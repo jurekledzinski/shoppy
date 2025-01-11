@@ -98,7 +98,7 @@ export const ProccedCheckoutPanel = ({
         </Button>
         <Button
           className={classNames(stylesButton.buttonCancelFullWidth)}
-          disabled={false}
+          disabled={isPending}
           text="Cancel"
           onClick={onCancelAction}
         />
