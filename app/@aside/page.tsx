@@ -1,7 +1,7 @@
 import { Aside as MainAside } from '@/components/shared';
 import { auth } from '@/auth';
 import { cookies, headers } from 'next/headers';
-import { fetchCart, fetchUser, getDomain } from '../_helpers';
+import { fetchUser, getDomain } from '../_helpers';
 import { verifyToken } from '@/lib';
 
 const secretGuest = process.env.GUEST_SECRET!;
@@ -20,16 +20,8 @@ const Aside = async () => {
     ? await verifyToken<{ value: string }>(guestCookie.value, secretGuest)
     : null;
 
-  const urlGetCart = `${domain}/api/v1/cart`;
-
-  const resCart =
-    session || guestCookieDecoded
-      ? await fetchCart(urlGetCart, allHeaders)
-      : null;
-
   return (
     <MainAside
-      cartData={resCart && resCart.success ? resCart.data : null}
       guestId={guestCookieDecoded ? guestCookieDecoded.payload.value : null}
       userData={resUser && resUser.success ? resUser.data : null}
     />
