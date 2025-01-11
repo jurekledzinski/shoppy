@@ -54,7 +54,6 @@ export const successOrder = connectDBAction(
     }
 
     if (!token && cookieGuest && cookieStepper) {
-      // gdy user normalny niezalogowany i guest user zalogowany i jest stepper
       const dataGuest = await verifyToken<{ value: string }>(
         cookieGuest.value,
         secretGuest
@@ -64,16 +63,12 @@ export const successOrder = connectDBAction(
         value: { allowed: string; completed: string[] };
       }>(cookieStepper.value, secretStepper);
 
-      // add cart to order
       await updateSuccessOrder(collectionOrders, parsedData, orderId);
 
-      // delete cart
-      await deleteCart(collectionCarts, 'guestId', dataGuest.payload.value);
-
-      // update products quantity
       await updateProductsQuantity(collectionProducts, cart.products);
 
-      // Remove cookie guestId i stepper
+      await deleteCart(collectionCarts, 'guestId', dataGuest.payload.value);
+
       deleteCookie(cookieStore, 'guestId');
       deleteCookie(cookieStore, 'stepper');
 
@@ -87,25 +82,20 @@ export const successOrder = connectDBAction(
     }
 
     if (token && !cookieGuest && cookieStepper) {
-      // gdy user normalny zalogowany i guest user nie zalogowany ale jest stepper
       await verifyToken<{
         value: { allowed: string; completed: string[] };
       }>(cookieStepper.value, secretStepper);
 
-      // add cart to order
       await updateSuccessOrder(collectionOrders, parsedData, orderId);
 
-      // delete cart
-      await deleteCart(collectionCarts, 'userId', token.id as string);
-
-      // update products quantity
       await updateProductsQuantity(collectionProducts, cart.products);
 
-      // Remove cookie stepper
-      deleteCookie(cookieStore, 'stepper');
+      await deleteCart(collectionCarts, 'userId', token.id as string);
 
       revalidateTag('get_order');
       revalidateTag('get_product');
+
+      deleteCookie(cookieStore, 'stepper');
 
       return {
         message: 'Order updated successful',
