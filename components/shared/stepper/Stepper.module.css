@@ -1,5 +1,4 @@
 .stepper {
-  /* width: min(575px, 100%); */
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -18,16 +17,8 @@
   gap: 0.5rem;
   text-decoration: none;
   flex: 1;
-  padding: 0.5rem 0;
+  padding: 0.5rem;
   transition: width 0.3s linear;
-}
-
-.step:first-child {
-  padding-left: 0.5rem;
-}
-
-.step:last-child {
-  padding-right: 0.5rem;
 }
 
 .step::after {
@@ -37,22 +28,32 @@
   left: 0;
   width: 0%;
   height: 2px;
-  background-color: var(--color-success);
+  background-color: var(--color-primary);
 }
 
 .step.completed::after {
   width: 100%;
-  background-color: var(--color-success);
+  background-color: var(--color-primary);
+}
+
+.step.active {
+  width: 100%;
+  background-color: var(--color-primary);
+}
+
+.step.active > .icon,
+.step.active > .label {
+  color: white;
 }
 
 .label {
   color: var(--color-text-primary);
-  font-size: 10px;
+  font-size: 8px;
 }
 
 .icon {
   color: var(--color-primary);
-  font-size: 10px;
+  font-size: 8px;
   transition: 0.3s linear;
 }
 
