@@ -7,6 +7,7 @@ import { SectionCancelProps } from './types';
 import { startTransition, useActionState, useEffect } from 'react';
 import { useCart } from '@/store/cart';
 import { useRouter } from 'next/navigation';
+import { classNames } from '@/helpers';
 
 import { Alert, Button, CrossIcon, Loader, Section } from '@/components/shared';
 
@@ -48,7 +49,7 @@ export const SectionCancel = ({ orderId }: SectionCancelProps) => {
       </h4>
       <div className={styles.buttonGroup}>
         <Button
-          className={stylesButton.buttonConfirm}
+          className={classNames(stylesButton.buttonConfirm, styles.button)}
           disabled={isPendingNoCancelOrder || isPendingCancelOrder}
           text="Yes, I want to continue"
           onClick={() => {
@@ -61,7 +62,7 @@ export const SectionCancel = ({ orderId }: SectionCancelProps) => {
         </Button>
 
         <Button
-          className={stylesButton.buttonConfirm}
+          className={classNames(stylesButton.buttonConfirm, styles.button)}
           disabled={isPendingCancelOrder || isPendingNoCancelOrder}
           text="No, I don't want to continue"
           onClick={() => {

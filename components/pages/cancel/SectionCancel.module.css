@@ -13,9 +13,16 @@
   max-height: 100vh;
 }
 
+button.button {
+  width: 100%;
+  max-width: initial;
+  margin: initial;
+}
+
 .title {
-  color: var(--color-secondary);
+  color: var(--color-text-primary);
   text-transform: uppercase;
+  text-align: center;
 }
 
 .buttonGroup {
@@ -25,10 +32,11 @@
   gap: 0.5rem;
 }
 
-/* from 575px */
-@media (min-width: 35.938rem) {
+@media (min-width: 381px) {
   .buttonGroup {
     align-items: center;
+    justify-content: center;
     flex-direction: row;
+    gap: 0.5rem;
   }
 }
