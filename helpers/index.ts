@@ -9,3 +9,4 @@ export * from './roundAvergeRate';
 export * from './errorMessageAction';
 export * from './tryCatch';
 export * from './localStorage';
+export * from './formatText';
