@@ -13,7 +13,6 @@
   width: 100%;
 }
 
-/* from 575px */
 @media (min-width: 35.938rem) {
   .container {
     flex-direction: row;

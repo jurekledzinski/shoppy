@@ -95,7 +95,6 @@ a.link {
   background-color: var(--color-primary-hover);
 }
 
-/* from 575px */
 @media (min-width: 35.938rem) {
   .wrapperContent {
     flex-direction: row;

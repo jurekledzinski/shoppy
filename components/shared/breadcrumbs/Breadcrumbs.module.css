@@ -30,7 +30,6 @@
   font-size: 12px;
 }
 
-/* from 575px */
 @media (min-width: 35.938rem) {
   .text {
     font-size: 14px;

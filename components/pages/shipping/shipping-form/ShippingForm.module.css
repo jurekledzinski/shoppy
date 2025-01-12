@@ -11,7 +11,6 @@
   margin-top: 1rem;
 }
 
-/* from 575px */
 @media (min-width: 35.938rem) {
   .buttonGroup {
     flex-direction: row;

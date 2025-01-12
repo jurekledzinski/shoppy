@@ -64,7 +64,6 @@
   font-size: 14px;
 }
 
-/* from 575px */
 @media (min-width: 35.938rem) {
   .container {
     grid-template-columns: 50% 1fr;
