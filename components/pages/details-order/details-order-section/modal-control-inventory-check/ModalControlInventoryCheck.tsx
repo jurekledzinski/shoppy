@@ -53,27 +53,27 @@ export const ModalControlInventoryCheck = ({
       </p>
       {inventoryData.map((itemInventory) => (
         <div className={styles.wrapper} key={itemInventory.productId}>
-          <div>
+          <figure className={styles.figure}>
             <Image
               className={styles.image}
               src={itemInventory.image}
-              width={30}
-              height={30}
+              width={100}
+              height={100}
               alt={itemInventory.name}
               priority={true}
             />
-          </div>
-          <div className={styles.content}>
-            <div>
+            <figcaption>
               <p className={styles.text}>{itemInventory.name}</p>
-              <p className={styles.text}>OnStock: {itemInventory.onStock}</p>
-            </div>
-
+              <p className={styles.text}>On stock: {itemInventory.onStock}</p>
+            </figcaption>
+          </figure>
+          <div className={styles.content}>
             {itemInventory.onStock ? (
               <CartItemCounter
                 addLocalQuantity={() =>
                   addLocalQuantity(itemInventory.productId)
                 }
+                className={styles.container}
                 classNameMinus={styles.minus}
                 classNameInput={styles.input}
                 classNamePlus={styles.plus}

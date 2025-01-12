@@ -25,9 +25,8 @@ export const ModalCheckInventoryContent = ({
           {cancel}
         </button>
         <Button
-          className={stylesButton.buttonDelete}
+          className={stylesButton.buttonConfirm}
           disabled={isPending}
-          type="button"
           text={confirm}
           onClick={onConfirm}
         >

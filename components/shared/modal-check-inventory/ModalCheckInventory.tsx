@@ -2,7 +2,7 @@
 import styles from '../modal/Modal.module.css';
 import { Backdrop } from '../backdrop';
 import { CSSTransition } from 'react-transition-group';
-import { Modal, ModalWarningContent } from '@/components/shared';
+import { Modal, ModalCheckInventoryContent } from '@/components/shared';
 import { ModalCheckInventoryProps } from './types';
 import { useEffect, useRef, useState } from 'react';
 
@@ -41,7 +41,7 @@ export const ModalCheckInventory = ({
         onExited={() => setShowBackdrop(false)}
       >
         <Modal ref={nodeRef}>
-          <ModalWarningContent
+          <ModalCheckInventoryContent
             cancel={cancel}
             confirm={confirm}
             onCancel={() => {
@@ -57,7 +57,7 @@ export const ModalCheckInventory = ({
             title={title}
           >
             {children}
-          </ModalWarningContent>
+          </ModalCheckInventoryContent>
         </Modal>
       </CSSTransition>
     </>

@@ -1,11 +1,24 @@
 .wrapper {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
   padding: 0.5rem 0;
 }
 
+div.container {
+  width: initial;
+}
+
+.figure {
+  display: flex;
+  align-items: center;
+}
+
 .image {
-  object-fit: cover;
+  display: block;
+  object-fit: contain;
+  width: 60px;
+  height: 80px;
 }
 
 .content {
@@ -15,14 +28,15 @@
 }
 
 .subTitle {
-  color: var(--color-secondary);
+  color: var(--color-text-primary);
   font-size: 14px;
   text-transform: uppercase;
 }
 
 .text {
-  color: var(--color-secondary);
+  color: var(--color-text-primary);
   font-size: 14px;
+  font-weight: 300;
 }
 
 .unavailable {
@@ -32,13 +46,15 @@
 p.input,
 button.plus,
 button.minus {
+  max-width: initial;
   padding: 0.25rem 1rem;
+  font-weight: 300;
 }
 
-/* from 575px */
 @media (min-width: 35.938rem) {
   .wrapper {
     align-items: center;
+    justify-content: space-between;
     flex-direction: row;
     gap: 0.5rem;
   }
@@ -48,7 +64,8 @@ button.minus {
   }
 
   .image {
-    object-fit: contain;
+    width: 40px;
+    height: 60px;
   }
 
   .content {
