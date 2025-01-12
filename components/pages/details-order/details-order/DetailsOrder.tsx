@@ -1,4 +1,5 @@
 import styles from './DetailsOrder.module.css';
+import stylesAlert from '@/components/shared/alert/Alert.module.css';
 import { DetailsOrderProps } from './types';
 import { TermsConditionsForm } from '../terms-conditions-form';
 import { formatText } from '@/helpers';
@@ -7,7 +8,7 @@ import {
   OrderAddress,
   OrderSummary,
   OrderProductsList,
-  AlertError,
+  Alert,
 } from '@/components/shared';
 
 export const DetailsOrder = ({
@@ -34,7 +35,7 @@ export const DetailsOrder = ({
 
           <h4 className={styles.title}>{titleDelivery}</h4>
           <p className={styles.text}>
-            {formatText(dataOrder?.methodDelivery ?? '')}
+            {formatText(dataOrder?.methodDelivery ?? '')}{' '}
             {dataOrder?.priceDelivery}€
           </p>
 
@@ -67,9 +68,9 @@ export const DetailsOrder = ({
           />
 
           {cartData && !Boolean(cartData.products.length) && (
-            <AlertError>
+            <Alert className={stylesAlert.warning}>
               Your shopping cart is empty, please add products.
-            </AlertError>
+            </Alert>
           )}
         </div>
       </div>

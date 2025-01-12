@@ -6,7 +6,7 @@ import {
   StarRating,
   ThumbnailsSlider,
   DisplayOnstock,
-  AlertError,
+  Alert,
   Section,
 } from '@/components/shared';
 
@@ -62,7 +62,7 @@ export const DetailsProductSection = ({
           </div>
         </div>
       ) : (
-        <AlertError>Failed to load product details</AlertError>
+        <Alert>Failed to load product details</Alert>
       )}
     </Section>
   );

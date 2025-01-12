@@ -1,7 +1,7 @@
 'use client';
 import styles from './ProfileSection.module.css';
 import stylesButton from '@styles/buttons.module.css';
-import { AlertError, ModalDelete, Section } from '@/components/shared';
+import { Alert, ModalDelete, Section } from '@/components/shared';
 import { ChangePasswordForm, UpdateProfileForm } from '../forms';
 import { logOut } from '@/auth';
 import { ProfileSectionProps } from './types';
@@ -113,7 +113,7 @@ export const ProfileSection = ({ children, userData }: ProfileSectionProps) => {
       </ModalDelete>
 
       {!stateDeleteAccount.success && stateDeleteAccount.message && (
-        <AlertError>{stateDeleteAccount.message}</AlertError>
+        <Alert>{stateDeleteAccount.message}</Alert>
       )}
     </Section>
   );

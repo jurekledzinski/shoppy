@@ -3,7 +3,7 @@ import stylesShipping from './ShippingForm.module.css';
 import { ShippingFormProps } from './types';
 
 import {
-  AlertError,
+  Alert,
   Button,
   ErrorMessage,
   FieldInput,
@@ -91,9 +91,7 @@ export const ShippingForm = ({
 
       {errors.country && <ErrorMessage>{errors.country.message}</ErrorMessage>}
 
-      {!state.success && state.message && (
-        <AlertError>{state.message}</AlertError>
-      )}
+      {!state.success && state.message && <Alert>{state.message}</Alert>}
 
       <div className={stylesShipping.buttonGroup}>
         <Button

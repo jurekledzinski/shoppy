@@ -3,7 +3,7 @@ import stylesButton from '@styles/buttons.module.css';
 import { ChangePasswordFormProps } from './types';
 
 import {
-  AlertError,
+  Alert,
   Button,
   ErrorMessage,
   FieldInput,
@@ -55,9 +55,7 @@ export const ChangePasswordForm = ({
         <ErrorMessage>{errors.confirmPassword.message}</ErrorMessage>
       )}
 
-      {!state.success && state.message && (
-        <AlertError>{state.message}</AlertError>
-      )}
+      {!state.success && state.message && <Alert>{state.message}</Alert>}
 
       <Button
         className={stylesButton.buttonConfirm}

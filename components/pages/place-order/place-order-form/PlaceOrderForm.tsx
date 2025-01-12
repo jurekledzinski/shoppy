@@ -1,5 +1,5 @@
 import styles from './PlaceOrderForm.module.css';
-import { AlertError, ErrorMessage, SelectButton } from '@/components/shared';
+import { Alert, ErrorMessage, SelectButton } from '@/components/shared';
 import { PlaceOrderFormProps } from './types';
 
 export const PlaceOrderForm = ({
@@ -81,9 +81,7 @@ export const PlaceOrderForm = ({
         <ErrorMessage>{errors.methodDelivery.message}</ErrorMessage>
       )}
 
-      {!state.success && state.message && (
-        <AlertError>{state.message}</AlertError>
-      )}
+      {!state.success && state.message && <Alert>{state.message}</Alert>}
     </form>
   );
 };

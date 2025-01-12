@@ -1,6 +1,6 @@
 import stylesButton from '@styles/buttons.module.css';
 import {
-  AlertError,
+  Alert,
   Button,
   ErrorMessage,
   FieldInput,
@@ -61,9 +61,7 @@ export const ContactForm = ({
 
       {errors.message && <ErrorMessage>{errors.message.message}</ErrorMessage>}
 
-      {!state.success && state.message && (
-        <AlertError>{state.message}</AlertError>
-      )}
+      {!state.success && state.message && <Alert>{state.message}</Alert>}
 
       <Button
         className={stylesButton.buttonConfirmFullWidth}

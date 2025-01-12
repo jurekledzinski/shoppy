@@ -3,7 +3,7 @@ import stylesButton from '@styles/buttons.module.css';
 import { classNames } from '@/helpers';
 import { ReviewFormProps } from './types';
 import {
-  AlertError,
+  Alert,
   Button,
   ErrorMessage,
   Loader,
@@ -41,9 +41,7 @@ export const ReviewForm = ({
 
       {errors.rate && <ErrorMessage>{errors.rate.message}</ErrorMessage>}
 
-      {!state.success && state.message && (
-        <AlertError>{state.message}</AlertError>
-      )}
+      {!state.success && state.message && <Alert>{state.message}</Alert>}
 
       <Button
         className={classNames(stylesButton.buttonConfirm, styles.button)}

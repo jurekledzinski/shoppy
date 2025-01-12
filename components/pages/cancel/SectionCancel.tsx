@@ -8,13 +8,7 @@ import { startTransition, useActionState, useEffect } from 'react';
 import { useCart } from '@/store/cart';
 import { useRouter } from 'next/navigation';
 
-import {
-  AlertError,
-  Button,
-  CrossIcon,
-  Loader,
-  Section,
-} from '@/components/shared';
+import { Alert, Button, CrossIcon, Loader, Section } from '@/components/shared';
 
 export const SectionCancel = ({ orderId }: SectionCancelProps) => {
   const router = useRouter();
@@ -83,11 +77,11 @@ export const SectionCancel = ({ orderId }: SectionCancelProps) => {
       </div>
 
       {!stateCancelOrder.success && stateCancelOrder.message && (
-        <AlertError>{stateCancelOrder.message}</AlertError>
+        <Alert>{stateCancelOrder.message}</Alert>
       )}
 
       {!stateNoCancelOrder.success && stateNoCancelOrder.message && (
-        <AlertError>{stateNoCancelOrder.message}</AlertError>
+        <Alert>{stateNoCancelOrder.message}</Alert>
       )}
     </Section>
   );

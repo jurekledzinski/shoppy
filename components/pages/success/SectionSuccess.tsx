@@ -2,7 +2,7 @@
 import styles from './SectionSuccess.module.css';
 import stylesButton from '@styles/buttons.module.css';
 import stylesSection from '@/components/shared/section/Section.module.css';
-import { AlertError, Button, Section, TickIcon } from '@/components/shared';
+import { Alert, Button, Section, TickIcon } from '@/components/shared';
 import { successOrder } from '@/actions';
 import { SectionSuccessProps } from './type';
 import { startTransition, useActionState, useCallback, useEffect } from 'react';
@@ -54,9 +54,7 @@ export const SectionSuccess = ({
         text="Go to home page"
         onClick={() => router.replace('/')}
       />
-      {!state.success && state.message && (
-        <AlertError>{state.message}</AlertError>
-      )}
+      {!state.success && state.message && <Alert>{state.message}</Alert>}
     </Section>
   );
 };

@@ -17,7 +17,7 @@ import {
   TabsPanel,
   ResponsiveTable,
   Review,
-  AlertError,
+  Alert,
 } from '@/components/shared';
 
 const tabs = ['Specification', 'Reviews'];
@@ -105,9 +105,7 @@ export const TabsDetailsContainer = ({
 
                 {errorReviews &&
                   !errorReviews.success &&
-                  errorReviews.message && (
-                    <AlertError>{errorReviews.message}</AlertError>
-                  )}
+                  errorReviews.message && <Alert>{errorReviews.message}</Alert>}
               </div>
             </>
           )}

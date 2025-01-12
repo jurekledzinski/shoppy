@@ -3,7 +3,7 @@ import stylesButton from '@styles/buttons.module.css';
 import { UpdateProfileFormProps } from './types';
 
 import {
-  AlertError,
+  Alert,
   Button,
   ErrorMessage,
   FieldInput,
@@ -49,9 +49,7 @@ export const UpdateProfileForm = ({
 
       {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
 
-      {!state.success && state.message && (
-        <AlertError>{state.message}</AlertError>
-      )}
+      {!state.success && state.message && <Alert>{state.message}</Alert>}
 
       <Button
         className={stylesButton.buttonConfirm}

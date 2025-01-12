@@ -1,5 +1,5 @@
 'use client';
-import { AlertError } from '@/components/shared';
+import { Alert } from '@/components/shared';
 import { CardBrand, Tab, Tabs, TabsList, TabsPanel } from '@/components/shared';
 import { TabsCategoriesContainerProps } from './types';
 import { useEffect, useState } from 'react';
@@ -52,7 +52,7 @@ export const TabsCategoriesContainer = ({
       </Tabs>
 
       {error && !error.success && error.message && (
-        <AlertError>{error.message}</AlertError>
+        <Alert>{error.message}</Alert>
       )}
     </>
   );

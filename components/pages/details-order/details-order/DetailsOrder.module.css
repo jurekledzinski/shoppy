@@ -20,7 +20,7 @@
 }
 
 .text {
-  color: var(--color-secondary);
+  color: var(--color-text-primary);
   font-size: 14px;
 }
 

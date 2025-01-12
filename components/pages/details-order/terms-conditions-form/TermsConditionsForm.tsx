@@ -1,6 +1,6 @@
 import styles from './TermsConditionsForm.module.css';
 import stylesButton from '@styles/buttons.module.css';
-import { AlertError, Button, ErrorMessage, Loader } from '@/components/shared';
+import { Alert, Button, ErrorMessage, Loader } from '@/components/shared';
 import { TermsConditionsFormProps } from './types';
 
 export const TermsConditionsForm = ({
@@ -43,7 +43,7 @@ export const TermsConditionsForm = ({
       )}
 
       {!state.success && state.message && !isEmpty && (
-        <AlertError>{state.message}</AlertError>
+        <Alert>{state.message}</Alert>
       )}
     </form>
   );
