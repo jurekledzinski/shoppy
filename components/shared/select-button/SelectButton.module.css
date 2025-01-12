@@ -1,10 +1,7 @@
-.button {
-  min-width: 150px;
-  padding: 0.5rem;
-  border: none;
-  cursor: pointer;
+button.selected {
+  background-color: var(--color-success);
 }
 
-.selected {
-  background-color: red;
+button.selected:hover {
+  background-color: var(--color-success);
 }

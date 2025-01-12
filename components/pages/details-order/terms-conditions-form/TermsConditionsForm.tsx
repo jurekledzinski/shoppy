@@ -35,7 +35,7 @@ export const TermsConditionsForm = ({
             },
           })}
         />
-        <span>Terms conditions</span>
+        <span className={styles.text}>Terms conditions</span>
       </label>
 
       {errors.termsConditions && (

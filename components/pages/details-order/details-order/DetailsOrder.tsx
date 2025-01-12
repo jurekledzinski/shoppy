@@ -1,6 +1,7 @@
 import styles from './DetailsOrder.module.css';
 import { DetailsOrderProps } from './types';
 import { TermsConditionsForm } from '../terms-conditions-form';
+import { formatText } from '@/helpers';
 
 import {
   OrderAddress,
@@ -26,19 +27,25 @@ export const DetailsOrder = ({
     <>
       <div className={styles.container}>
         <div className={styles.left}>
-          <h5>{titlePayment}</h5>
-          <p>{dataOrder?.methodPayment}</p>
+          <h4 className={styles.title}>{titlePayment}</h4>
+          <p className={styles.text}>
+            {formatText(dataOrder?.methodPayment ?? '')}
+          </p>
 
-          <h5>{titleDelivery}</h5>
-          <p>
-            {dataOrder?.methodDelivery} {dataOrder?.priceDelivery}€
+          <h4 className={styles.title}>{titleDelivery}</h4>
+          <p className={styles.text}>
+            {formatText(dataOrder?.methodDelivery ?? '')}
+            {dataOrder?.priceDelivery}€
           </p>
 
           <OrderAddress dataOrder={dataOrder} titleAddress={titleAddress} />
 
-          <h5>{titleOrders}</h5>
-          <OrderProductsList items={cartData?.products ?? []} />
+          <OrderProductsList
+            items={cartData?.products ?? []}
+            titleOrders={titleOrders}
+          />
         </div>
+
         <div className={styles.right}>
           <OrderSummary
             dataOrder={dataOrder}

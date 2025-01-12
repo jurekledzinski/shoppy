@@ -1,3 +1,4 @@
+import styles from './OrderAddress.module.css';
 import { OrderAddressProps } from './types';
 
 export const OrderAddress = ({
@@ -5,16 +6,16 @@ export const OrderAddress = ({
   titleAddress,
 }: OrderAddressProps) => {
   return (
-    <>
-      <h5>{titleAddress}</h5>
-      <p>
+    <div className={styles.container}>
+      <h4 className={styles.title}>{titleAddress}</h4>
+      <p className={styles.text}>
         {dataOrder?.name} {dataOrder?.surname}
       </p>
-      <p>{dataOrder?.street}</p>
-      <p>
+      <p className={styles.text}>{dataOrder?.street}</p>
+      <p className={styles.text}>
         {dataOrder?.postCode} {dataOrder?.city}
       </p>
-      <p>{dataOrder?.country}</p>
-    </>
+      <p className={styles.text}>{dataOrder?.country}</p>
+    </div>
   );
 };

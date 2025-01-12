@@ -1,8 +1,8 @@
 .form {
   display: flex;
   justify-content: space-between;
-  gap: 0.5rem;
   width: 100%;
+  gap: initial;
   padding: initial;
 }
 
@@ -11,4 +11,10 @@
   align-items: center;
   gap: 0.5rem;
   width: fit-content;
+}
+
+.title {
+  color: var(--color-primary);
+  text-transform: uppercase;
+  font-weight: 500;
 }

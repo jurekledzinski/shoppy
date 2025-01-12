@@ -1,0 +1,13 @@
+.title {
+  color: var(--color-primary);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.text {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text-primary);
+  font-size: 14px;
+}

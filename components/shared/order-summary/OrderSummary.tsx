@@ -1,3 +1,5 @@
+import styles from './OrderSummary.module.css';
+import { formatText } from '@/helpers';
 import { OrderSummaryProps } from './types';
 
 export const OrderSummary = ({
@@ -11,25 +13,30 @@ export const OrderSummary = ({
 }: OrderSummaryProps) => {
   return (
     <>
-      <h5>{titleSummary}</h5>
-      <p>
+      <h4 className={styles.title}>{titleSummary}</h4>
+      <p className={styles.text}>
         <span>Method payment:</span>
-        <span>{methodPayment ?? dataOrder?.methodPayment}</span>
+        <span>
+          {formatText(methodPayment) ??
+            formatText(dataOrder?.methodPayment ?? '')}
+        </span>
       </p>
-      <p>
+      <p className={styles.text}>
         <span>Delivery name:</span>
-        <span>{methodDelivery}</span>
+        <span>{formatText(methodDelivery)}</span>
       </p>
-      <p>
+      <p className={styles.text}>
         <span>Delivery price:</span>
         <span>{priceDelivery}€</span>
       </p>
-      <p>
+      <p className={styles.text}>
         <span>Delivery time:</span>
-        <span>{timeDelivery}</span>
-        <span>{timeDelivery > 1 ? 'days' : 'day'}</span>
+        <span>
+          {timeDelivery}
+          {timeDelivery > 1 ? ' days' : ' day'}
+        </span>
       </p>
-      <p>Total price: {totalPrice + priceDelivery}€</p>
+      <p className={styles.text}>Total price: {totalPrice + priceDelivery}€</p>
     </>
   );
 };

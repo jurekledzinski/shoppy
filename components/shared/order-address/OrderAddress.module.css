@@ -1,0 +1,14 @@
+.container {
+  margin: 0.25rem 0;
+}
+
+.title {
+  color: var(--color-primary);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.text {
+  color: var(--color-text-primary);
+  font-size: 14px;
+}

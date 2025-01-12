@@ -17,7 +17,8 @@ export const PlaceOrderForm = ({
 
   return (
     <form id="place-order-form" className={styles.form} onSubmit={onSubmit}>
-      <h5>{titlePayment}</h5>
+      <h4 className={styles.title}>{titlePayment}</h4>
+
       <div className={styles.buttonGroup}>
         <Controller
           control={control}
@@ -42,10 +43,13 @@ export const PlaceOrderForm = ({
           }}
         />
       </div>
+
       {errors.methodPayment && (
         <ErrorMessage>{errors.methodPayment.message}</ErrorMessage>
       )}
-      <h5>{titleDelivery}</h5>
+
+      <h4 className={styles.title}>{titleDelivery}</h4>
+
       <div className={styles.buttonGroup}>
         <Controller
           control={control}
@@ -72,6 +76,7 @@ export const PlaceOrderForm = ({
           }}
         />
       </div>
+
       {errors.methodDelivery && (
         <ErrorMessage>{errors.methodDelivery.message}</ErrorMessage>
       )}
