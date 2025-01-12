@@ -25,7 +25,7 @@ export const ModalWarningContent = ({
           {cancel}
         </button>
         <Button
-          className={stylesButton.buttonDelete}
+          className={stylesButton.buttonConfirm}
           disabled={isPending}
           text={confirm}
           onClick={onConfirm}
