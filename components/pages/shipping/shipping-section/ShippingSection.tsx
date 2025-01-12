@@ -1,5 +1,6 @@
 'use client';
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
+import stylesLoader from '@/components/shared/loader/Loader.module.css';
 import { Loader, Section } from '@/components/shared';
 import { shipping } from '@/actions';
 import { ShippingForm } from '../shipping-form';
@@ -8,8 +9,6 @@ import { showToast } from '@/helpers';
 import { useActionState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useShippingForm } from '@/hooks';
-
-// import styles from './ShippingSection.module.css';
 
 export const ShippingSection = ({
   children,
@@ -44,7 +43,7 @@ export const ShippingSection = ({
   return (
     <Section>
       {children}
-      <Suspense fallback={<Loader />}>
+      <Suspense fallback={<Loader className={stylesLoader.loaderCenter} />}>
         <ShippingForm
           isPending={isPendingShipping}
           methods={methodsShipping}

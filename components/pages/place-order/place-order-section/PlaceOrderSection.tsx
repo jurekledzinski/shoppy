@@ -1,5 +1,6 @@
 'use client';
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
+import stylesLoader from '@/components/shared/loader/Loader.module.css';
 import { Loader, Section } from '@/components/shared';
 import { PlaceOrder } from '../place-order/PlaceOrder';
 import { placeOrder } from '@/actions';
@@ -9,8 +10,6 @@ import { useActionState } from 'react';
 import { useCart } from '@/store/cart';
 import { usePlaceOrderForm } from '@/hooks';
 import { useRouter } from 'next/navigation';
-
-// import styles from './PlaceOrderSection.module.css';
 
 export const PlaceOrderSection = ({
   children,
@@ -40,7 +39,7 @@ export const PlaceOrderSection = ({
   return (
     <Section>
       {children}
-      <Suspense fallback={<Loader />}>
+      <Suspense fallback={<Loader className={stylesLoader.loaderCenter} />}>
         <PlaceOrder
           cartData={state.cart}
           Controller={Controller}

@@ -1,5 +1,6 @@
 'use client';
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
+import stylesLoader from '@/components/shared/loader/Loader.module.css';
 import { checkout } from '@/actions';
 import { DetailsOrder } from '../details-order/DetailsOrder';
 import { DetailsOrderSectionProps } from './types';
@@ -9,8 +10,6 @@ import { ModalControlInventoryCheck } from './modal-control-inventory-check';
 import { removeItem, updateItem, updateSyncCart, useCart } from '@/store/cart';
 import { showToast } from '@/helpers';
 import { useActionStateAndReset, useTermsConditionsForm } from '@/hooks';
-
-// import styles from './DetailsOrderSection.module.css';
 
 export const DetailsOrderSection = ({
   children,
@@ -95,7 +94,7 @@ export const DetailsOrderSection = ({
       ) : null}
       <Section>
         {children}
-        <Suspense fallback={<Loader />}>
+        <Suspense fallback={<Loader className={stylesLoader.loaderCenter} />}>
           <DetailsOrder
             cartData={state.cart}
             dataOrder={orderData}
