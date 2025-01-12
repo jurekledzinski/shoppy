@@ -19,11 +19,7 @@ export const ProccedCheckoutPanel = ({
   onCancelAction,
   onContinueAction,
 }: ProccedCheckoutPanelProps) => {
-  const [open, setOpen] = useState<Record<string, boolean>>({
-    register: false,
-    login: true,
-    guest: false,
-  });
+  const [selectedValue, setSelectedValue] = useState('login');
 
   return (
     <>
@@ -31,17 +27,12 @@ export const ProccedCheckoutPanel = ({
       <div className={stylesProccedPanel.container}>
         <Accordion>
           <AccordionHeader
+            checked={selectedValue === 'register'}
             name="register"
             title="Register"
-            onChange={(e) => {
-              setOpen({
-                [e.target.value]: true,
-                login: false,
-                guest: false,
-              });
-            }}
+            onChange={(e) => setSelectedValue(e.target.value)}
           />
-          <AccordionContent active={open['register']}>
+          <AccordionContent active={selectedValue === 'register'}>
             <p>
               Creating an account allows you to save your details for faster
               checkout next time.
@@ -50,17 +41,12 @@ export const ProccedCheckoutPanel = ({
         </Accordion>
         <Accordion>
           <AccordionHeader
+            checked={selectedValue === 'login'}
             name="login"
             title="Login"
-            onChange={(e) => {
-              setOpen({
-                [e.target.value]: true,
-                register: false,
-                guest: false,
-              });
-            }}
+            onChange={(e) => setSelectedValue(e.target.value)}
           />
-          <AccordionContent active={open['login']}>
+          <AccordionContent active={selectedValue === 'login'}>
             <p>
               Log in to access your saved information and complete your
               purchase.
@@ -69,17 +55,12 @@ export const ProccedCheckoutPanel = ({
         </Accordion>
         <Accordion>
           <AccordionHeader
+            checked={selectedValue === 'guest'}
             name="guest"
             title="Guest"
-            onChange={(e) => {
-              setOpen({
-                [e.target.value]: true,
-                register: false,
-                login: false,
-              });
-            }}
+            onChange={(e) => setSelectedValue(e.target.value)}
           />
-          <AccordionContent active={open['guest']}>
+          <AccordionContent active={selectedValue === 'guest'}>
             <p>You can complete your purchase without creating an account.</p>
           </AccordionContent>
         </Accordion>
@@ -88,10 +69,7 @@ export const ProccedCheckoutPanel = ({
           disabled={isPending}
           text="Continue"
           onClick={() => {
-            const selected = Object.entries(open).find((value) => value[1]);
-            if (!selected) return;
-            const option = selected[0];
-            onContinueAction(option);
+            onContinueAction(selectedValue);
           }}
         >
           {isPending && <Loader />}

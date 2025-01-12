@@ -2,20 +2,24 @@ import styles from './Accordion.module.css';
 import { AccordionHeaderProps } from './types';
 
 export const AccordionHeader = ({
+  checked,
   name,
-  onChange,
   title,
+  onChange,
+  onClick,
 }: AccordionHeaderProps) => {
   return (
     <header className={styles.header}>
       <input
+        checked={checked}
         className={styles.radioButton}
         id={name}
-        name="option"
+        name={'option'}
         type="radio"
         value={name}
-        onChange={onChange}
-        defaultChecked={name === 'login'}
+        {...(onChange && { onChange })}
+        onClick={() => onClick && onClick(name)}
+        readOnly
       />
       <label className={styles.label} htmlFor={name}>
         {title}

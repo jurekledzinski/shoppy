@@ -2,7 +2,7 @@
 import styles from './OrdersSection.module.css';
 import { OrdersSectionProps } from './types';
 import { Section } from '@/components/shared';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import {
   Accordion,
@@ -21,41 +21,23 @@ import {
 } from '@/components/pages';
 
 export const OrdersSection = ({ children, ordersData }: OrdersSectionProps) => {
-  const [open, setOpen] = useState<Record<string, boolean>>({});
-
-  useEffect(() => {
-    if (!ordersData) return;
-    const formattedOrders = ordersData.map((order) => order._id);
-    const objOrders: Record<string, boolean> = {};
-    for (const id of formattedOrders) {
-      objOrders[id as string] = false;
-    }
-    setOpen(objOrders);
-  }, [ordersData]);
+  const [selectedValue, setSelectedValue] = useState<string | null>(null);
 
   return (
     <Section>
       {children}
-
       {ordersData &&
         ordersData.map((order) => (
           <Accordion key={order._id}>
             <AccordionHeader
+              checked={selectedValue === order._id}
               name={order._id!}
               title={`Order id: ${order._id}`}
-              onChange={(e) => {
-                setOpen((prev) => {
-                  const formatPrev = Object.fromEntries(
-                    Object.entries(prev).map((i) => [i[0], false])
-                  );
-                  return {
-                    ...formatPrev,
-                    [e.target.value]: !formatPrev[e.target.value],
-                  };
-                });
+              onClick={(id) => {
+                setSelectedValue(selectedValue === id ? null : id);
               }}
             />
-            <AccordionContent active={open[order?._id ?? '']}>
+            <AccordionContent active={selectedValue === order._id}>
               <div className={styles.container}>
                 <OrderAddress className={styles} ordersData={order} />
                 <OrderDate className={styles} ordersData={order} />

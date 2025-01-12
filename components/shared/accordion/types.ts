@@ -6,9 +6,10 @@ export type AccordionContentProps = {
 };
 
 export type AccordionHeaderProps = {
+  checked?: boolean;
   name: string;
-  //   onClick: (name: string) => void;
   title: string;
+  onClick?: (id: string) => void;
   onChange?: ChangeEventHandler<HTMLInputElement>;
 };
 
