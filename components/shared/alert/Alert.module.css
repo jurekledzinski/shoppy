@@ -1,4 +1,4 @@
-.alertError {
+.alert {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -9,14 +9,19 @@
   margin-bottom: 0.5rem;
 }
 
-.alertIcon {
+.icon {
   display: inline-block;
   color: var(--color-text-bg-dark);
 }
 
-.alertText {
+.text {
   color: var(--color-text-bg-dark);
   font-size: 0.65rem;
   font-weight: 400;
   text-wrap: wrap;
+}
+
+.warning {
+  margin-top: 0.25rem;
+  background-color: #ff851b;
 }

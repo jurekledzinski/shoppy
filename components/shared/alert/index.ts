@@ -1,2 +1,2 @@
-export * from './AlertError';
+export * from './Alert';
 export * from './types';
