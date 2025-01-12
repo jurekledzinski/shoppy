@@ -1,14 +1,16 @@
 'use client';
-// import styles from './PlaceOrderSection.module.css';
+import React, { Suspense } from 'react';
+import { Loader, Section } from '@/components/shared';
 import { PlaceOrder } from '../place-order/PlaceOrder';
 import { placeOrder } from '@/actions';
 import { PlaceOrderSectionProps } from './types';
 import { showToast } from '@/helpers';
 import { useActionState } from 'react';
+import { useCart } from '@/store/cart';
 import { usePlaceOrderForm } from '@/hooks';
 import { useRouter } from 'next/navigation';
-import { useCart } from '@/store/cart';
-import { Section } from '@/components/shared';
+
+// import styles from './PlaceOrderSection.module.css';
 
 export const PlaceOrderSection = ({
   children,
@@ -38,27 +40,29 @@ export const PlaceOrderSection = ({
   return (
     <Section>
       {children}
-      <PlaceOrder
-        cartData={state.cart}
-        Controller={Controller}
-        dataOrder={orderData}
-        isPending={isPendingPlaceOrder}
-        methods={methodsPlaceOrder}
-        methodsDelivery={[
-          { name: 'standard', price: 3, time: 3 },
-          { name: 'next day', price: 5, time: 1 },
-          { name: 'abroad', price: 8, time: 14 },
-        ]}
-        methodsPayment={['credit card']}
-        onSubmit={onSubmitPlaceOrder}
-        state={statePlaceOrder}
-        titleAddress="Shipping address"
-        titlePayment="Select method payment"
-        titleDelivery="Select method delivery"
-        titleOrders="Your orders"
-        titleSummary="Summary"
-        textSubmit="Place order"
-      />
+      <Suspense fallback={<Loader />}>
+        <PlaceOrder
+          cartData={state.cart}
+          Controller={Controller}
+          dataOrder={orderData}
+          isPending={isPendingPlaceOrder}
+          methods={methodsPlaceOrder}
+          methodsDelivery={[
+            { name: 'standard', price: 3, time: 3 },
+            { name: 'next day', price: 5, time: 1 },
+            { name: 'abroad', price: 8, time: 14 },
+          ]}
+          methodsPayment={['credit card']}
+          onSubmit={onSubmitPlaceOrder}
+          state={statePlaceOrder}
+          titleAddress="Shipping address"
+          titlePayment="Select method payment"
+          titleDelivery="Select method delivery"
+          titleOrders="Your orders"
+          titleSummary="Summary"
+          textSubmit="Place order"
+        />
+      </Suspense>
     </Section>
   );
 };

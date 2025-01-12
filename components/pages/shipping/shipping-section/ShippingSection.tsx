@@ -1,13 +1,15 @@
 'use client';
-import { ShippingSectionProps } from './types';
-// import styles from './ShippingSection.module.css';
-import { Section } from '@/components/shared';
-import { useShippingForm } from '@/hooks';
-import { ShippingForm } from '../shipping-form';
-import { useActionState } from 'react';
+import React, { Suspense } from 'react';
+import { Loader, Section } from '@/components/shared';
 import { shipping } from '@/actions';
+import { ShippingForm } from '../shipping-form';
+import { ShippingSectionProps } from './types';
 import { showToast } from '@/helpers';
+import { useActionState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useShippingForm } from '@/hooks';
+
+// import styles from './ShippingSection.module.css';
 
 export const ShippingSection = ({
   children,
@@ -42,12 +44,14 @@ export const ShippingSection = ({
   return (
     <Section>
       {children}
-      <ShippingForm
-        isPending={isPendingShipping}
-        methods={methodsShipping}
-        onSubmit={onSubmitShipping}
-        state={stateShipping}
-      />
+      <Suspense fallback={<Loader />}>
+        <ShippingForm
+          isPending={isPendingShipping}
+          methods={methodsShipping}
+          onSubmit={onSubmitShipping}
+          state={stateShipping}
+        />
+      </Suspense>
     </Section>
   );
 };

@@ -1,14 +1,16 @@
 'use client';
-// import styles from './DetailsOrderSection.module.css';
+import React, { Suspense } from 'react';
 import { checkout } from '@/actions';
 import { DetailsOrder } from '../details-order/DetailsOrder';
 import { DetailsOrderSectionProps } from './types';
+import { Loader, Section } from '@/components/shared';
 import { loadStripe } from '@stripe/stripe-js';
 import { ModalControlInventoryCheck } from './modal-control-inventory-check';
+import { removeItem, updateItem, updateSyncCart, useCart } from '@/store/cart';
 import { showToast } from '@/helpers';
 import { useActionStateAndReset, useTermsConditionsForm } from '@/hooks';
-import { updateItem, updateSyncCart, useCart, removeItem } from '@/store/cart';
-import { Section } from '@/components/shared';
+
+// import styles from './DetailsOrderSection.module.css';
 
 export const DetailsOrderSection = ({
   children,
@@ -93,19 +95,21 @@ export const DetailsOrderSection = ({
       ) : null}
       <Section>
         {children}
-        <DetailsOrder
-          cartData={state.cart}
-          dataOrder={orderData}
-          isPending={action.isPending}
-          methods={methodsCheckoutOrder}
-          onSubmit={onSubmitCheckoutOrder}
-          state={action.state}
-          titleAddress="Shipping address"
-          titlePayment="Method payment"
-          titleDelivery="Method delivery"
-          titleOrders="Your orders"
-          titleSummary="Summary"
-        />
+        <Suspense fallback={<Loader />}>
+          <DetailsOrder
+            cartData={state.cart}
+            dataOrder={orderData}
+            isPending={action.isPending}
+            methods={methodsCheckoutOrder}
+            onSubmit={onSubmitCheckoutOrder}
+            state={action.state}
+            titleAddress="Shipping address"
+            titlePayment="Method payment"
+            titleDelivery="Method delivery"
+            titleOrders="Your orders"
+            titleSummary="Summary"
+          />
+        </Suspense>
       </Section>
     </>
   );
