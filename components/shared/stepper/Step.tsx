@@ -8,6 +8,7 @@ import { usePathname } from 'next/navigation';
 
 export const Step = ({ completed, icon, label, path }: StepProps) => {
   const currentPathname = usePathname();
+  
   return (
     <Link
       href={`${path}`}
