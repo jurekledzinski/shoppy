@@ -1,19 +1,26 @@
 'use client';
 import styles from './Aside.module.css';
 import { AsideProps } from './types';
-import { controlAside, removeQueryUrl, showToast } from '@/helpers';
 import { extendGuestSession, guestCheckout, userCheckout } from '@/actions';
+import { ModalWarning } from '../modal-warning';
 import { startTransition, useActionState, useCallback, useEffect } from 'react';
-import { useAside } from '@/store/aside';
 import { updateSyncCart, useCart } from '@/store/cart';
+import { useAside } from '@/store/aside';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useSessionUser } from '@/store/session';
+
+import {
+  controlAside,
+  redirectWithQueries,
+  removeQueryUrl,
+  showToast,
+} from '@/helpers';
 import {
   useActionStateAndReset,
   useLoadResetPasswordForm,
   useSetCartOnRefresh,
   useSetUserSession,
 } from '@/hooks';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useSessionUser } from '@/store/session';
 
 import {
   CartPanel,
@@ -25,7 +32,6 @@ import {
   ResetPasswordPanel,
   ProccedCheckoutPanel,
 } from '@/components/pages';
-import { ModalWarning } from '../modal-warning';
 
 export const Aside = ({ guestId, userData }: AsideProps) => {
   const context = useAside();
@@ -153,7 +159,10 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
             user={{ id: userId, name: userName }}
             onSuccessAction={() => {
               dispatch({ type: 'CLEAR_CART' });
-              router.replace(window.location.pathname);
+              const newUrl = redirectWithQueries();
+
+              router.replace(newUrl);
+              router.refresh();
             }}
           />
         ) : context.type === 'cart' ? (
@@ -214,7 +223,10 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
                 return;
               }
 
-              router.replace(window.location.pathname);
+              const newUrl = redirectWithQueries();
+
+              router.replace(newUrl);
+              router.refresh();
             }}
             optionCheckout={optionCheckout}
           />
@@ -250,13 +262,15 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
             <ResetPasswordPanel
               onCancel={(e) => {
                 e.preventDefault();
-                router.replace(window.location.pathname);
+                const newUrl = redirectWithQueries();
+                router.replace(newUrl);
                 setTimeout(() => {
                   context.onChange(actionElement, false);
                 }, 500);
               }}
               onSuccessAction={(message) => {
-                router.replace(window.location.pathname);
+                const newUrl = redirectWithQueries();
+                router.replace(newUrl);
                 showToast(message);
                 setTimeout(() => {
                   controlAside(context, 'login', actionElement, stateOpen);
