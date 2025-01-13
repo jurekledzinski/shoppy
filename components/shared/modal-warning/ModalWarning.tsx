@@ -10,6 +10,7 @@ export const ModalWarning = ({
   cancel,
   confirm,
   children,
+  onCancel,
   onConfirm,
   title,
   isPending,
@@ -53,9 +54,10 @@ export const ModalWarning = ({
             title={title}
             confirm={confirm}
             isPending={isPending}
-            onCancel={() => {
+            onCancel={(e) => {
               setModal(false);
               setShowBackdrop(false);
+              if (onCancel) onCancel(e);
             }}
             onConfirm={onConfirm}
           >
