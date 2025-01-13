@@ -1,7 +1,7 @@
 'use client';
 import styles from './Aside.module.css';
 import { AsideProps } from './types';
-import { controlAside, showToast } from '@/helpers';
+import { controlAside, removeQueryUrl, showToast } from '@/helpers';
 import { extendGuestSession, guestCheckout, userCheckout } from '@/actions';
 import { startTransition, useActionState, useCallback, useEffect } from 'react';
 import { useAside } from '@/store/aside';
@@ -123,9 +123,16 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
         isOpen={guestUserExpire === 'true'}
         isSuccess={stateExtendGuestSession.success && !isPending}
         title="Session Expired"
+        cancel="Cancel"
         confirm="Click to extend your guest session"
+        onCancel={() => {
+          const newPath = removeQueryUrl(searchParams, 'guest-user-expired');
+          router.replace(newPath);
+        }}
         onConfirm={() => {
           startTransition(() => formAction(new FormData()));
+          const newPath = removeQueryUrl(searchParams, 'guest-user-expired');
+          router.replace(newPath);
         }}
       >
         <p>
