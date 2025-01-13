@@ -1,7 +1,7 @@
 import { auth } from '@/auth';
 import { cookies } from 'next/headers';
-import { verifyToken } from '@/lib';
 import { SectionSuccess } from '@/components/pages';
+import { tokenVerify } from '../_helpers';
 
 type SearchParams = Promise<{ orderId: string }>;
 
@@ -16,11 +16,11 @@ const Success = async ({ searchParams }: { searchParams: SearchParams }) => {
   const stepperCookie = cookieStore.get('stepper') ?? null;
 
   const guestCookieDecoded = guestCookie?.value
-    ? await verifyToken<{ value: string }>(guestCookie.value, secretGuest)
+    ? await tokenVerify<{ value: string }>(guestCookie.value, secretGuest)
     : null;
 
   const stepperCookieDecoded = stepperCookie?.value
-    ? await verifyToken<{ value: { allowed: string; completed: string[] } }>(
+    ? await tokenVerify<{ value: { allowed: string; completed: string[] } }>(
         stepperCookie.value,
         secretStepper
       )

@@ -1,8 +1,7 @@
 import { Aside as MainAside } from '@/components/shared';
 import { auth } from '@/auth';
 import { cookies, headers } from 'next/headers';
-import { fetchUser, getDomain } from '../_helpers';
-import { verifyToken } from '@/lib';
+import { fetchUser, getDomain, tokenVerify } from '../_helpers';
 
 const secretGuest = process.env.GUEST_SECRET!;
 
@@ -17,7 +16,7 @@ const Aside = async () => {
   const resUser = session ? await fetchUser(urlGetUser, allHeaders) : null;
 
   const guestCookieDecoded = guestCookie?.value
-    ? await verifyToken<{ value: string }>(guestCookie.value, secretGuest)
+    ? await tokenVerify<{ value: string }>(guestCookie.value, secretGuest)
     : null;
 
   return (
