@@ -1,6 +1,6 @@
 import { auth } from '@/auth';
-import { jwtVerify } from 'jose';
-import { NextResponse } from 'next/server';
+import { jwtVerify, JWTVerifyResult } from 'jose';
+import { NextResponse, NextRequest } from 'next/server';
 
 const checkoutProcess = ['/shipping', '/place-order', '/details-order'];
 
@@ -41,81 +41,71 @@ export default auth(async (request) => {
       }
     }
 
-    //   prevent when user normal not login in
     if (
       (!request.auth && pathname.startsWith('/profile')) ||
       (!request.auth && pathname.startsWith('/orders'))
     ) {
-      const newUrl = new URL('/', request.nextUrl.origin);
-      return NextResponse.redirect(newUrl);
+      return redirectToPage(request, '/');
     }
 
-    // Is this isProccesCheckoutRoute
     const isProtectedCheckout = checkoutProcess.some((item) =>
       pathname.includes(item)
     );
 
-    //Kiedy nie zalogowany user normalnie
     if (!request.auth && isProtectedCheckout) {
       if (!guestCookieValue || !stepperCookieValue) {
-        // gdy nie jest także zalogowany jako guest user i nie ma stepper cookie to redirect do home page
-        const newUrl = new URL('/', request.nextUrl.origin);
-        return NextResponse.redirect(newUrl);
+        return redirectToPage(request, '/');
       }
 
-      // gdy user kontynuuje jako guest user
-      const allowedPath = stepperCookieValue.payload.value.allowed;
-
-      const restProtectedSteps = checkoutProcess.filter(
-        (item) => !allowedPath.includes(item)
-      );
-
-      const isNotAllowedStep = restProtectedSteps.some((item) =>
-        pathname.includes(item)
-      );
-
-      if (isNotAllowedStep) {
-        const newUrl = new URL(allowedPath, request.nextUrl.origin);
-        return NextResponse.redirect(newUrl);
-      }
-
-      return NextResponse.next();
+      return checkAccessCheckout(stepperCookieValue, pathname, request);
     }
 
-    // Kiedy zalogowany normalnie user i jest któraś ze stron ['/shipping', '/place-order', '/details-order'] i nie ma cookie stepper
-
     if (request.auth && isProtectedCheckout) {
-      // kiedy normalnie zalogowany user ale nie ma cookie stepper to
       if (!stepperCookieValue) {
-        const newUrl = new URL('/', request.nextUrl.origin);
-        return NextResponse.redirect(newUrl);
+        return redirectToPage(request, '/');
       }
 
-      // kiedy normalnie zalogowany user to
-      const allowedPath = stepperCookieValue.payload.value.allowed;
-
-      const restProtectedSteps = checkoutProcess.filter(
-        (item) => !allowedPath.includes(item)
-      );
-
-      const isNotAllowedStep = restProtectedSteps.some((item) =>
-        pathname.includes(item)
-      );
-
-      if (isNotAllowedStep) {
-        const newUrl = new URL(allowedPath, request.nextUrl.origin);
-        return NextResponse.redirect(newUrl);
-      }
-      return NextResponse.next();
+      return checkAccessCheckout(stepperCookieValue, pathname, request);
     }
 
     return NextResponse.next();
   } catch {
-    const newUrl = new URL('/', request.nextUrl.origin);
-    return NextResponse.redirect(newUrl);
+    return redirectToPage(request, '/');
   }
 });
 
 export const config = {
   matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
 };
+
+function redirectToPage(request: NextRequest, path: string) {
+  const newUrl = new URL(path, request.nextUrl.origin);
+  return NextResponse.redirect(newUrl);
+}
+
+function checkAccessCheckout(
+  stepperCookieValue: JWTVerifyResult<{
+    value: {
+      allowed: string;
+      completed: string[];
+    };
+  }>,
+  pathname: string,
+  request: NextRequest
+) {
+  const allowedPath = stepperCookieValue.payload.value.allowed;
+
+  const restProtectedSteps = checkoutProcess.filter(
+    (item) => !allowedPath.includes(item)
+  );
+
+  const isNotAllowedStep = restProtectedSteps.some((item) =>
+    pathname.includes(item)
+  );
+
+  if (isNotAllowedStep) {
+    return redirectToPage(request, allowedPath);
+  }
+
+  return NextResponse.next();
+}
