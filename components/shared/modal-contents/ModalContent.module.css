@@ -28,6 +28,7 @@
 .body {
   padding: 1rem 0.75rem 0;
   color: var(--color-text-primary);
+  font-weight: 300;
 }
 
 .footer {
