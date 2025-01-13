@@ -114,10 +114,14 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
   });
 
   useSetCartOnRefresh({
-    onLoad: (cart) => {
-      if (!cart) return;
-      dispatch({ type: 'SET_CART', payload: cart });
-    },
+    onLoad: useCallback(
+      (cart) => {
+        if (!cart) return;
+        console.log('Set cart on refresh');
+        dispatch({ type: 'SET_CART', payload: cart });
+      },
+      [dispatch]
+    ),
     userSession: userId,
     guestSession: guestId,
   });
@@ -213,7 +217,6 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
             onSuccessAction={() => {
               showToast('Login successful');
               context.onChange(actionElement, false);
-              console.log('log user', userId, guestId);
               updateSyncCart(state, userId, guestId);
 
               if (optionCheckout === 'login') {

@@ -1,6 +1,6 @@
 import { Cart } from '@/models';
 import { getItemFromLocalStorage } from '@/helpers';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 type UseSetCartOnRefreshProps = {
   onLoad: (cart: Cart) => void;
@@ -15,7 +15,7 @@ export const useSetCartOnRefresh = ({
   guestSession,
   userSession,
 }: UseSetCartOnRefreshProps) => {
-  const fetchCart = async () => {
+  const fetchCart = useCallback(async () => {
     try {
       const response = await fetch(urlGetCart, {
         method: 'GET',
@@ -30,7 +30,7 @@ export const useSetCartOnRefresh = ({
       onLoad(data.payload);
       console.log('DATA FETCH client', data);
     } catch {}
-  };
+  }, [onLoad]);
 
   useEffect(() => {
     if (guestSession || userSession) {
@@ -39,5 +39,5 @@ export const useSetCartOnRefresh = ({
       const localData = getItemFromLocalStorage('cart', 'null');
       onLoad(localData);
     }
-  }, [guestSession, userSession]);
+  }, [fetchCart, guestSession, onLoad, userSession]);
 };
