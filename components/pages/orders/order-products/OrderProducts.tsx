@@ -1,14 +1,13 @@
 import { OrderProductsList } from '@/components/shared';
 import { OrderProductsProps } from './types';
 
-export const OrderProducts = ({
-  className,
-  ordersData,
-}: OrderProductsProps) => {
+export const OrderProducts = ({ ordersData }: OrderProductsProps) => {
   return (
     <>
-      <h4 className={className.title}>Products:</h4>
-      <OrderProductsList items={ordersData.cart?.products ?? []} />
+      <OrderProductsList
+        items={ordersData.cart?.products ?? []}
+        titleOrders="Products:"
+      />
     </>
   );
 };
