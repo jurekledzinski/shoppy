@@ -16,9 +16,16 @@
   }
 }
 
+.loaderBigger {
+  width: 2rem;
+  height: 2rem;
+}
+
 .loaderCenter {
   position: fixed;
   top: 50%;
   left: 50%;
+  width: 2rem;
+  height: 2rem;
   transform: translate(-50%, -50%);
 }
