@@ -27,23 +27,19 @@ export default auth(async (request) => {
         )
       : null;
 
-    //   ----------------
+    if (guestCookieValue) {
+      const guestUserExpire = guestCookieValue.payload.exp! * 1000;
+      const alertTime = new Date(guestUserExpire - 28 * 60 * 1000).getTime();
+      const currentTime = Date.now();
 
-    // if (guestCookieValue) {
-    //   const guestUserExpire = guestCookieValue.payload.exp! * 1000;
-    //   const alertTime = new Date(guestUserExpire - 28 * 60 * 1000).getTime();
-    //   const currentTime = Date.now();
-
-    //   if (currentTime >= alertTime) {
-    //     const url = new URL(request.url);
-    //     if (!url.searchParams.has('guest-user-expired')) {
-    //       url.searchParams.set('guest-user-expired', 'true');
-    //       return NextResponse.redirect(url);
-    //     }
-    //   }
-    // }
-
-    // ----------------
+      if (currentTime >= alertTime) {
+        const url = new URL(request.url);
+        if (!url.searchParams.has('guest-user-expired')) {
+          url.searchParams.set('guest-user-expired', 'true');
+          return NextResponse.redirect(url);
+        }
+      }
+    }
 
     //   prevent when user normal not login in
     if (
