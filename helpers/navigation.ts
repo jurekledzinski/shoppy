@@ -9,3 +9,10 @@ export const removeQueryUrl = (
   const newPath = `${window.location.pathname}?${currentParams.toString()}`;
   return newPath;
 };
+
+export const redirectWithQueries = () => {
+  const url = window.location.pathname;
+  const currentSearchParams = window.location.search;
+  const newUrl = `${url}${currentSearchParams}`;
+  return newUrl;
+};
