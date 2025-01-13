@@ -34,6 +34,7 @@ const nextAuthOptions: NextAuthConfig = {
     }),
   ],
   basePath: BASEPATH,
+  trustHost: true,
   secret: process.env.AUTH_SECRET,
   session: {
     maxAge: 30 * 60,
