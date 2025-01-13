@@ -3,6 +3,7 @@ import { ChangeEventHandler } from 'react';
 export type AccordionContentProps = {
   active: boolean;
   children?: React.ReactNode;
+  className?: string;
 };
 
 export type AccordionHeaderProps = {

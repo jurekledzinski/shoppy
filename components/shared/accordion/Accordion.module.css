@@ -3,7 +3,7 @@
   transition: 0.3s ease;
   overflow: hidden;
   color: var(--color-text-primary);
-  font-size: 14px;
+  font-size: 12px;
   margin: 0 1rem;
 }
 
@@ -25,4 +25,8 @@
   font-family: var(--font-oswald);
   text-transform: uppercase;
   font-size: 12px;
+}
+
+.contentOrders {
+  font-size: 14px;
 }
