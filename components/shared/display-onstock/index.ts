@@ -1,2 +1,2 @@
-export * from './DisplayOnStock';
+export * from './DisplayOnstock';
 export * from './types';
