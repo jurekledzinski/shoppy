@@ -1,5 +1,6 @@
 'use client';
 import styles from './OrdersSection.module.css';
+import stylesAccordionContent from '@/components/shared/accordion/Accordion.module.css';
 import { OrdersSectionProps } from './types';
 import { Section } from '@/components/shared';
 import { useState } from 'react';
@@ -37,7 +38,10 @@ export const OrdersSection = ({ children, ordersData }: OrdersSectionProps) => {
                 setSelectedValue(selectedValue === id ? null : id);
               }}
             />
-            <AccordionContent active={selectedValue === order._id}>
+            <AccordionContent
+              active={selectedValue === order._id}
+              className={stylesAccordionContent.contentOrders}
+            >
               <div className={styles.container}>
                 <OrderAddress className={styles} ordersData={order} />
                 <OrderDate className={styles} ordersData={order} />
