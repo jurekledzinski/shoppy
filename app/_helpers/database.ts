@@ -197,3 +197,47 @@ export const checkProductsInventory = async (
     productId: product.productId.toString(),
   }));
 };
+
+export const getUserCart = async (
+  collection: Collection<Omit<Cart, '_id'>>,
+  cartId: string,
+  userId: string
+) => {
+  return await collection.findOne({ cartId: { $ne: cartId }, userId });
+};
+
+export const updateCartProducts = (
+  dbProducts: Cart['products'],
+  newProducts: Cart['products']
+) => {
+  const allProducts = dbProducts.concat(newProducts);
+  const products: Cart['products'] = [];
+
+  for (const product of allProducts) {
+    const foundIndex = products.findIndex((item) => item._id === product._id);
+
+    if (foundIndex >= 0) {
+      products[foundIndex].quantity += product.quantity;
+    } else {
+      products.push(product);
+    }
+  }
+
+  return products;
+};
+
+export const updateCartTotalAmount = (updatedProducts: Cart['products']) => {
+  const totalAmountIncreaseCart = updatedProducts.reduce(
+    (acc, product) => acc + product.quantity,
+    0
+  );
+  return totalAmountIncreaseCart;
+};
+
+export const updateCartTotalPrice = (updatedProducts: Cart['products']) => {
+  const totalPriceIncreaseCart = updatedProducts.reduce(
+    (acc, product) => acc + product.quantity * product.price,
+    0
+  );
+  return totalPriceIncreaseCart;
+};
