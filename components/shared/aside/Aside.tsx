@@ -3,7 +3,13 @@ import styles from './Aside.module.css';
 import { AsideProps } from './types';
 import { extendGuestSession, guestCheckout, userCheckout } from '@/actions';
 import { ModalWarning } from '../modal-warning';
-import { startTransition, useActionState, useCallback, useEffect } from 'react';
+import {
+  startTransition,
+  useActionState,
+  useCallback,
+  useEffect,
+  useRef,
+} from 'react';
 import { initialState, updateSyncCart, useCart } from '@/store/cart';
 import { useAside } from '@/store/aside';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -21,6 +27,7 @@ import {
   useLoadResetPasswordForm,
   useSetCartOnRefresh,
   useSetUserSession,
+  useSetTimeoutController,
 } from '@/hooks';
 
 import {
@@ -34,7 +41,10 @@ import {
   ProccedCheckoutPanel,
 } from '@/components/pages';
 
+type Timeout = ReturnType<typeof setTimeout> | null;
+
 export const Aside = ({ guestId, userData }: AsideProps) => {
+  const timeoutConfirm = useRef<Timeout>(null);
   const context = useAside();
   const sessionUser = useSessionUser();
   const actionElement = context.type;
@@ -63,7 +73,8 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
     fnAction: userCheckout,
     onResetAction: () => {
       context.onChange(actionElement, false);
-      setTimeout(() => router.replace('/shipping'), 200);
+      setControlTimeout(() => router.replace('/shipping'), 200);
+      //   setTimeout(() => router.replace('/shipping'), 200);
     },
   });
 
@@ -78,7 +89,8 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
     onResetAction: () => {
       context.onChange(actionElement, false);
       updateSyncCart(state, userData?._id, guestId);
-      setTimeout(() => router.replace('/shipping'), 200);
+      setControlTimeout(() => router.replace('/shipping'), 200);
+      //   setTimeout(() => router.replace('/shipping'), 200);
     },
   });
 
@@ -126,27 +138,36 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
     guestSession: guestId,
   });
 
+  useEffect(() => {
+    const confirmTimeout = timeoutConfirm.current;
+    console.log('run  22', confirmTimeout);
+    return () => {
+      console.log('run  2', confirmTimeout);
+      if (confirmTimeout) clearTimeout(confirmTimeout);
+    };
+  }, []);
+
+  const setControlTimeout = useSetTimeoutController();
+
   return (
     <>
       <ModalWarning
         isPending={isPending}
         isOpen={guestUserExpire === 'true'}
         isSuccess={stateExtendGuestSession.success && !isPending}
-        title="Session Expired"
-        cancel="Cancel"
-        confirm="Click to extend your guest session"
-        onCancel={() => {
-          const newPath = removeQueryUrl(searchParams, 'guest-user-expired');
-          router.replace(newPath);
-        }}
+        title="Session will expire in 10 minutes"
+        confirm="Extend session"
         onConfirm={() => {
           startTransition(() => formAction(new FormData()));
           const newPath = removeQueryUrl(searchParams, 'guest-user-expired');
-          router.replace(newPath);
+          setControlTimeout(() => router.replace(newPath), 1000);
+          //   timeoutConfirm.current = setTimeout(() => {
+          //     router.replace(newPath);
+          //   }, 1000);
         }}
       >
         <p>
-          Your guest session will expire in 15 minutes. Please click extend
+          Your guest session will expire in 10 minutes. Please click extend
           session button to stay logged in as guest user.
         </p>
       </ModalWarning>
@@ -229,9 +250,10 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
               }
 
               if (optionCheckout === 'login') {
-                setTimeout(() => {
-                  router.replace('/shipping');
-                }, 200);
+                setControlTimeout(() => router.replace('/shipping'), 200);
+                // setTimeout(() => {
+                //   router.replace('/shipping');
+                // }, 200);
                 return;
               }
 
@@ -275,17 +297,26 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
                 e.preventDefault();
                 const newUrl = redirectWithQueries();
                 router.replace(newUrl);
-                setTimeout(() => {
-                  context.onChange(actionElement, false);
-                }, 500);
+                setControlTimeout(
+                  () => context.onChange(actionElement, false),
+                  500
+                );
+                // setTimeout(() => {
+                //   context.onChange(actionElement, false);
+                // }, 500);
               }}
               onSuccessAction={(message) => {
                 const newUrl = redirectWithQueries();
                 router.replace(newUrl);
                 showToast(message);
-                setTimeout(() => {
-                  controlAside(context, 'login', actionElement, stateOpen);
-                }, 500);
+                setControlTimeout(
+                  () =>
+                    controlAside(context, 'login', actionElement, stateOpen),
+                  500
+                );
+                // setTimeout(() => {
+                //   controlAside(context, 'login', actionElement, stateOpen);
+                // }, 500);
               }}
             />
           </>
