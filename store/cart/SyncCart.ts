@@ -14,11 +14,11 @@ export const updateSyncCart = async (
       formDataUser.set('userId', userSession!);
       formDataUser.set('cart', JSON.stringify(updatedCart.cart));
 
-      cart('', formDataUser);
+      const result = cart('', formDataUser);
 
       const localData1 = JSON.parse(localStorage.getItem('cart') || 'null');
       if (localData1) localStorage.removeItem('cart');
-      break;
+      return result;
 
     case Boolean(guestSession):
       const expiresIn = new Date(Date.now() + 30 * 60 * 1000);
