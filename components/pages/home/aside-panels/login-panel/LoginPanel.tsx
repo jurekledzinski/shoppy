@@ -4,8 +4,8 @@ import { login } from '@/actions';
 import { LoginForm } from '../../forms';
 import { LoginPanelProps } from './types';
 import { QuestionRedirect } from '@/components/shared';
-import { useActionState } from 'react';
-import { useLoginForm } from '@/hooks';
+import { useEffect } from 'react';
+import { useActionStateAndReset, useLoginForm } from '@/hooks';
 
 export const LoginPanel = ({
   onRedirectForgetPassword,
@@ -13,16 +13,24 @@ export const LoginPanel = ({
   optionCheckout,
   onSuccessAction,
 }: LoginPanelProps) => {
-  const [stateLogin, formActionLogin, isPendingLogin] = useActionState(login, {
-    message: '',
-    success: false,
+  const { action, resetStateAction } = useActionStateAndReset({
+    fnAction: login,
+    onResetAction: () => {
+      onSuccessAction();
+    },
   });
 
+  useEffect(() => {
+    if (action.state.success && !action.isPending) {
+      resetStateAction();
+    }
+  }, [action, resetStateAction]);
+
   const { methodsLogin, onSubmitLogin } = useLoginForm({
-    formAction: formActionLogin,
-    isPending: isPendingLogin,
-    isSuccess: stateLogin.success,
-    onSuccess: onSuccessAction,
+    formAction: action.formAction,
+    isPending: action.isPending,
+    isSuccess: action.state.success,
+    onSuccess: () => {},
     optionCheckout,
   });
 
@@ -32,8 +40,8 @@ export const LoginPanel = ({
       <LoginForm
         methods={methodsLogin}
         onSubmit={onSubmitLogin}
-        state={stateLogin}
-        isPending={isPendingLogin}
+        state={action.state}
+        isPending={action.isPending}
       />
 
       <div className={styles.wrapper}>
