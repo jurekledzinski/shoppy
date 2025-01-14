@@ -4,10 +4,11 @@ import { AsideProps } from './types';
 import { extendGuestSession, guestCheckout, userCheckout } from '@/actions';
 import { ModalWarning } from '../modal-warning';
 import { startTransition, useActionState, useCallback, useEffect } from 'react';
-import { updateSyncCart, useCart } from '@/store/cart';
+import { initialState, updateSyncCart, useCart } from '@/store/cart';
 import { useAside } from '@/store/aside';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useSessionUser } from '@/store/session';
+import { getSession } from 'next-auth/react';
 
 import {
   controlAside,
@@ -117,7 +118,6 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
     onLoad: useCallback(
       (cart) => {
         if (!cart) return;
-        console.log('Set cart on refresh');
         dispatch({ type: 'SET_CART', payload: cart });
       },
       [dispatch]
@@ -214,10 +214,19 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
               e.preventDefault();
               controlAside(context, 'register', actionElement, stateOpen);
             }}
-            onSuccessAction={() => {
+            onSuccessAction={async () => {
               showToast('Login successful');
               context.onChange(actionElement, false);
-              updateSyncCart(state, userId, guestId);
+              const updatedSession = await getSession();
+              const idUser = updatedSession?.user.id;
+
+              if (state.cart.totalAmountCart) {
+                const resultCart = await updateSyncCart(state, idUser, guestId);
+                dispatch({
+                  type: 'SET_CART',
+                  payload: resultCart?.payload ?? initialState.cart,
+                });
+              }
 
               if (optionCheckout === 'login') {
                 setTimeout(() => {
@@ -227,8 +236,7 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
               }
 
               const newUrl = redirectWithQueries();
-
-              router.replace(newUrl);
+              router.push(newUrl);
               router.refresh();
             }}
             optionCheckout={optionCheckout}
