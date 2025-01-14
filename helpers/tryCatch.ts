@@ -13,6 +13,7 @@ export const tryCatch = <T>(
       const data = await fn(url, headers);
       return { success: true, data: data.payload };
     } catch (error) {
+      console.log('Try catch error', error);
       if (error instanceof Error) {
         return { message: error.message, success: false };
       } else {
