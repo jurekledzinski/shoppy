@@ -15,7 +15,11 @@ export const DisplayOnstock = ({ className, data }: DisplayOnstockProps) => {
   return (
     <span className={className}>
       On stock:
-      {productInCart ? data.onStock - productInCart.quantity : data.onStock}
+      {productInCart
+        ? data.onStock > productInCart.quantity
+          ? data.onStock - productInCart.quantity
+          : data.onStock
+        : data.onStock}
     </span>
   );
 };
