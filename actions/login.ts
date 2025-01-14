@@ -27,7 +27,7 @@ export const login = actionTryCatch(
       redirect: false,
     });
 
-    if (paramsCheckout === 'login' || paramsCheckout === 'register') {
+    if (paramsCheckout === 'login') {
       const tokenStepper = await createToken(
         payloadStepper,
         secretStepper,
