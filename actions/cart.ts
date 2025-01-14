@@ -1,9 +1,18 @@
 'use server';
-import { Cart, CartSchema } from '@/models';
+import { Cart, CartSchema, ProductCard } from '@/models';
 import { cookies, headers } from 'next/headers';
 import { errorMessageAction } from '@/helpers';
 import { getToken } from 'next-auth/jwt';
-import { setCookieGuestId, setCookieStepper, updateCart } from '@/app/_helpers';
+import {
+  checkProductsInventory,
+  getUserCart,
+  setCookieGuestId,
+  setCookieStepper,
+  updateCart,
+  updateCartProducts,
+  updateCartTotalAmount,
+  updateCartTotalPrice,
+} from '@/app/_helpers';
 
 import {
   connectDBAction,
@@ -11,6 +20,8 @@ import {
   getCollectionDb,
   verifyToken,
 } from '@/lib';
+import { Collection } from 'mongodb';
+import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 
 const secretGuest = process.env.GUEST_SECRET!;
 const secretStepper = process.env.STEPPER_SECRET!;
@@ -18,7 +29,7 @@ const secretAuth = process.env.AUTH_SECRET!;
 const expireGuestToken = process.env.EXPIRE_GUEST_TOKEN!;
 const expireStepperToken = process.env.EXPIRE_STEPPER_TOKEN!;
 
-export const cart = connectDBAction(
+export const cart = connectDBAction<Cart>(
   async (prevState: unknown, formData: FormData) => {
     const cookieStore = await cookies();
     const headersData = await headers();
@@ -92,25 +103,97 @@ export const cart = connectDBAction(
         expireStepperToken
       );
 
-      await updateCart(collection, parsedData, 'userId');
-
-      setCookieStepper(cookieStore, tokenStepper, expiresIn);
-
-      return {
-        message: 'Cart updated successful',
-        success: true,
-      };
+      return processCartUpdate(
+        collection,
+        parsedData,
+        'userId',
+        cookieStore,
+        expiresIn,
+        tokenStepper
+      );
     }
 
     if (token && !cookieGuest && !cookieStepper) {
-      await updateCart(collection, parsedData, 'userId');
-
-      return {
-        message: 'Cart updated bez click checkout successful',
-        success: true,
-      };
+      return processCartUpdate(
+        collection,
+        parsedData,
+        'userId',
+        cookieStore,
+        expiresIn
+      );
     }
 
     return errorMessageAction('Unauthorized');
   }
 );
+
+async function processCartUpdate(
+  collection: Collection<Omit<Cart, '_id'>>,
+  parsedData: Cart,
+  userIdKey: 'userId',
+  cookieStore: ReadonlyRequestCookies,
+  expiresIn: Date,
+  tokenStepper?: string
+) {
+  const existingCart = await getUserCart(
+    collection,
+    parsedData.cartId!,
+    parsedData[userIdKey]!
+  );
+
+  if (existingCart) {
+    const updatedProducts = updateCartProducts(
+      existingCart.products,
+      parsedData.products
+    );
+    const totalAmount = updateCartTotalAmount(updatedProducts);
+    const totalPrice = updateCartTotalPrice(updatedProducts);
+
+    const newCart = {
+      cartId: existingCart.cartId,
+      products: updatedProducts,
+      totalAmountCart: totalAmount,
+      totalPriceCart: totalPrice,
+      userId: existingCart.userId,
+    };
+
+    const collectionProducts = getCollectionDb<ProductCard>('products');
+    if (!collectionProducts) return errorMessageAction('Internal server error');
+
+    const inventoryIssues = await checkProductsInventory(
+      collectionProducts,
+      updatedProducts
+    );
+
+    if (inventoryIssues.length) {
+      newCart.products = updatedProducts.map((product) => {
+        const issue = inventoryIssues.find(
+          (item) => item.productId === product._id
+        );
+        return issue ? { ...product, quantity: issue.onStock } : product;
+      });
+      newCart.totalAmountCart = updateCartTotalAmount(newCart.products);
+      newCart.totalPriceCart = updateCartTotalPrice(newCart.products);
+    }
+
+    await updateCart(collection, newCart, userIdKey);
+
+    if (tokenStepper) setCookieStepper(cookieStore, tokenStepper, expiresIn);
+
+    return {
+      message: 'Cart updated successfully',
+      success: true,
+      payload: newCart,
+    };
+  } else {
+    await updateCart(collection, parsedData, userIdKey);
+
+    if (tokenStepper) setCookieStepper(cookieStore, tokenStepper, expiresIn);
+
+    return {
+      message: 'Cart updated successfully continue',
+      success: true,
+      payload: parsedData,
+    };
+  }
+}
