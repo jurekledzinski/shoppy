@@ -18,3 +18,4 @@ export * from './cancelOrder';
 export * from './noCancelOrder';
 export * from './extendGuestSession';
 export * from './userCheckout';
+export * from './clearDataDeleteAccount';
