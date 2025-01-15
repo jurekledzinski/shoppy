@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './BasicSlider.module.css';
+import stylesSkeleton from '@/styles/HomePage.module.css';
 import { classNames } from '@/helpers';
 import { optionsSlider } from './optionsSlider';
 import { sliderData } from '@/data';
@@ -18,7 +19,7 @@ export const BasicSlider = () => {
   }, []);
 
   return (
-    <div className={`${isLoaded ? styles.wrapper : styles.skeleton}`}>
+    <div className={`${isLoaded ? styles.wrapper : stylesSkeleton.skeleton}`}>
       <Splide options={optionsSlider} onMoved={(e) => setIndexSlide(e.index)}>
         {sliderData.map((item, index) => {
           return (
