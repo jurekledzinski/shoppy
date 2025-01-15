@@ -1,9 +1,0 @@
-div.tabsPanel {
-  display: initial;
-}
-
-.info {
-  margin-bottom: 0.5rem;
-  color: var(--color-text-primary);
-  text-transform: uppercase;
-}
