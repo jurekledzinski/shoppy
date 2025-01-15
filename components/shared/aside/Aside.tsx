@@ -65,7 +65,6 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
     onResetAction: () => {
       context.onChange(actionElement, false);
       setControlTimeout(() => router.replace('/shipping'), 200);
-      //   setTimeout(() => router.replace('/shipping'), 200);
     },
   });
 
@@ -81,7 +80,6 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
       context.onChange(actionElement, false);
       updateSyncCart(state, userData?._id, guestId);
       setControlTimeout(() => router.replace('/shipping'), 200);
-      //   setTimeout(() => router.replace('/shipping'), 200);
     },
   });
 
@@ -143,9 +141,6 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
           startTransition(() => formAction(new FormData()));
           const newPath = removeQueryUrl(searchParams, 'guest-user-expired');
           setControlTimeout(() => router.replace(newPath), 1000);
-          //   timeoutConfirm.current = setTimeout(() => {
-          //     router.replace(newPath);
-          //   }, 1000);
         }}
       >
         <p>
@@ -233,9 +228,6 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
 
               if (optionCheckout === 'login') {
                 setControlTimeout(() => router.replace('/shipping'), 200);
-                // setTimeout(() => {
-                //   router.replace('/shipping');
-                // }, 200);
                 return;
               }
 
@@ -283,9 +275,6 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
                   () => context.onChange(actionElement, false),
                   500
                 );
-                // setTimeout(() => {
-                //   context.onChange(actionElement, false);
-                // }, 500);
               }}
               onSuccessAction={(message) => {
                 const newUrl = redirectWithQueries();
@@ -296,9 +285,6 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
                     controlAside(context, 'login', actionElement, stateOpen),
                   500
                 );
-                // setTimeout(() => {
-                //   controlAside(context, 'login', actionElement, stateOpen);
-                // }, 500);
               }}
             />
           </>

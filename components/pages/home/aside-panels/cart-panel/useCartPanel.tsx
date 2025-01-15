@@ -52,11 +52,9 @@ export const useCartPanel = ({
 
   const onClick = () => {
     if ((userId && userName) || guestId) {
-      // redirect to shipping page when logged in
       return onSuccess();
     }
 
-    // otherwise open aside with options
     controlAside(context, 'procced-checkout-options', actionElement, stateOpen);
   };
 
