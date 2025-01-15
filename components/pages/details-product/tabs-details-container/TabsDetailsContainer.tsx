@@ -81,7 +81,10 @@ export const TabsDetailsContainer = ({
             <>
               {!userId && !userName ? (
                 <h5 className={styles.info}>
-                  <FontAwesomeIcon icon={faLock} /> Please log in to add review.
+                  <span className={styles.icon}>
+                    <FontAwesomeIcon icon={faLock} size="1x" />
+                  </span>
+                  <span> Please log in to add review.</span>
                 </h5>
               ) : null}
 

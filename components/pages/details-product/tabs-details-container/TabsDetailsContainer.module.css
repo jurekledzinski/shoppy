@@ -3,6 +3,9 @@ div.tabsPanel {
 }
 
 .info {
+  display: flex;
+  align-items: normal;
+  gap: 0.25rem;
   margin-bottom: 0.5rem;
   color: var(--color-text-primary);
   text-transform: uppercase;
@@ -12,4 +15,12 @@ div.tabsPanel {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  width: 12px;
+  height: 20px;
+  font-size: 12px;
 }
