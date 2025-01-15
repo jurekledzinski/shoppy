@@ -43,3 +43,4 @@ export * from './modal-contents';
 export * from './modal-delete';
 export * from './modal-check-inventory';
 export * from './section';
+export * from './not-found';
