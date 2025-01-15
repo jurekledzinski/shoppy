@@ -7,3 +7,9 @@ div.tabsPanel {
   color: var(--color-text-primary);
   text-transform: uppercase;
 }
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

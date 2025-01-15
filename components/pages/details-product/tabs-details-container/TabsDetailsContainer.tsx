@@ -98,7 +98,7 @@ export const TabsDetailsContainer = ({
                 />
               ) : null}
 
-              <div>
+              <div className={styles.container}>
                 {dataReviews.map((review) => {
                   return <Review key={review._id} data={review} />;
                 })}
