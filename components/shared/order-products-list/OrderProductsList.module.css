@@ -1,3 +1,12 @@
+.container {
+  max-height: 136px;
+  overflow-y: auto;
+}
+
+.containerCheckout {
+  max-height: 204px;
+}
+
 .list {
   display: flex;
   flex-direction: column;

@@ -1,15 +1,17 @@
 import Image from 'next/image';
-import { OrderProductsListProps } from './types';
 import styles from './OrderProductsList.module.css';
+import { classNames } from '@/helpers';
+import { OrderProductsListProps } from './types';
 
 export const OrderProductsList = ({
+  className,
   items,
   titleOrders,
 }: OrderProductsListProps) => {
   return (
     <div>
       <h4 className={styles.title}>{titleOrders}</h4>
-      <ul>
+      <ul className={classNames(styles.container, className!)}>
         {items.map((product) => (
           <li className={styles.item} key={product._id}>
             <span>

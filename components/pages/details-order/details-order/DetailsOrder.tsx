@@ -1,8 +1,9 @@
 import styles from './DetailsOrder.module.css';
 import stylesAlert from '@/components/shared/alert/Alert.module.css';
+import stylesOrderProducts from '@/components/shared/order-products-list/OrderProductsList.module.css';
 import { DetailsOrderProps } from './types';
-import { TermsConditionsForm } from '../terms-conditions-form';
 import { formatText } from '@/helpers';
+import { TermsConditionsForm } from '../terms-conditions-form';
 
 import {
   OrderAddress,
@@ -42,6 +43,7 @@ export const DetailsOrder = ({
           <OrderAddress dataOrder={dataOrder} titleAddress={titleAddress} />
 
           <OrderProductsList
+            className={stylesOrderProducts.containerCheckout}
             items={cartData?.products ?? []}
             titleOrders={titleOrders}
           />
