@@ -38,6 +38,10 @@
   --color-border-loader: #dddddd;
   --color-border-table: #dddddd;
   --color-box-shadow-bottom: rgba(0, 0, 0, 0.16);
+
+  --color-skeleton-one: #e9e9e9;
+  --color-skeleton-two: #f9f9f9;
+  --color-skeleton-three: #e9e9e9;
 }
 
 [data-theme='dark'] {
@@ -74,6 +78,10 @@
   --color-border-loader: #dddddd;
   --color-border-table: #555;
   --color-box-shadow-bottom: rgba(255, 255, 255, 0.5);
+
+  --color-skeleton-one: #4a4a4a;
+  --color-skeleton-two: #3d3d3d;
+  --color-skeleton-three: #4a4a4a;
 }
 
 body {
