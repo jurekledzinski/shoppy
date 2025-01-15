@@ -1,6 +1,5 @@
 import styles from './ProductsSection.module.css';
-import { CardProduct, Section } from '@/components/shared';
-import { NoProducts } from '../no-products';
+import { CardProduct, NoData, Section } from '@/components/shared';
 import { omit } from 'lodash';
 import { ProductsSectionProps } from './types';
 
@@ -18,7 +17,10 @@ export const ProductsSection = ({ children, data }: ProductsSectionProps) => {
             return <CardProduct key={product._id} product={filterProduct} />;
           })
         ) : (
-          <NoProducts />
+          <NoData
+            text="At the moment there is no products from this brand."
+            title="No products found"
+          />
         )}
       </div>
     </Section>

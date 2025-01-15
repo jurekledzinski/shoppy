@@ -1,8 +1,8 @@
 'use client';
 import styles from './OrdersSection.module.css';
 import stylesAccordionContent from '@/components/shared/accordion/Accordion.module.css';
+import { NoData, Section } from '@/components/shared';
 import { OrdersSectionProps } from './types';
-import { Section } from '@/components/shared';
 import { useState } from 'react';
 
 import {
@@ -27,7 +27,7 @@ export const OrdersSection = ({ children, ordersData }: OrdersSectionProps) => {
   return (
     <Section>
       {children}
-      {ordersData &&
+      {ordersData ? (
         ordersData.map((order) => (
           <Accordion key={order._id}>
             <AccordionHeader
@@ -54,7 +54,13 @@ export const OrdersSection = ({ children, ordersData }: OrdersSectionProps) => {
               </div>
             </AccordionContent>
           </Accordion>
-        ))}
+        ))
+      ) : (
+        <NoData
+          text="At the moment you didn't order anything."
+          title="No orders"
+        />
+      )}
     </Section>
   );
 };

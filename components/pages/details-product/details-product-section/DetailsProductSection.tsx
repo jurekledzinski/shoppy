@@ -1,7 +1,7 @@
 import styles from './DetailsProductSection.module.css';
 import { CartQuantityContoller } from '../cart-quantity-contoller';
 import { DetailsProductSectionProps } from './types';
-import { NoProducts } from '../../products/no-products';
+import { NoData } from '@/components/shared';
 import { TabsDetailsContainer } from '../tabs-details-container';
 import {
   StarRating,
@@ -62,7 +62,10 @@ export const DetailsProductSection = ({
           </div>
         </div>
       ) : (
-        <NoProducts />
+        <NoData
+          text="At the moment there is no products from this brand."
+          title="No products found"
+        />
       )}
     </Section>
   );
