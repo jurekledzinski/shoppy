@@ -11,3 +11,4 @@ export * from './tryCatch';
 export * from './localStorage';
 export * from './formatText';
 export * from './navigation';
+export * from './helpersForm';
