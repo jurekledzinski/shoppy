@@ -1,0 +1,42 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex: 1;
+  gap: 0.5rem;
+  padding: 0 1rem 1rem;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 75rem;
+  max-height: 100vh;
+}
+
+button.button {
+  width: 100%;
+  max-width: initial;
+  margin: initial;
+}
+
+.title {
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.buttonGroup {
+  width: min(574px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+@media (min-width: 381px) {
+  .buttonGroup {
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+}

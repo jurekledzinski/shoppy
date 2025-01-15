@@ -1,0 +1,52 @@
+{
+  "name": "new_shoppy",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "open-browser": "start http://localhost:3000",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.6.0",
+    "@fortawesome/free-regular-svg-icons": "^6.6.0",
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@splidejs/react-splide": "^0.7.12",
+    "@stripe/stripe-js": "^5.4.0",
+    "@types/bcrypt": "^5.0.2",
+    "bcrypt": "^5.1.1",
+    "handlebars": "^4.7.8",
+    "jose": "^5.9.6",
+    "juice": "^11.0.0",
+    "lodash": "^4.17.21",
+    "mongodb": "^6.10.0",
+    "next": "15.0.3",
+    "next-auth": "^5.0.0-beta.25",
+    "nodemailer": "^6.9.16",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.53.2",
+    "react-simple-star-rating": "^5.1.7",
+    "react-toastify": "^10.0.6",
+    "react-transition-group": "^4.4.5",
+    "stripe": "^17.5.0",
+    "uuid": "^11.0.3",
+    "xss": "^1.0.15",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.17.13",
+    "@types/node": "^20",
+    "@types/nodemailer": "^6.4.17",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@types/react-transition-group": "^4.4.11",
+    "eslint": "^8",
+    "eslint-config-next": "15.0.3",
+    "handlebars-loader": "^1.7.3",
+    "typescript": "^5"
+  }
+}

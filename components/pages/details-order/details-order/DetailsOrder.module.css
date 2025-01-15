@@ -1,0 +1,39 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.left {
+  width: 100%;
+}
+
+.right {
+  width: 100%;
+}
+
+.title {
+  color: var(--color-primary);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.text {
+  color: var(--color-text-primary);
+  font-size: 14px;
+}
+
+@media (min-width: 35.938rem) {
+  .container {
+    flex-direction: row;
+  }
+
+  .left {
+    width: 70%;
+  }
+
+  .right {
+    width: 30%;
+  }
+}

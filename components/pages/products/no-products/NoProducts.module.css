@@ -1,0 +1,18 @@
+.container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: min(575px, 100%);
+  padding: 0.5rem;
+  color: var(--color-text-primary);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.title {
+  text-transform: uppercase;
+}
+
+.text {
+  font-size: 1rem;
+}

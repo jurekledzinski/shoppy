@@ -1,0 +1,10 @@
+.themeButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1rem;
+  height: 1rem;
+  background-color: transparent;
+  border: initial;
+  cursor: pointer;
+}

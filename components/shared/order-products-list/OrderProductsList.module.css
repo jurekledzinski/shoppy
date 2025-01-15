@@ -1,0 +1,53 @@
+.container {
+  max-height: 136px;
+  overflow-y: auto;
+}
+
+.containerCheckout {
+  max-height: 204px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  padding: 0.5rem 0.5rem 0.5rem 0;
+}
+
+.title {
+  color: var(--color-primary);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.image {
+  display: block;
+  object-fit: contain;
+  width: 60px;
+  height: 80px;
+}
+
+.text {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text-primary);
+  font-size: 14px;
+}
+
+@media (min-width: 35.938rem) {
+  .item {
+    flex-direction: row;
+    padding: 0.25rem;
+  }
+
+  .image {
+    width: 40px;
+    height: 60px;
+  }
+}

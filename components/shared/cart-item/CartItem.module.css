@@ -1,0 +1,71 @@
+.cartItem {
+  width: 100%;
+}
+
+.header {
+  width: 100%;
+  padding: 0.5rem 1rem;
+}
+
+.title {
+  color: var(--color-text-primary);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.text {
+  color: var(--color-text-primary);
+  font-size: 12px;
+}
+
+.content {
+  display: flex;
+  padding-bottom: 0.5rem;
+}
+
+.contentLeft,
+.contentRight {
+  width: 50%;
+}
+
+.contentRight {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.image {
+  max-width: 100%;
+  object-fit: contain;
+  max-height: min-content;
+}
+
+.footer {
+  width: 100%;
+}
+
+button.buttonRemoveItem {
+  max-width: initial;
+  width: 100%;
+  border-top-left-radius: initial;
+  border-top-right-radius: initial;
+}
+
+button.buttonPlus,
+button.buttonMinus {
+  padding: initial;
+}
+
+p.input {
+  padding: 0.25rem 0;
+  color: var(--color-text-primary);
+  font-size: 12px;
+}
+
+.wrapper {
+  border-top: 1px solid var(--color-border-table);
+  border-left: 1px solid var(--color-border-table);
+  border-right: 1px solid var(--color-border-table);
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+}

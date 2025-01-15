@@ -1,0 +1,7 @@
+button.selected {
+  background-color: var(--color-success);
+}
+
+button.selected:hover {
+  background-color: var(--color-success);
+}

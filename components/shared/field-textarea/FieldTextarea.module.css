@@ -1,0 +1,21 @@
+.label {
+  display: block;
+  margin-bottom: 0.15rem;
+  color: var(--color-text-primary);
+  font-size: 0.7rem;
+  font-weight: 400;
+}
+
+.textarea {
+  display: block;
+  border: 1px solid var(--color-border-input);
+  border-radius: 2px;
+  padding: 0.25rem 0.5rem;
+  width: 100%;
+  resize: none;
+  font-weight: 300;
+}
+
+.fieldset {
+  border: none;
+}

@@ -1,0 +1,20 @@
+.form {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: initial;
+  padding: initial;
+}
+
+.buttonGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: fit-content;
+}
+
+.title {
+  color: var(--color-primary);
+  text-transform: uppercase;
+  font-weight: 500;
+}

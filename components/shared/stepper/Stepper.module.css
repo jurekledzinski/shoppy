@@ -1,0 +1,73 @@
+.stepper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1px;
+  margin: 1rem auto;
+  border-radius: 0.125rem;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.step {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  flex: 1;
+  padding: 0.5rem;
+  transition: width 0.3s linear;
+}
+
+.step::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: var(--color-primary);
+}
+
+.step.completed::after {
+  width: 100%;
+  background-color: var(--color-primary);
+}
+
+.step.active {
+  width: 100%;
+  background-color: var(--color-primary);
+}
+
+.step.active > .icon,
+.step.active > .label {
+  color: white;
+}
+
+.label {
+  color: var(--color-text-primary);
+  font-size: 8px;
+}
+
+.icon {
+  color: var(--color-primary);
+  font-size: 8px;
+  transition: 0.3s linear;
+}
+
+.icon:hover {
+  color: var(--color-primary-hover);
+}
+
+/* from 575px 35.938rem */
+@media (min-width: 35.938rem) {
+  .label {
+    font-size: 14px;
+  }
+
+  .icon {
+    font-size: 14px;
+  }
+}

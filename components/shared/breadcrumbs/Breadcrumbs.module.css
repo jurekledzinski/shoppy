@@ -1,0 +1,40 @@
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text-primary);
+  text-decoration: none;
+}
+
+.icon {
+  display: block;
+  font-size: 10px;
+  color: var(--color-text-primary);
+}
+
+.text {
+  color: var(--color-text-primary);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.active {
+  color: var(--color-primary);
+  font-size: 12px;
+}
+
+@media (min-width: 35.938rem) {
+  .text {
+    font-size: 14px;
+  }
+  .active {
+    font-size: 14px;
+  }
+}

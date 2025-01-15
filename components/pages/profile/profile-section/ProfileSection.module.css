@@ -1,0 +1,28 @@
+/* .section {
+  position: relative;
+  flex: 1;
+  padding: 0 1rem 1rem;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 75rem;
+  max-height: 100vh;
+} */
+
+.headerUpdateProfile {
+  margin-bottom: 1rem;
+  color: var(--color-text-primary);
+}
+
+.headerChangePassword {
+  margin: 1rem 0;
+  color: var(--color-text-primary);
+}
+
+.headerDeleteAccount {
+  margin: 1rem 0;
+  color: var(--color-text-primary);
+}
+
+.modalDeleteText {
+  font-size: 14px;
+}

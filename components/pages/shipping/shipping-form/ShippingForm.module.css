@@ -1,0 +1,20 @@
+.form {
+  width: min(575px, 100%);
+  margin: 0 auto;
+  padding: initial;
+}
+
+.buttonGroup {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+@media (min-width: 35.938rem) {
+  .buttonGroup {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}

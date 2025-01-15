@@ -1,0 +1,15 @@
+.fieldset {
+  display: flex;
+  flex-direction: column;
+  border: none;
+}
+
+.rating {
+  height: 14px;
+  font-size: 14px;
+}
+
+.label {
+  color: var(--color-text-primary);
+  font-size: 0.7rem;
+}
