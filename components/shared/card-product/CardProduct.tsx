@@ -20,8 +20,9 @@ export const CardProduct = ({ product }: CardProductProps) => {
             src={images[3]}
             width={200}
             height={200}
-            alt={name}
+            alt="Image phone"
             priority={true}
+            sizes="(max-width: 575px) 200px, 200px"
           />
         </Link>
       </header>

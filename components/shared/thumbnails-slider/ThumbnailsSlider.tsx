@@ -28,7 +28,7 @@ export const ThumbnailsSlider = ({ images }: ThumbnailsSliderProps) => {
                   src={`${item}?tr=w-305,h-250,cm-pad_resize`}
                   width={305}
                   height={250}
-                  alt={'image'}
+                  alt="Image phone"
                   priority={true}
                   className={styles.mainImage}
                 />
@@ -46,7 +46,7 @@ export const ThumbnailsSlider = ({ images }: ThumbnailsSliderProps) => {
                   src={`${item}?tr=h-80, 80h`}
                   width={80}
                   height={100}
-                  alt={'image'}
+                  alt="Image phone"
                   priority={true}
                   sizes="80px"
                   className={styles.thumbnailImage}
