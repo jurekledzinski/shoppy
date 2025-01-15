@@ -28,6 +28,11 @@
   background-size: 200%;
 }
 
+.skeletonStarsRate {
+  width: 6.25rem;
+  height: 19px;
+}
+
 @keyframes leftToRight {
   0% {
     background-position: -100% 0;
