@@ -9,6 +9,7 @@ import {
   FieldInput,
   Loader,
 } from '@/components/shared';
+import { patternPassword, validateConfirmPassword } from '@/helpers';
 
 export const ChangePasswordForm = ({
   isPending,
@@ -34,6 +35,7 @@ export const ChangePasswordForm = ({
         type="password"
         {...methods.register('password', {
           required: { message: 'Password is required', value: true },
+          pattern: patternPassword(),
         })}
       />
 
@@ -48,6 +50,7 @@ export const ChangePasswordForm = ({
         type="password"
         {...methods.register('confirmPassword', {
           required: { message: 'Confirm password is required', value: true },
+          validate: validateConfirmPassword,
         })}
       />
 

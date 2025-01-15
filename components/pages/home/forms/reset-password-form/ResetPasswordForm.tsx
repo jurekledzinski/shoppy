@@ -8,6 +8,7 @@ import {
   FieldInput,
   Loader,
 } from '@/components/shared';
+import { patternPassword, validateConfirmPassword } from '@/helpers';
 
 export const ResetPasswordForm = ({
   methods,
@@ -28,6 +29,7 @@ export const ResetPasswordForm = ({
         type="password"
         {...methods.register('password', {
           required: { message: 'Password is required', value: true },
+          pattern: patternPassword(),
         })}
       />
 
@@ -42,6 +44,7 @@ export const ResetPasswordForm = ({
         type="password"
         {...methods.register('confirmPassword', {
           required: { message: 'Confirm password is required', value: true },
+          validate: validateConfirmPassword,
         })}
       />
 
