@@ -269,21 +269,27 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
             <ResetPasswordPanel
               onCancel={(e) => {
                 e.preventDefault();
-                const newUrl = redirectWithQueries();
-                router.replace(newUrl);
+                const url = new URL(window.location.href);
+                url.search = '';
+                router.refresh();
+                router.replace(url.pathname);
+
                 setControlTimeout(
                   () => context.onChange(actionElement, false),
-                  500
+                  1000
                 );
               }}
               onSuccessAction={(message) => {
-                const newUrl = redirectWithQueries();
-                router.replace(newUrl);
                 showToast(message);
+                const url = new URL(window.location.href);
+                url.search = '';
+                router.refresh();
+                router.replace(url.pathname);
+
                 setControlTimeout(
                   () =>
                     controlAside(context, 'login', actionElement, stateOpen),
-                  500
+                  1000
                 );
               }}
             />
