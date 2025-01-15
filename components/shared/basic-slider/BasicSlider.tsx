@@ -47,11 +47,10 @@ export const BasicSlider = () => {
                         : classNames(styles.image, styles.hideImage)
                     }
                     src={item.image}
-                    width={220}
-                    height={280}
-                    alt={item.alt}
+                    alt="Image phone"
                     priority={true}
-                    sizes="(max-width: 575px) 70vw, 100vw"
+                    fill={true}
+                    sizes="(max-width: 575px) 240px, (min-width: 576px) 100vw"
                   />
                 </div>
               </div>

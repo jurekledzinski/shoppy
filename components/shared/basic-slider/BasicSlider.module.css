@@ -24,11 +24,12 @@
 }
 
 .rightBoxSlide {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 60%;
+  height: 210px;
 }
 
 .leftBoxContext {
@@ -54,8 +55,7 @@
 }
 
 .image {
-  height: 100%;
-  width: fit-content;
+  object-fit: contain;
 }
 
 .showText {
@@ -116,7 +116,7 @@ a.link {
   .rightBoxSlide {
     width: 50%;
     max-height: 100%;
-    height: initial;
+    height: 350px;
   }
 
   .title {
