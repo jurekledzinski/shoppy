@@ -8,9 +8,6 @@ import { Order } from '@/models';
 const secretGuest = process.env.GUEST_SECRET!;
 const secretStepper = process.env.STEPPER_SECRET!;
 
-// Update cookies expiration time for guestId and stepper but value of the cookies stay same
-// we can create new token with same values of cookie but updated expiration time
-
 export const GET = connectDBAuth(
   auth(async (request) => {
     const cookieGuest = request.cookies.get('guestId')!;
@@ -23,7 +20,6 @@ export const GET = connectDBAuth(
     const collection = getCollectionDb<Omit<Order, '_id'>>('orders');
     if (!collection) return errorMessage(500);
 
-    // Gdy user nie zalogowany to wtedy może być guest user
     if (!request.auth && cookieGuest && cookieStepper) {
       const dataGuest = await verifyToken<{ value: string }>(
         cookieGuest.value,
@@ -47,7 +43,6 @@ export const GET = connectDBAuth(
       return response;
     }
 
-    // Gdy user zalogowany
     if (request.auth && !cookieGuest && cookieStepper) {
       await verifyToken<{ value: { allowed: string; completed: string[] } }>(
         cookieStepper.value,

@@ -3,13 +3,7 @@ import styles from './Aside.module.css';
 import { AsideProps } from './types';
 import { extendGuestSession, guestCheckout, userCheckout } from '@/actions';
 import { ModalWarning } from '../modal-warning';
-import {
-  startTransition,
-  useActionState,
-  useCallback,
-  useEffect,
-  useRef,
-} from 'react';
+import { startTransition, useActionState, useCallback, useEffect } from 'react';
 import { initialState, updateSyncCart, useCart } from '@/store/cart';
 import { useAside } from '@/store/aside';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -41,10 +35,7 @@ import {
   ProccedCheckoutPanel,
 } from '@/components/pages';
 
-type Timeout = ReturnType<typeof setTimeout> | null;
-
 export const Aside = ({ guestId, userData }: AsideProps) => {
-  const timeoutConfirm = useRef<Timeout>(null);
   const context = useAside();
   const sessionUser = useSessionUser();
   const actionElement = context.type;
@@ -137,15 +128,6 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
     userSession: userId,
     guestSession: guestId,
   });
-
-  useEffect(() => {
-    const confirmTimeout = timeoutConfirm.current;
-    console.log('run  22', confirmTimeout);
-    return () => {
-      console.log('run  2', confirmTimeout);
-      if (confirmTimeout) clearTimeout(confirmTimeout);
-    };
-  }, []);
 
   const setControlTimeout = useSetTimeoutController();
 

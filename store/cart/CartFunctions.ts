@@ -125,8 +125,6 @@ export const clearCart: CartActionHandler = (state, action) => {
   return { cart: initialState.cart };
 };
 
-// ---------------------
-
 export const subtractItem: CartActionHandler = (state, action) => {
   if (action.type !== 'SUBTRACT_ITEM') return state;
 

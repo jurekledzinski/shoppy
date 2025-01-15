@@ -18,8 +18,6 @@ export const forgetPassword = connectDBAction(
 
     const parsedData = ForgetPasswordSchema.parse(body);
 
-    // ----
-
     const collection = getCollectionDb<UserForgetPassword>('users');
 
     if (!collection) return errorMessageAction('Internal server error');
@@ -67,8 +65,6 @@ export const forgetPassword = connectDBAction(
     };
 
     await transporter.sendMail(mailOptions);
-
-    // ----
 
     return {
       message: 'Request send successfully, please check your email',

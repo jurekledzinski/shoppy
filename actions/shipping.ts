@@ -52,7 +52,7 @@ export const shipping = connectDBAction(
       isDelivered: false,
       isPaid: false,
       isSent: false,
-      ...(cookieGuest && { expiryAt: expiresIn }), //ustaw na 2 godziny dla order
+      ...(cookieGuest && { expiryAt: expiresIn }),
     });
 
     if (!token && !cookieGuest && !cookieStepper) {
@@ -69,7 +69,6 @@ export const shipping = connectDBAction(
     );
 
     if (!token && cookieGuest && cookieStepper) {
-      // gdy user normalny niezalogowany i guest user zalogowany i jest stepper
       const dataGuest = await verifyToken<{ value: string }>(
         cookieGuest.value,
         secretGuest
@@ -108,7 +107,6 @@ export const shipping = connectDBAction(
     }
 
     if (token && !cookieGuest && cookieStepper) {
-      // gdy user normalny zalogowany i guest user nie zalogowany ale jest stepper
       await verifyToken<{
         value: { allowed: string; completed: string[] };
       }>(cookieStepper.value, secretStepper);

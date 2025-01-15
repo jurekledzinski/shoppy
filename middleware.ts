@@ -34,7 +34,6 @@ export default auth(async (request) => {
 
       if (currentTime >= alertTime) {
         const url = new URL(request.url);
-        console.log('MID', request.url);
         if (!url.searchParams.has('guest-user-expired')) {
           url.searchParams.set('guest-user-expired', 'true');
           return NextResponse.redirect(url);

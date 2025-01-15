@@ -28,7 +28,6 @@ export const useSetCartOnRefresh = ({
 
       const data = await response.json();
       onLoad(data.payload);
-      console.log('DATA FETCH client', data);
     } catch {}
   }, [onLoad]);
 

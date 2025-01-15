@@ -49,7 +49,7 @@ export const placeOrder = connectDBAction(
       ...body,
       priceDelivery: parseFloat(body.priceDelivery as string),
       timeDelivery: parseInt(body.timeDelivery as string),
-      ...(cookieGuest && { expiryAt: expiresIn }), //ustaw na 2 godziny dla order
+      ...(cookieGuest && { expiryAt: expiresIn }),
     });
 
     if (!token && !cookieGuest && !cookieStepper) {
@@ -66,7 +66,6 @@ export const placeOrder = connectDBAction(
     );
 
     if (!token && cookieGuest && cookieStepper) {
-      // gdy user normalny niezalogowany i guest user zalogowany i jest stepper
       const dataGuest = await verifyToken<{ value: string }>(
         cookieGuest.value,
         secretGuest
@@ -105,7 +104,6 @@ export const placeOrder = connectDBAction(
     }
 
     if (token && !cookieGuest && cookieStepper) {
-      // gdy user normalny zalogowany i guest user nie zalogowany ale jest stepper
       await verifyToken<{
         value: { allowed: string; completed: string[] };
       }>(cookieStepper.value, secretStepper);

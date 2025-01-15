@@ -15,7 +15,6 @@ export const actionTryCatch = (
     try {
       return await fn(prevState, formData);
     } catch (error) {
-      console.log('errr async ', error);
       if (error instanceof z.ZodError) {
         return {
           message: 'Incorrect credentials',
