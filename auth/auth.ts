@@ -12,12 +12,15 @@ const nextAuthOptions: NextAuthConfig = {
       },
       async authorize({ email, password }) {
         try {
-          const res = await fetch('http://localhost:3000/api/v1/login', {
-            body: JSON.stringify({ email, password }),
-            method: 'POST',
-            cache: 'no-store',
-            headers: { 'Content-Type': 'application/json' },
-          });
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/v1/login`,
+            {
+              body: JSON.stringify({ email, password }),
+              method: 'POST',
+              cache: 'no-store',
+              headers: { 'Content-Type': 'application/json' },
+            }
+          );
 
           if (!res.ok) {
             throw new Error(`Authentication failed: ${res.statusText}`);
