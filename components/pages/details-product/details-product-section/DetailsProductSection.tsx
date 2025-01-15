@@ -1,12 +1,12 @@
 import styles from './DetailsProductSection.module.css';
 import { CartQuantityContoller } from '../cart-quantity-contoller';
 import { DetailsProductSectionProps } from './types';
+import { NoProducts } from '../../products/no-products';
 import { TabsDetailsContainer } from '../tabs-details-container';
 import {
   StarRating,
   ThumbnailsSlider,
   DisplayOnstock,
-  Alert,
   Section,
 } from '@/components/shared';
 
@@ -62,7 +62,7 @@ export const DetailsProductSection = ({
           </div>
         </div>
       ) : (
-        <Alert>Failed to load product details</Alert>
+        <NoProducts />
       )}
     </Section>
   );
