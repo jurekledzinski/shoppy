@@ -27,7 +27,7 @@ export const OrdersSection = ({ children, ordersData }: OrdersSectionProps) => {
   return (
     <Section>
       {children}
-      {ordersData ? (
+      {ordersData && ordersData?.length ? (
         ordersData.map((order) => (
           <Accordion key={order._id}>
             <AccordionHeader
