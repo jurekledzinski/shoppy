@@ -1,4 +1,4 @@
-import styles from './NoProducts.module.css';
+import styles from './NoData.module.css';
 import { NoDataProps } from './types';
 
 export const NoData = ({ text, title }: NoDataProps) => {
@@ -9,6 +9,3 @@ export const NoData = ({ text, title }: NoDataProps) => {
     </div>
   );
 };
-
-// No products found
-// At the moment there is no products from this brand.
