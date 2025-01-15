@@ -24,11 +24,11 @@ export const ModalDelete = ({
   const [showModal, setModal] = useState(false);
 
   useEffect(() => {
-    if (isSuccess) {
+    if (showModal && isSuccess && !isPending) {
       if (onSuccess) onSuccess();
       setModal(false);
     }
-  }, [isSuccess, onSuccess]);
+  }, [isPending, isSuccess, showModal, onSuccess]);
 
   return (
     <>
