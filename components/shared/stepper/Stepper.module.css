@@ -61,7 +61,6 @@
   color: var(--color-primary-hover);
 }
 
-/* from 575px 35.938rem */
 @media (min-width: 35.938rem) {
   .label {
     font-size: 14px;
