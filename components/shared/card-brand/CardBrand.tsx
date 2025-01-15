@@ -3,7 +3,7 @@ import Link from 'next/link';
 import styles from './CardBrand.module.css';
 import { CardBrandProps } from './types';
 
-export const CardBrand = ({ alt, src, title, url }: CardBrandProps) => {
+export const CardBrand = ({ src, title, url }: CardBrandProps) => {
   return (
     <div className={styles.card}>
       <header className={styles.header}>
@@ -12,8 +12,9 @@ export const CardBrand = ({ alt, src, title, url }: CardBrandProps) => {
           src={src}
           width={250}
           height={280}
-          alt={alt}
+          alt="Image brand"
           priority={true}
+          sizes="(max-width: 575px) 250px, 250px"
         />
       </header>
       <footer className={styles.footer}>

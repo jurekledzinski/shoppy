@@ -41,7 +41,6 @@ export const TabsCategoriesContainer = ({
         <TabsPanel>
           {data.map((item, index) => (
             <CardBrand
-              alt={item.brand}
               src={item.image}
               title={item.brand}
               key={index}
