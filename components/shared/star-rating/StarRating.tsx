@@ -2,6 +2,8 @@
 import { Rating } from 'react-simple-star-rating';
 import { StarRatingProps } from './types';
 import { useEffect, useState } from 'react';
+import stylesSkeleton from '@/styles/HomePage.module.css';
+import { classNames } from '@/helpers';
 
 export const StarRating = ({
   initialValue,
@@ -17,7 +19,10 @@ export const StarRating = ({
   if (rating === null) {
     return (
       <div
-        style={{ width: '100px', height: `${size + 5}px`, background: '#eee' }}
+        className={classNames(
+          stylesSkeleton.skeleton,
+          stylesSkeleton.skeletonStarsRate
+        )}
       />
     );
   }
