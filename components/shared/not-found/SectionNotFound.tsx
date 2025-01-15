@@ -1,10 +1,10 @@
 'use client';
-import { Button } from '../button';
-import styles from './NotFound.module.css';
+import styles from './SectionNotFound.module.css';
 import stylesButton from '@styles/buttons.module.css';
 import stylesSection from '@/components/shared/section/Section.module.css';
-import { useRouter } from 'next/navigation';
+import { Button } from '../button';
 import { Section } from '../section';
+import { useRouter } from 'next/navigation';
 
 export const SectionNotFound = () => {
   const router = useRouter();
@@ -14,8 +14,8 @@ export const SectionNotFound = () => {
       <h3 className={styles.title}>Page not found!</h3>
       <Button
         className={stylesButton.buttonConfirm}
-        text="Go to home page"
-        onClick={() => router.replace('/')}
+        text="Back to previous page"
+        onClick={() => router.back()}
       />
     </Section>
   );
