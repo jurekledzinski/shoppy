@@ -110,11 +110,7 @@ export const fetchUserOrders = tryCatch<Order[]>(
 );
 
 function formatHeaders(headers?: ReadonlyHeaders) {
-  const formattedHeaders: Record<string, string> = {};
-  if (headers) {
-    const cookie = headers.get('cookie');
-    if (cookie) formattedHeaders['cookie'] = cookie;
-  }
-
-  return formattedHeaders;
+  const formattedHeader: Record<string, string> = {};
+  if (headers) Array.from(headers.entries());
+  return formattedHeader;
 }
