@@ -29,12 +29,12 @@ export const useTermsConditionsForm = ({
 
   const onSubmit = (data: TermsConditionsFormInputs) => {
     const formData = new FormData();
-    formData.set('_id', defaultData?._id ?? '');
     formData.set('termsConditions', data.termsConditions.toString());
     formData.set('methodDelivery', defaultData?.methodDelivery ?? 'standard');
     formData.set('priceDelivery', defaultData?.priceDelivery.toString() ?? '3');
     formData.set('timeDelivery', defaultData?.timeDelivery.toString() ?? '3');
     if (cartData) formData.set('products', JSON.stringify(cartData.products));
+    if (defaultData?._id) formData.set('_id', defaultData._id);
 
     startTransition(() => {
       formAction(formData);

@@ -34,11 +34,11 @@ export const usePlaceOrderForm = ({
 
   const onSubmit = (data: PlaceOrderFormInputs) => {
     const formData = new FormData();
-    formData.set('_id', defaultData?._id ?? '');
     formData.set('methodDelivery', data.methodDelivery);
     formData.set('methodPayment', data.methodPayment);
     formData.set('priceDelivery', data.priceDelivery.toString());
     formData.set('timeDelivery', data.timeDelivery.toString());
+    if (defaultData?._id) formData.set('_id', defaultData._id);
 
     startTransition(() => {
       formAction(formData);
