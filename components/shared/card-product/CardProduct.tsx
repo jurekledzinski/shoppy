@@ -17,7 +17,7 @@ export const CardProduct = ({ product }: CardProductProps) => {
         >
           <Image
             className={styles.image}
-            src={images[3]}
+            src={images[0]}
             width={200}
             height={200}
             alt="Image phone"
