@@ -23,7 +23,6 @@ export const fetchOrder = tryCatch<Order>(
 export const fetchUser = tryCatch<Omit<UserRegister, 'password'>>(
   async (url: string, headers?: ReadonlyHeaders) => {
     const formattedHeaders = formatHeaders(headers);
-    console.log('headers fetch user fn', headers);
 
     const response = await fetch(url, {
       method: 'GET',
