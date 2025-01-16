@@ -20,7 +20,6 @@ const Aside = async () => {
     : null;
 
   console.log('cookieStore aside', cookieStore);
-  console.log('allHeaders aside', allHeaders);
   console.log('domain aside', domain);
   console.log('session aside', session);
   console.log('resUser aside', resUser);
