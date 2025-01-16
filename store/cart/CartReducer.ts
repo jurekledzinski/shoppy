@@ -7,15 +7,12 @@ import {
   removeItem,
   setItem,
   subtractItem,
-  updateItem,
 } from './CartFunctions';
 
 export const cartReducer = (state: CartState, action: CartAction) => {
   switch (action.type) {
     case 'ADD_ITEM':
       return addItem(state, action);
-    case 'SET_QUANTITY':
-      return updateItem(state, action);
     case 'INCREASE_ITEM':
       return increaseItem(state, action);
     case 'SUBTRACT_ITEM':

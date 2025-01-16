@@ -7,9 +7,16 @@ import { DetailsOrderSectionProps } from './types';
 import { Loader, Section } from '@/components/shared';
 import { loadStripe } from '@stripe/stripe-js';
 import { ModalControlInventoryCheck } from './modal-control-inventory-check';
-import { removeItem, updateItem, updateSyncCart, useCart } from '@/store/cart';
+import {
+  sumTotalAmountCart,
+  sumTotalPriceCart,
+  updateSyncCart,
+  useCart,
+} from '@/store/cart';
 import { showToast } from '@/helpers';
 import { useActionStateAndReset, useTermsConditionsForm } from '@/hooks';
+import { Cart } from '@/models';
+import { cloneDeep } from 'lodash';
 
 export const DetailsOrderSection = ({
   children,
@@ -58,36 +65,29 @@ export const DetailsOrderSection = ({
             Array.isArray(action.state.payload) ? action.state.payload : []
           }
           onConfirm={(inventory, onClose) => {
-            Object.entries(inventory).forEach((item) => {
-              if (item[1] !== 0) {
-                const payload = { id: item[0], qunatity: item[1] };
+            const updatedProducts = state.cart.products
+              .map((product) => {
+                const value = inventory[product._id as keyof typeof product];
+                if (value) return { ...product, quantity: value };
+                if (typeof value === 'undefined') return product;
+                return null;
+              })
+              .filter(Boolean) as Cart['products'];
 
-                dispatch({
-                  type: 'SET_QUANTITY',
-                  payload,
-                });
+            const totalAmountCart = sumTotalAmountCart(updatedProducts);
+            const totalPriceCart = sumTotalPriceCart(updatedProducts);
 
-                const resultUpdateCart = updateItem(state, {
-                  type: 'SET_QUANTITY',
-                  payload,
-                });
+            const updateCart: Cart = {
+              ...cloneDeep(state.cart),
+              products: updatedProducts,
+              totalAmountCart,
+              totalPriceCart,
+            };
 
-                updateSyncCart(resultUpdateCart, userSession, guestSession);
-              } else {
-                const payload = { id: item[0] };
-
-                dispatch({ type: 'REMOVE_ITEM', payload });
-
-                const resultUpdateCart = removeItem(state, {
-                  type: 'REMOVE_ITEM',
-                  payload,
-                });
-
-                updateSyncCart(resultUpdateCart, userSession, guestSession);
-              }
-            });
-            onClose();
+            dispatch({ type: 'SET_CART', payload: updateCart });
+            updateSyncCart({ cart: updateCart }, userSession, guestSession);
             resetStateAction();
+            onClose();
           }}
           title="Inventory check"
         />

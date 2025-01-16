@@ -24,18 +24,11 @@ export const addItem: CartActionHandler = (state, action) => {
     ];
   }
 
-  const totalAmountCart = udpatedProducts.reduce(
-    (acc, product) => acc + product.quantity,
-    0
-  );
+  const totalAmountCart = sumTotalAmountCart(udpatedProducts);
 
-  const totalPriceCart = udpatedProducts.reduce(
-    (acc, product) => acc + product.quantity * product.price,
-    0
-  );
+  const totalPriceCart = sumTotalPriceCart(udpatedProducts);
 
-  const cartId =
-    indexAddProduct < 0 ? action.payload.id! : state.cart?.cartId ?? '';
+  const cartId = action.payload.id ? action.payload.id : state.cart?.cartId;
 
   return {
     cart: {
@@ -55,15 +48,9 @@ export const removeItem: CartActionHandler = (state, action) => {
     (product) => product._id !== action.payload.id
   );
 
-  const totalAmountCartAfterRemove = restProducts.reduce(
-    (acc, product) => acc + product.quantity,
-    0
-  );
+  const totalAmountCartAfterRemove = sumTotalAmountCart(restProducts);
 
-  const totalPriceCartAfterRemove = restProducts.reduce(
-    (acc, product) => acc + product.quantity * product.price,
-    0
-  );
+  const totalPriceCartAfterRemove = sumTotalPriceCart(restProducts);
 
   return {
     cart: {
@@ -72,42 +59,6 @@ export const removeItem: CartActionHandler = (state, action) => {
       products: restProducts,
       totalAmountCart: totalAmountCartAfterRemove,
       totalPriceCart: totalPriceCartAfterRemove,
-    },
-  };
-};
-
-export const updateItem: CartActionHandler = (state, action) => {
-  if (action.type !== 'SET_QUANTITY') return state;
-
-  const indexProduct = state.cart.products.findIndex(
-    (product) => product._id === action.payload.id
-  );
-
-  let udpatedProduct: Cart['products'];
-
-  if (indexProduct >= 0) {
-    udpatedProduct = cloneDeep(state.cart.products);
-    udpatedProduct[indexProduct].quantity = action.payload.qunatity;
-  } else {
-    udpatedProduct = cloneDeep(state.cart.products);
-  }
-
-  const totalAmount = udpatedProduct.reduce(
-    (acc, product) => acc + product.quantity,
-    0
-  );
-
-  const totalPrice = udpatedProduct.reduce(
-    (acc, product) => acc + product.quantity * product.price,
-    0
-  );
-
-  return {
-    cart: {
-      ...state.cart,
-      products: udpatedProduct,
-      totalAmountCart: totalAmount,
-      totalPriceCart: totalPrice,
     },
   };
 };
@@ -141,22 +92,15 @@ export const subtractItem: CartActionHandler = (state, action) => {
     udpatedSubtractProducts = cloneDeep(state.cart.products);
   }
 
-  const totalAmountSubtractCart = udpatedSubtractProducts.reduce(
-    (acc, product) => product.quantity - acc,
-    0
-  );
-
-  const totalPriceSubtractCart = udpatedSubtractProducts.reduce(
-    (acc, product) => (product.quantity - acc) * product.price,
-    0
-  );
+  const totalAmount = sumTotalAmountCart(udpatedSubtractProducts);
+  const totalPriceCart = sumTotalPriceCart(udpatedSubtractProducts);
 
   return {
     cart: {
       ...state.cart,
       products: udpatedSubtractProducts,
-      totalAmountCart: totalAmountSubtractCart,
-      totalPriceCart: totalPriceSubtractCart,
+      totalAmountCart: totalAmount,
+      totalPriceCart: totalPriceCart,
     },
   };
 };
@@ -177,15 +121,9 @@ export const increaseItem: CartActionHandler = (state, action) => {
     udpatedIncreaseProducts = cloneDeep(state.cart.products);
   }
 
-  const totalAmountIncreaseCart = udpatedIncreaseProducts.reduce(
-    (acc, product) => acc + product.quantity,
-    0
-  );
+  const totalAmountIncreaseCart = sumTotalAmountCart(udpatedIncreaseProducts);
 
-  const totalPriceIncreaseCart = udpatedIncreaseProducts.reduce(
-    (acc, product) => acc + product.quantity * product.price,
-    0
-  );
+  const totalPriceIncreaseCart = sumTotalPriceCart(udpatedIncreaseProducts);
 
   return {
     cart: {
@@ -196,3 +134,19 @@ export const increaseItem: CartActionHandler = (state, action) => {
     },
   };
 };
+
+export function sumTotalAmountCart(products: Cart['products']) {
+  const totalAmount = products.reduce(
+    (acc, product) => acc + product.quantity,
+    0
+  );
+  return totalAmount;
+}
+
+export function sumTotalPriceCart(products: Cart['products']) {
+  const totalPrice = products.reduce(
+    (acc, product) => acc + product.quantity * product.price,
+    0
+  );
+  return totalPrice;
+}
