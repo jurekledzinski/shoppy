@@ -39,10 +39,12 @@ export const CartQuantityContoller = ({ data }: CartQuantityContollerProps) => {
       />
       <AddToCartButton
         onClick={() => {
+          const totalAmountCart = state.cart.totalAmountCart;
           const payload = {
             data: { ...data, quantity: localQuanity },
-            ...(!productInCart && { id: uuidv4() }),
+            ...(!Boolean(totalAmountCart) && { id: uuidv4() }),
           };
+
           dispatch({
             type: 'ADD_ITEM',
             payload,

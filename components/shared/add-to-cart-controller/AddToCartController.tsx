@@ -20,7 +20,11 @@ export const AddToCartController = ({ data }: AddToCartControllerProps) => {
     <React.Fragment>
       <AddToCartButton
         onClick={() => {
-          const payload = { data, ...(!productInCart && { id: uuidv4() }) };
+          const totalAmountCart = state.cart.totalAmountCart;
+          const payload = {
+            data,
+            ...(!Boolean(totalAmountCart) && { id: uuidv4() }),
+          };
 
           dispatch({
             type: 'ADD_ITEM',
