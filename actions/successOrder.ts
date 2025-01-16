@@ -73,7 +73,7 @@ export const successOrder = connectDBAction(
       deleteCookie(cookieStore, 'stepper');
 
       revalidateTag('get_order');
-      revalidateTag('get_product');
+      revalidateTag('get_products');
 
       return {
         message: 'Order updated successful',
@@ -93,7 +93,7 @@ export const successOrder = connectDBAction(
       await deleteCart(collectionCarts, 'userId', token.id as string);
 
       revalidateTag('get_order');
-      revalidateTag('get_product');
+      revalidateTag('get_products');
 
       deleteCookie(cookieStore, 'stepper');
 

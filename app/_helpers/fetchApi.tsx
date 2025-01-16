@@ -46,7 +46,7 @@ export const fetchBrands = tryCatch<Brand[]>(async (url: string) => {
 
 export const fetchProducts = tryCatch<Product[]>(async (url: string) => {
   const response = await fetch(url, {
-    next: { revalidate: 3600, tags: ['get_product'] },
+    next: { revalidate: 3600, tags: ['get_products'] },
   });
 
   if (!response.ok) {
@@ -76,7 +76,7 @@ export const fetchDetailsProduct = tryCatch<Product>(async (url: string) => {
     headers: {
       'Content-Type': 'application/json',
     },
-    next: { revalidate: 3600, tags: ['get_product'] },
+    next: { revalidate: 3600, tags: ['get_products'] },
   });
 
   if (!response.ok) {

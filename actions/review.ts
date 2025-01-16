@@ -61,7 +61,7 @@ export const review = connectDBAction(
     );
 
     revalidateTag('get_product_reviews');
-    revalidateTag('get_product');
+    revalidateTag('get_products');
 
     return { message: 'Review successful', success: true };
   }
