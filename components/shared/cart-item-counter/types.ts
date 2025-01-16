@@ -5,6 +5,7 @@ export type CartItemCounterProps = {
   className?: string;
   classNamePlus?: string;
   classNameMinus?: string;
+  classNameIcon?: string;
   localQuantity?: boolean;
   addLocalQuantity?: () => void;
   subtractLocalQuantity?: () => void;
