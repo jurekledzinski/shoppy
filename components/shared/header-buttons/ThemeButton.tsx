@@ -17,7 +17,7 @@ export const ThemeButton = () => {
           style: {
             borderRadius: 2,
             backgroundColor: theme.mode === 'light' ? '#ffffff' : '#333333',
-            color: theme.mode === 'light' ? '#333333' : '#ffffff',
+            color: theme.mode === 'light' ? '#555555' : '#ffffff',
           },
         }}
       />
