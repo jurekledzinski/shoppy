@@ -3,8 +3,6 @@ import CartProvider from '@/store/cart/CartProvider';
 import SessionUserProvider from '@/store/session/SessionUserProvider';
 import ThemeProvider from '@/store/theme';
 import { Oswald, Roboto } from 'next/font/google';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import '@styles/globals.css';
 import type { Metadata } from 'next';
 
@@ -49,7 +47,6 @@ export default async function RootLayout({
                 {footer}
                 {aside}
                 {backdrop}
-                <ToastContainer position="top-right" autoClose={1500} />
               </body>
             </CartProvider>
           </AsideProvider>
