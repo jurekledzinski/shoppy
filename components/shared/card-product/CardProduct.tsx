@@ -8,12 +8,15 @@ import { StarRating } from '../star-rating';
 
 export const CardProduct = ({ product }: CardProductProps) => {
   const { category, brand, name, _id, images, rate, price, onStock } = product;
+
   return (
     <div className={styles.card}>
       <header className={styles.header}>
         <Link
           className={styles.link}
-          href={`/${category}/${brand}/${encodeURIComponent(name)}?id=${_id}`}
+          href={`/${category}/${brand}/${encodeURIComponent(
+            name
+          ).toLowerCase()}?id=${_id}`}
         >
           <Image
             className={styles.image}
