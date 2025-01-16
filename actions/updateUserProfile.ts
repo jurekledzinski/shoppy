@@ -6,6 +6,7 @@ import { headers } from 'next/headers';
 import { ObjectId } from 'mongodb';
 import { revalidateTag } from 'next/cache';
 import { UpdateUserProfileSchema, UserRegister } from '@/models';
+import { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
 
 const secret = process.env.AUTH_SECRET;
 
@@ -18,7 +19,10 @@ export const updateUserProfile = connectDBAction(
     const parsedData = UpdateUserProfileSchema.parse(body);
     console.log('parsedData profile', parsedData);
 
-    const token = await getToken({ req: { headers: userHeaders }, secret });
+    const token = await getToken({
+      req: { headers: formatHeaders(userHeaders) },
+      secret,
+    });
     console.log('parsedData token', token);
 
     if (!token) return errorMessageAction('Unauthorized');
@@ -44,3 +48,10 @@ export const updateUserProfile = connectDBAction(
     return { message: 'Update success', success: true };
   }
 );
+
+function formatHeaders(headers?: ReadonlyHeaders) {
+  const formattedHeader = headers
+    ? Object.fromEntries(Array.from(headers.entries()))
+    : {};
+  return formattedHeader;
+}
