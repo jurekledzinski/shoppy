@@ -110,6 +110,8 @@ export const fetchUserOrders = tryCatch<Order[]>(
 );
 
 function formatHeaders(headers?: ReadonlyHeaders) {
-  const formattedHeaders = headers ? Object.fromEntries(headers.entries()) : {};
+  const formattedHeaders = headers
+    ? Object.fromEntries(Array.from(headers.entries()))
+    : {};
   return formattedHeaders;
 }
