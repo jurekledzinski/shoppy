@@ -4,9 +4,11 @@ import { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/he
 
 export const fetchOrder = tryCatch<Order>(
   async (url: string, headers?: ReadonlyHeaders) => {
+    const formattedHeaders = formatHeaders(headers);
+
     const response = await fetch(url, {
       method: 'GET',
-      headers,
+      headers: formattedHeaders,
       next: { revalidate: 3600, tags: ['get_order'] },
     });
 
@@ -20,9 +22,12 @@ export const fetchOrder = tryCatch<Order>(
 
 export const fetchUser = tryCatch<Omit<UserRegister, 'password'>>(
   async (url: string, headers?: ReadonlyHeaders) => {
+    const formattedHeaders = formatHeaders(headers);
+    console.log('headers fetch user fn', headers);
+
     const response = await fetch(url, {
       method: 'GET',
-      headers,
+      headers: formattedHeaders,
       next: { revalidate: 3600, tags: ['get_user'] },
     });
 
@@ -88,9 +93,11 @@ export const fetchDetailsProduct = tryCatch<Product>(async (url: string) => {
 
 export const fetchUserOrders = tryCatch<Order[]>(
   async (url: string, headers?: ReadonlyHeaders) => {
+    const formattedHeaders = formatHeaders(headers);
+
     const response = await fetch(url, {
       method: 'GET',
-      headers,
+      headers: formattedHeaders,
       next: { revalidate: 3600, tags: ['get_user_orders'] },
     });
 
@@ -101,3 +108,8 @@ export const fetchUserOrders = tryCatch<Order[]>(
     return await response.json();
   }
 );
+
+function formatHeaders(headers?: ReadonlyHeaders) {
+  const formattedHeaders = headers ? Object.fromEntries(headers.entries()) : {};
+  return formattedHeaders;
+}
