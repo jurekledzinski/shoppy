@@ -24,7 +24,7 @@ export const CartButton = () => {
         <span className={styles.quantity}>
           {state.cart.totalAmountCart < 100
             ? state.cart.totalAmountCart
-            : state.cart.totalAmountCart - 1 + '+'}
+            : 100 + '+'}
         </span>
       ) : null}
     </button>
