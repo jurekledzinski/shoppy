@@ -43,6 +43,7 @@ export const useShippingForm = ({
     formData.set('city', data.city);
     formData.set('country', data.country);
     formData.set('createdAt', new Date().toISOString());
+    if (defaultData?._id) formData.set('_id', defaultData._id);
     if (userId) formData.set('userId', userId);
     if (guestId) formData.set('guestId', guestId);
 
