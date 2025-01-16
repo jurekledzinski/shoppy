@@ -18,7 +18,7 @@ export const DisplayOnstock = ({ className, data }: DisplayOnstockProps) => {
       {productInCart
         ? data.onStock > productInCart.quantity
           ? data.onStock - productInCart.quantity
-          : data.onStock
+          : 0
         : data.onStock}
     </span>
   );
