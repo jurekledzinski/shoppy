@@ -13,10 +13,13 @@ export const updateUserProfile = connectDBAction(
   async (prevState: unknown, formData: FormData) => {
     const userHeaders = await headers();
     const body = Object.fromEntries(formData);
+    console.log('body profile', body);
 
     const parsedData = UpdateUserProfileSchema.parse(body);
+    console.log('parsedData profile', parsedData);
 
     const token = await getToken({ req: { headers: userHeaders }, secret });
+    console.log('parsedData token', token);
 
     if (!token) return errorMessageAction('Unauthorized');
 
