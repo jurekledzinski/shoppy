@@ -54,7 +54,7 @@ export const ModalControlInventoryCheck = ({
       <div className={styles.wrapper}>
         {inventoryData.map((itemInventory) => (
           <div className={styles.card} key={itemInventory.productId}>
-            <figure className={styles.figure}>
+            <div className={styles.figure}>
               <Image
                 className={styles.image}
                 src={itemInventory.image}
@@ -63,39 +63,44 @@ export const ModalControlInventoryCheck = ({
                 alt={itemInventory.name}
                 priority={true}
               />
-              <figcaption>
-                <p className={styles.text}>{itemInventory.name}</p>
-                <p className={styles.text}>On stock: {itemInventory.onStock}</p>
-              </figcaption>
-            </figure>
-            <div className={styles.content}>
-              {itemInventory.onStock ? (
-                <CartItemCounter
-                  addLocalQuantity={() =>
-                    addLocalQuantity(itemInventory.productId)
-                  }
-                  className={styles.container}
-                  classNameMinus={styles.minus}
-                  classNameInput={styles.input}
-                  classNamePlus={styles.plus}
-                  subtractLocalQuantity={() =>
-                    subtractLocalQuantity(itemInventory.productId)
-                  }
-                  quanity={localProducts[itemInventory.productId]}
-                  disabledButtonMinus={
-                    localProducts[itemInventory.productId] === 1
-                  }
-                  disabledButtonPlus={
-                    itemInventory.onStock -
-                      localProducts[itemInventory.productId] ===
-                    0
-                      ? true
-                      : false
-                  }
-                />
-              ) : (
-                <p className={styles.unavailable}>Product unavailable</p>
-              )}
+              <div className={styles.innerContainer}>
+                <div>
+                  <p className={styles.text}>{itemInventory.name}</p>
+                  <p className={styles.text}>
+                    On stock: {itemInventory.onStock}
+                  </p>
+                </div>
+
+                <div className={styles.content}>
+                  {itemInventory.onStock ? (
+                    <CartItemCounter
+                      addLocalQuantity={() =>
+                        addLocalQuantity(itemInventory.productId)
+                      }
+                      className={styles.container}
+                      classNameMinus={styles.minus}
+                      classNameInput={styles.input}
+                      classNamePlus={styles.plus}
+                      subtractLocalQuantity={() =>
+                        subtractLocalQuantity(itemInventory.productId)
+                      }
+                      quanity={localProducts[itemInventory.productId]}
+                      disabledButtonMinus={
+                        localProducts[itemInventory.productId] === 1
+                      }
+                      disabledButtonPlus={
+                        itemInventory.onStock -
+                          localProducts[itemInventory.productId] ===
+                        0
+                          ? true
+                          : false
+                      }
+                    />
+                  ) : (
+                    <p className={styles.unavailable}>Product unavailable</p>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         ))}

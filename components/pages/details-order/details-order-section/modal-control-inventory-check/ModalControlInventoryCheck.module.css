@@ -1,17 +1,23 @@
 .card {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  flex-direction: row;
   gap: 0.5rem;
   padding: 0.5rem 0;
 }
 
 div.container {
-  width: initial;
+  width: 2rem;
 }
 
 .figure {
   display: flex;
-  align-items: center;
+}
+
+.innerContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .image {
@@ -41,6 +47,7 @@ div.container {
 
 .unavailable {
   color: var(--color-negative);
+  font-size: 14px;
 }
 
 p.input,
@@ -59,21 +66,9 @@ button.minus {
   overflow-y: auto;
 }
 
-@media (min-width: 35.938rem) {
-  .card {
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: row;
-    gap: 0.5rem;
-  }
-
+@media (min-width: 380px) {
   .subTitle {
     font-size: 1rem;
-  }
-
-  .image {
-    width: 40px;
-    height: 60px;
   }
 
   .content {
