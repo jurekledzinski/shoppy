@@ -42,6 +42,7 @@ export const CartItem = ({
             <div>
               <h6 className={styles.title}>Quantity</h6>
               <CartItemCounter
+                classNameIcon={styles.icon}
                 classNameInput={styles.input}
                 classNameMinus={styles.buttonMinus}
                 classNamePlus={styles.buttonPlus}

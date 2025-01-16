@@ -69,3 +69,7 @@ p.input {
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
 }
+
+span.icon {
+  width: 2rem;
+}
