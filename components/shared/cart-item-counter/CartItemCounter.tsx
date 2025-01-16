@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 export const CartItemCounter = ({
   idProduct,
   classNameInput,
+  classNameIcon,
   className,
   classNameMinus,
   classNamePlus,
@@ -30,9 +31,12 @@ export const CartItemCounter = ({
             subtractGlobalQuantity(idProduct);
           }
         }}
-        text={<FontAwesomeIcon icon={faMinus} />}
         disabled={disabledButtonMinus}
-      />
+      >
+        <span className={classNames(styles.icon, classNameIcon!)}>
+          <FontAwesomeIcon icon={faMinus} />
+        </span>
+      </Button>
 
       <p className={classNames(styles.input, classNameInput!)}>{quanity}</p>
 
@@ -44,9 +48,12 @@ export const CartItemCounter = ({
             addGlobalQuantity(idProduct);
           }
         }}
-        text={<FontAwesomeIcon icon={faPlus} />}
         disabled={disabledButtonPlus}
-      />
+      >
+        <span className={classNames(styles.icon, classNameIcon!)}>
+          <FontAwesomeIcon icon={faPlus} />
+        </span>
+      </Button>
     </div>
   );
 };
