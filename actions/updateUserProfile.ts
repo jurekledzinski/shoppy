@@ -19,6 +19,8 @@ export const updateUserProfile = connectDBAction(
     const parsedData = UpdateUserProfileSchema.parse(body);
     console.log('parsedData profile', parsedData);
 
+    console.log('userHeaders', userHeaders);
+
     const token = await getToken({
       req: { headers: formatHeaders(userHeaders) },
       secret,
