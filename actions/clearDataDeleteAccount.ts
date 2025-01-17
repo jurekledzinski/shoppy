@@ -1,18 +1,15 @@
 'use server';
-import { connectDBAction, getCollectionDb } from '@/lib';
+import { connectDBAction, getAuthToken, getCollectionDb } from '@/lib';
 import { errorMessageAction } from '@/helpers';
-import { getToken } from 'next-auth/jwt';
 import { headers } from 'next/headers';
 import { Cart, Order } from '@/models';
 
-const secret = process.env.AUTH_SECRET;
-
 export const clearDataDeleteAccount = connectDBAction(
   async (prevState: unknown, formData: FormData) => {
-    const userHeaders = await headers();
+    const headersData = await headers();
     Object.fromEntries(formData);
 
-    const token = await getToken({ req: { headers: userHeaders }, secret });
+    const token = await getAuthToken({ headers: headersData });
 
     if (!token) return errorMessageAction('Unauthorized');
 

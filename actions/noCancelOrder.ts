@@ -2,12 +2,12 @@
 import { Cart, Order } from '@/models';
 import { cookies, headers } from 'next/headers';
 import { errorMessageAction } from '@/helpers';
-import { getToken } from 'next-auth/jwt';
 import { revalidateTag } from 'next/cache';
 
 import {
   connectDBAction,
   createToken,
+  getAuthToken,
   getCollectionDb,
   verifyToken,
 } from '@/lib';
@@ -32,7 +32,6 @@ const payloadStepper = {
 
 const secretGuest = process.env.GUEST_SECRET!;
 const secretStepper = process.env.STEPPER_SECRET!;
-const secretAuth = process.env.AUTH_SECRET!;
 const expireGuestToken = process.env.EXPIRE_GUEST_TOKEN!;
 const expireStepperToken = process.env.EXPIRE_STEPPER_TOKEN!;
 
@@ -46,10 +45,7 @@ export const noCancelOrder = connectDBAction(
     const body = Object.fromEntries(formData);
     const orderId = body.orderId as string;
 
-    const token = await getToken({
-      req: { headers: headersData },
-      secret: secretAuth,
-    });
+    const token = await getAuthToken({ headers: headersData });
 
     if (!token && !cookieGuest && !cookieStepper) {
       return errorMessageAction('Unauthorized');

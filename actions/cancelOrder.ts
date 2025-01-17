@@ -1,15 +1,18 @@
 'use server';
 import { Cart, Order } from '@/models';
-import { connectDBAction, getCollectionDb, verifyToken } from '@/lib';
+import {
+  connectDBAction,
+  getAuthToken,
+  getCollectionDb,
+  verifyToken,
+} from '@/lib';
 import { cookies, headers } from 'next/headers';
 import { deleteCart, deleteCookie, deleteOrder } from '@/app/_helpers';
 import { errorMessageAction } from '@/helpers';
-import { getToken } from 'next-auth/jwt';
 import { revalidateTag } from 'next/cache';
 
 const secretGuest = process.env.GUEST_SECRET!;
 const secretStepper = process.env.STEPPER_SECRET!;
-const secretAuth = process.env.AUTH_SECRET!;
 
 export const cancelOrder = connectDBAction(
   async (prevState: unknown, formData: FormData) => {
@@ -21,10 +24,7 @@ export const cancelOrder = connectDBAction(
     const body = Object.fromEntries(formData);
     const orderId = body.orderId as string;
 
-    const token = await getToken({
-      req: { headers: headersData },
-      secret: secretAuth,
-    });
+    const token = await getAuthToken({ headers: headersData });
 
     if (!token && !cookieGuest && !cookieStepper) {
       return errorMessageAction('Unauthorized');

@@ -2,7 +2,6 @@
 import { Cart, CartSchema, ProductCard } from '@/models';
 import { cookies, headers } from 'next/headers';
 import { errorMessageAction } from '@/helpers';
-import { getToken } from 'next-auth/jwt';
 import {
   checkProductsInventory,
   getUserCart,
@@ -17,6 +16,7 @@ import {
 import {
   connectDBAction,
   createToken,
+  getAuthToken,
   getCollectionDb,
   verifyToken,
 } from '@/lib';
@@ -25,7 +25,6 @@ import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adap
 
 const secretGuest = process.env.GUEST_SECRET!;
 const secretStepper = process.env.STEPPER_SECRET!;
-const secretAuth = process.env.AUTH_SECRET!;
 const expireGuestToken = process.env.EXPIRE_GUEST_TOKEN!;
 const expireStepperToken = process.env.EXPIRE_STEPPER_TOKEN!;
 
@@ -38,10 +37,7 @@ export const cart = connectDBAction<Cart>(
     const body = Object.fromEntries(formData);
     const cart = JSON.parse(body.cart as string);
 
-    const token = await getToken({
-      req: { headers: headersData },
-      secret: secretAuth,
-    });
+    const token = await getAuthToken({ headers: headersData });
 
     const parsedData = CartSchema.parse({
       ...cart,

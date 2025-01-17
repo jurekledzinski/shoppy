@@ -1,7 +1,6 @@
 'use server';
 import { cookies, headers } from 'next/headers';
 import { errorMessageAction } from '@/helpers';
-import { getToken } from 'next-auth/jwt';
 import { Cart, Order, OrderCheckoutSchema, ProductCard } from '@/models';
 import { revalidateTag } from 'next/cache';
 
@@ -21,6 +20,7 @@ import {
   CartInventoryPayload,
   connectDBAction,
   createToken,
+  getAuthToken,
   getCollectionDb,
   IdPayload,
   verifyToken,
@@ -28,7 +28,6 @@ import {
 
 const secretGuest = process.env.GUEST_SECRET!;
 const secretStepper = process.env.STEPPER_SECRET!;
-const secretAuth = process.env.AUTH_SECRET!;
 const expireGuestToken = process.env.EXPIRE_GUEST_TOKEN!;
 const expireStepperToken = process.env.EXPIRE_STEPPER_TOKEN!;
 
@@ -62,10 +61,7 @@ export const checkout = connectDBAction<IdPayload | CartInventoryPayload[]>(
       };
     }
 
-    const token = await getToken({
-      req: { headers: headersData },
-      secret: secretAuth,
-    });
+    const token = await getAuthToken({ headers: headersData });
 
     const parsedData = OrderCheckoutSchema.parse({
       ...body,

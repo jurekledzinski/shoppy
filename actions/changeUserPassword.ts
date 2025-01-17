@@ -1,22 +1,19 @@
 'use server';
 import bcrypt from 'bcrypt';
-import { connectDBAction, getCollectionDb } from '@/lib';
+import { connectDBAction, getAuthToken, getCollectionDb } from '@/lib';
 import { errorMessageAction } from '@/helpers';
-import { getToken } from 'next-auth/jwt';
 import { headers } from 'next/headers';
 import { ObjectId } from 'mongodb';
 import { PasswordSchema, UserRegister } from '@/models';
 
-const secret = process.env.AUTH_SECRET;
-
 export const changeUserPassword = connectDBAction(
   async (prevState: unknown, formData: FormData) => {
-    const userHeaders = await headers();
+    const headersData = await headers();
     const body = Object.fromEntries(formData);
 
     const parsedData = PasswordSchema.parse(body);
 
-    const token = await getToken({ req: { headers: userHeaders }, secret });
+    const token = await getAuthToken({ headers: headersData });
 
     if (!token) return errorMessageAction('Unauthorized');
 

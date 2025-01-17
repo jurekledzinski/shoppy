@@ -1,23 +1,20 @@
 'use server';
-import { connectDBAction, getCollectionDb } from '@/lib';
+import { connectDBAction, getAuthToken, getCollectionDb } from '@/lib';
 import { errorMessageAction, roundAvergeRate } from '@/helpers';
-import { getToken } from 'next-auth/jwt';
 import { headers } from 'next/headers';
 import { ObjectId } from 'mongodb';
 import { Product, Review, ReviewSchema } from '@/models';
 import { revalidateTag } from 'next/cache';
 
-const secret = process.env.AUTH_SECRET;
-
 export const review = connectDBAction(
   async (prevState: unknown, formData: FormData) => {
-    const reviewHeaders = await headers();
+    const headersData = await headers();
     const body = Object.fromEntries(formData);
     const fomattedBody = { ...body, rate: parseFloat(body.rate.toString()) };
 
     const parsedData = ReviewSchema.parse(fomattedBody) as Omit<Review, '_id'>;
 
-    const token = await getToken({ req: { headers: reviewHeaders }, secret });
+    const token = await getAuthToken({ headers: headersData });
 
     if (!token) return errorMessageAction('Unauthorized');
 

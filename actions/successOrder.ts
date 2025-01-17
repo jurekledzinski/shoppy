@@ -1,9 +1,13 @@
 'use server';
 import { Cart, Order, OrderSuccessSchema, ProductCard } from '@/models';
-import { connectDBAction, getCollectionDb, verifyToken } from '@/lib';
+import {
+  connectDBAction,
+  getAuthToken,
+  getCollectionDb,
+  verifyToken,
+} from '@/lib';
 import { cookies, headers } from 'next/headers';
 import { errorMessageAction } from '@/helpers';
-import { getToken } from 'next-auth/jwt';
 import { revalidateTag } from 'next/cache';
 
 import {
@@ -15,7 +19,6 @@ import {
 
 const secretGuest = process.env.GUEST_SECRET!;
 const secretStepper = process.env.STEPPER_SECRET!;
-const secretAuth = process.env.AUTH_SECRET!;
 
 export const successOrder = connectDBAction(
   async (prevState: unknown, formData: FormData) => {
@@ -28,10 +31,7 @@ export const successOrder = connectDBAction(
     const cart = JSON.parse(body.cart as string) as Cart;
     const orderId = body.orderId as string;
 
-    const token = await getToken({
-      req: { headers: headersData },
-      secret: secretAuth,
-    });
+    const token = await getAuthToken({ headers: headersData });
 
     const parsedData = OrderSuccessSchema.parse({
       cart,
