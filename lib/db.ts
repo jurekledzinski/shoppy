@@ -38,7 +38,6 @@ const connectDB = (
       await client.connect();
       return await fn(req, res);
     } catch (err) {
-      console.log('Connect Db error', err);
       const error = err as Error;
       const message = transformMessage(error.name);
       return errorMessage(500, message);
@@ -60,7 +59,6 @@ const connectDBAuth = (
       await client.connect();
       return await fn(req, ctx);
     } catch (err) {
-      console.log('connectDBAuth error', err);
       const error = err as Error;
       const message = transformMessage(error.name);
       return errorMessage(500, message);
@@ -76,7 +74,6 @@ const connectDBAction = <T>(
       await client.connect();
       return await fn(prevState, formData);
     } catch (error) {
-      console.log('connectDBAction error', error);
       if (error instanceof z.ZodError) {
         return {
           message: 'Incorrect credentials',

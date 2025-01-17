@@ -132,18 +132,12 @@ async function processCartUpdate(
   tokenStepper?: string,
   tokenGuest?: string
 ) {
-  console.log('tokenGuest', tokenGuest);
-  console.log('tokenStepper', tokenStepper);
-  console.log('userIdKey', userIdKey);
-  console.log('parsedData', parsedData);
   const existingCart = await getUserCart(
     collection,
     parsedData.cartId!,
     parsedData[userIdKey]!,
     userIdKey
   );
-
-  console.log('existingCart', existingCart);
 
   if (existingCart) {
     const updatedProducts = updateCartProducts(
