@@ -1,7 +1,11 @@
 'use server';
 import { Cart, CartSchema, ProductCard } from '@/models';
+import { Collection } from 'mongodb';
 import { cookies, headers } from 'next/headers';
 import { errorMessageAction } from '@/helpers';
+import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
+import { revalidateTag } from 'next/cache';
+
 import {
   checkProductsInventory,
   getUserCart,
@@ -20,8 +24,6 @@ import {
   getCollectionDb,
   verifyToken,
 } from '@/lib';
-import { Collection } from 'mongodb';
-import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 
 const secretGuest = process.env.GUEST_SECRET!;
 const secretStepper = process.env.STEPPER_SECRET!;
@@ -179,6 +181,8 @@ async function processCartUpdate(
     if (tokenGuest) setCookieGuestId(cookieStore, tokenGuest, expiresIn);
     if (tokenStepper) setCookieStepper(cookieStore, tokenStepper, expiresIn);
 
+    revalidateTag('get_products');
+
     return {
       message: 'Cart updated successfully',
       success: true,
@@ -189,6 +193,8 @@ async function processCartUpdate(
 
     if (tokenGuest) setCookieGuestId(cookieStore, tokenGuest, expiresIn);
     if (tokenStepper) setCookieStepper(cookieStore, tokenStepper, expiresIn);
+
+    revalidateTag('get_products');
 
     return {
       message: 'Cart updated successfully continue',
