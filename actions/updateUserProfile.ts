@@ -1,5 +1,5 @@
 'use server';
-import { connectDBAction, getCollectionDb } from '@/lib';
+import { connectDBAction, getCollectionDb, getAuthToken } from '@/lib';
 import { errorMessageAction } from '@/helpers';
 import { getToken } from 'next-auth/jwt';
 import { headers } from 'next/headers';
@@ -19,7 +19,8 @@ export const updateUserProfile = connectDBAction(
     const parsedData = UpdateUserProfileSchema.parse(body);
     console.log('parsedData profile', parsedData);
 
-    console.log('userHeaders', userHeaders);
+    const check = await getAuthToken({ headers: userHeaders });
+    console.log('check token', check);
 
     const token = await getToken({
       req: { headers: formatHeaders(userHeaders) },
