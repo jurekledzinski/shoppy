@@ -1,32 +1,19 @@
 'use server';
-import { connectDBAction, getCollectionDb, getAuthToken } from '@/lib';
+import { connectDBAction, getAuthToken, getCollectionDb } from '@/lib';
 import { errorMessageAction } from '@/helpers';
-import { getToken } from 'next-auth/jwt';
 import { headers } from 'next/headers';
 import { ObjectId } from 'mongodb';
 import { revalidateTag } from 'next/cache';
 import { UpdateUserProfileSchema, UserRegister } from '@/models';
-import { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
-
-const secret = process.env.AUTH_SECRET;
 
 export const updateUserProfile = connectDBAction(
   async (prevState: unknown, formData: FormData) => {
     const userHeaders = await headers();
     const body = Object.fromEntries(formData);
-    console.log('body profile', body);
 
     const parsedData = UpdateUserProfileSchema.parse(body);
-    console.log('parsedData profile', parsedData);
 
-    const check = await getAuthToken({ headers: userHeaders });
-    console.log('check token', check);
-
-    const token = await getToken({
-      req: { headers: formatHeaders(userHeaders) },
-      secret,
-    });
-    console.log('parsedData token', token);
+    const token = await getAuthToken({ headers: userHeaders });
 
     if (!token) return errorMessageAction('Unauthorized');
 
@@ -51,11 +38,3 @@ export const updateUserProfile = connectDBAction(
     return { message: 'Update success', success: true };
   }
 );
-
-function formatHeaders(headers?: ReadonlyHeaders) {
-  const formattedHeaders: Record<string, string> = {};
-  headers?.forEach((value, key) => {
-    formattedHeaders[key as keyof typeof formattedHeaders] = value;
-  });
-  return formattedHeaders;
-}
