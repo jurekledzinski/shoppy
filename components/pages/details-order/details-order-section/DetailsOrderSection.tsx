@@ -85,7 +85,11 @@ export const DetailsOrderSection = ({
             };
 
             dispatch({ type: 'SET_CART', payload: updateCart });
+
             updateSyncCart({ cart: updateCart }, userSession, guestSession);
+
+            showToast('Your cart is updated according to inventory check');
+
             resetStateAction();
             onClose();
           }}

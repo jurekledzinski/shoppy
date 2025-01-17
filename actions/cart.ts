@@ -77,15 +77,15 @@ export const cart = connectDBAction<Cart>(
         expireGuestToken
       );
 
-      await updateCart(collection, parsedData, 'guestId');
-
-      setCookieGuestId(cookieStore, tokenGuest, expiresIn);
-      setCookieStepper(cookieStore, tokenStepper, expiresIn);
-
-      return {
-        message: 'Cart updated successful',
-        success: true,
-      };
+      return processCartUpdate(
+        collection,
+        parsedData,
+        'guestId',
+        cookieStore,
+        expiresIn,
+        tokenStepper,
+        tokenGuest
+      );
     }
 
     if (token && !cookieGuest && cookieStepper) {
@@ -126,16 +126,24 @@ export const cart = connectDBAction<Cart>(
 async function processCartUpdate(
   collection: Collection<Omit<Cart, '_id'>>,
   parsedData: Cart,
-  userIdKey: 'userId',
+  userIdKey: 'userId' | 'guestId',
   cookieStore: ReadonlyRequestCookies,
   expiresIn: Date,
-  tokenStepper?: string
+  tokenStepper?: string,
+  tokenGuest?: string
 ) {
+  console.log('tokenGuest', tokenGuest);
+  console.log('tokenStepper', tokenStepper);
+  console.log('userIdKey', userIdKey);
+  console.log('parsedData', parsedData);
   const existingCart = await getUserCart(
     collection,
     parsedData.cartId!,
-    parsedData[userIdKey]!
+    parsedData[userIdKey]!,
+    userIdKey
   );
+
+  console.log('existingCart', existingCart);
 
   if (existingCart) {
     const updatedProducts = updateCartProducts(
@@ -174,6 +182,7 @@ async function processCartUpdate(
 
     await updateCart(collection, newCart, userIdKey);
 
+    if (tokenGuest) setCookieGuestId(cookieStore, tokenGuest, expiresIn);
     if (tokenStepper) setCookieStepper(cookieStore, tokenStepper, expiresIn);
 
     return {
@@ -184,6 +193,7 @@ async function processCartUpdate(
   } else {
     await updateCart(collection, parsedData, userIdKey);
 
+    if (tokenGuest) setCookieGuestId(cookieStore, tokenGuest, expiresIn);
     if (tokenStepper) setCookieStepper(cookieStore, tokenStepper, expiresIn);
 
     return {

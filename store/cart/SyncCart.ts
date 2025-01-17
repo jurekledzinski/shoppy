@@ -14,11 +14,11 @@ export const updateSyncCart = async (
       formDataUser.set('userId', userSession!);
       formDataUser.set('cart', JSON.stringify(updatedCart.cart));
 
-      const result = cart('', formDataUser);
+      const resultUserCart = cart('', formDataUser);
 
       const localData1 = JSON.parse(localStorage.getItem('cart') || 'null');
       if (localData1) localStorage.removeItem('cart');
-      return result;
+      return resultUserCart;
 
     case Boolean(guestSession):
       const expiresIn = new Date(Date.now() + 30 * 60 * 1000);
@@ -27,11 +27,11 @@ export const updateSyncCart = async (
       formDataGuest.set('expiryAt', expiresIn.toISOString());
       formDataGuest.set('cart', JSON.stringify(updatedCart.cart));
 
-      cart('', formDataGuest);
+      const resultGuestCart = cart('', formDataGuest);
 
       const localData2 = JSON.parse(localStorage.getItem('cart') || 'null');
       if (localData2) localStorage.removeItem('cart');
-      break;
+      return resultGuestCart;
 
     default:
       if (updatedCart.cart.totalAmountCart) {

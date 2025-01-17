@@ -201,9 +201,13 @@ export const checkProductsInventory = async (
 export const getUserCart = async (
   collection: Collection<Omit<Cart, '_id'>>,
   cartId: string,
-  userId: string
+  userId: string,
+  userIdKey: 'userId' | 'guestId'
 ) => {
-  return await collection.findOne({ cartId: { $ne: cartId }, userId });
+  return await collection.findOne({
+    cartId: { $ne: cartId },
+    [userIdKey]: userId,
+  });
 };
 
 export const updateCartProducts = (
