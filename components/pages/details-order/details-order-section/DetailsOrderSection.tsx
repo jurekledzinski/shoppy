@@ -65,7 +65,7 @@ export const DetailsOrderSection = ({
             Array.isArray(action.state.payload) ? action.state.payload : []
           }
           onConfirm={(inventory, onClose) => {
-            const updatedProducts = state.cart.products
+            const updatedProducts = cloneDeep(state.cart.products)
               .map((product) => {
                 const value = inventory[product._id as keyof typeof product];
                 if (value) return { ...product, quantity: value };
