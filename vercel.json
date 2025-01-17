@@ -1,7 +1,3 @@
 {
-  "functions": {
-    "api/*": {
-      "includeFiles": "templates/**"
-    }
-  }
+  "functions.api/*.includeFiles": ["templates/**"]
 }
