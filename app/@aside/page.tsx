@@ -19,12 +19,6 @@ const Aside = async () => {
     ? await tokenVerify<{ value: string }>(guestCookie.value, secretGuest)
     : null;
 
-  console.log('cookieStore aside', cookieStore);
-  console.log('domain aside', domain);
-  console.log('session aside', session);
-  console.log('resUser aside', resUser);
-  console.log('guestCookieDecoded aside', guestCookieDecoded);
-
   return (
     <MainAside
       guestId={guestCookieDecoded ? guestCookieDecoded.payload.value : null}
