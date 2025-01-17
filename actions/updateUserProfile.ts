@@ -50,8 +50,9 @@ export const updateUserProfile = connectDBAction(
 );
 
 function formatHeaders(headers?: ReadonlyHeaders) {
-  const formattedHeader = headers
-    ? Object.fromEntries(Array.from(headers.entries()))
-    : {};
-  return formattedHeader;
+  const formattedHeaders: Record<string, string> = {};
+  headers?.forEach((value, key) => {
+    formattedHeaders[key as keyof typeof formattedHeaders] = value;
+  });
+  return formattedHeaders;
 }
