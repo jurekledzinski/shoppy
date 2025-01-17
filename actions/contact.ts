@@ -25,15 +25,6 @@ export const contact = actionTryCatch(
 
     const cssPath = path.join(process.cwd(), 'templates/contactEmail.css');
 
-    console.log('Resolved CSS path:', cssPath);
-    console.log('Current working directory:', process.cwd());
-
-    try {
-      fs.readFileSync(cssPath, 'utf-8');
-      console.log('CSS file loaded successfully.');
-    } catch (error) {
-      console.error('Error reading CSS file:', error);
-    }
     const cssContent = fs.readFileSync(cssPath, 'utf-8');
 
     const htmlWithCss = juice.inlineContent(htmlContent, cssContent);
