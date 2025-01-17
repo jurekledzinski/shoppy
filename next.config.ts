@@ -1,5 +1,4 @@
 import type { NextConfig } from 'next';
-import path from 'path';
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -22,7 +21,7 @@ const nextConfig: NextConfig = {
     return config;
   },
   outputFileTracingIncludes: {
-    '/api/*': [path.join(__dirname, 'templates/**/*')],
+    '*': ['./templates/**/*'],
   },
 };
 
