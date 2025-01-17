@@ -23,7 +23,7 @@ export const clearDataDeleteAccount = connectDBAction(
     const collectionOrders = getCollectionDb<Omit<Order, '_id'>>('orders');
     if (!collectionOrders) return errorMessageAction('Internal server error');
 
-    await collectionOrders.deleteOne({ userId });
+    await collectionOrders.deleteMany({ userId });
 
     return { message: 'Clear data successful', success: true };
   }
