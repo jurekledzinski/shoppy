@@ -9,7 +9,7 @@ export const ProductsSection = ({ children, data }: ProductsSectionProps) => {
     <Section>
       {children}
       <Suspense fallback={<Loader className={stylesLoader.loaderCenter} />}>
-        <ProdcutsContainer data={data} />{' '}
+        <ProdcutsContainer data={data} />
       </Suspense>
     </Section>
   );
