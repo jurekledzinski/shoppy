@@ -1,12 +1,10 @@
 'use client';
-import styles from './ProfileSection.module.css';
-import stylesButton from '@styles/buttons.module.css';
-import { Alert, ModalDelete, Section } from '@/components/shared';
-import { ChangePasswordForm, UpdateProfileForm } from '../forms';
-import { logOut } from '@/auth';
+import stylesLoader from '@/components/shared/loader/Loader.module.css';
+import { Loader, Section } from '@/components/shared';
+import { ProfileControl } from '../profile-control';
 import { ProfileSectionProps } from './types';
 import { showToast } from '@/helpers';
-import { startTransition, useCallback } from 'react';
+import { Suspense, useCallback } from 'react';
 import { useCart } from '@/store/cart';
 import { useRouter } from 'next/navigation';
 
@@ -20,7 +18,6 @@ import {
   changeUserPassword,
   deleteUserAccount,
   updateUserProfile,
-  clearDataDeleteAccount,
 } from '@/actions';
 
 export const ProfileSection = ({ children, userData }: ProfileSectionProps) => {
@@ -67,69 +64,24 @@ export const ProfileSection = ({ children, userData }: ProfileSectionProps) => {
   return (
     <Section>
       {children}
-      <header className={styles.headerUpdateProfile}>
-        Update profile user
-      </header>
-      <UpdateProfileForm
-        isPending={actionProfile.isPending}
-        methods={methodsUpdateProfile}
-        onSubmit={onSubmitUpdateProfile}
-        state={actionProfile.state}
-      />
-
-      <header className={styles.headerChangePassword}>
-        Change password user
-      </header>
-      <ChangePasswordForm
-        isPending={actionPassword.isPending}
-        methods={methodsChangePassword}
-        onSubmit={onSubmitChangePassword}
-        state={actionPassword.state}
-      />
-
-      <header className={styles.headerDeleteAccount}>
-        Delete user account
-      </header>
-
-      <ModalDelete
-        isPending={actionDelete.isPending}
-        isSuccess={actionDelete.state.success}
-        classButton={stylesButton.buttonDelete}
-        onConfirm={(e) => {
-          e.preventDefault();
-          startTransition(() => {
-            actionDelete.formAction(new FormData());
-          });
-        }}
-        title="Delete user account"
-        onSuccess={useCallback(async () => {
-          dispatch({ type: 'CLEAR_CART' });
-
-          await clearDataDeleteAccount('', new FormData());
-
-          resetStateActionDelete();
-
-          await logOut();
-
-          showToast(actionDelete.state.message);
-
-          router.replace('/');
-        }, [
-          actionDelete.state.message,
-          dispatch,
-          router,
-          resetStateActionDelete,
-        ])}
-        textButton="Delete account"
-      >
-        <p className={styles.modalDeleteText}>
-          Are you sure you want delete your account?
-        </p>
-      </ModalDelete>
-
-      {!actionDelete.state.success && actionDelete.state.message && (
-        <Alert>{actionDelete.state.message}</Alert>
-      )}
+      <Suspense fallback={<Loader className={stylesLoader.loaderCenter} />}>
+        <ProfileControl
+          actionDelete={actionDelete}
+          actionProfile={actionProfile}
+          actionPassword={actionPassword}
+          methodsChangePassword={methodsChangePassword}
+          methodsUpdateProfile={methodsUpdateProfile}
+          onClearCart={useCallback(() => {
+            dispatch({ type: 'CLEAR_CART' });
+          }, [dispatch])}
+          onSubmitChangePassword={onSubmitChangePassword}
+          onSubmitUpdateProfile={onSubmitUpdateProfile}
+          resetStateActionDelete={resetStateActionDelete}
+          onRedirectSuccess={useCallback(() => {
+            router.replace('/');
+          }, [router])}
+        />
+      </Suspense>
     </Section>
   );
 };
