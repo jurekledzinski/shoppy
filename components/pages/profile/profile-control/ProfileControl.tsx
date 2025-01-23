@@ -1,4 +1,4 @@
-import styles from './ProfileSection.module.css';
+import styles from './ProfileControl.module.css';
 import stylesButton from '@styles/buttons.module.css';
 import { Alert, ModalDelete } from '@/components/shared';
 import { ChangePasswordForm, UpdateProfileForm } from '../forms';
