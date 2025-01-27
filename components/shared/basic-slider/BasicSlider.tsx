@@ -7,19 +7,17 @@ import { classNames } from '@/helpers';
 import { optionsSlider } from './optionsSlider';
 import { sliderData } from '@/data';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useLoadSkeleton } from '@/hooks';
 import '@splidejs/splide/dist/css/splide.min.css';
 
 export const BasicSlider = () => {
   const [indexSlide, setIndexSlide] = useState(0);
-  const [isLoaded, setIsLoaded] = useState(false);
 
-  useEffect(() => {
-    setIsLoaded(true);
-  }, []);
+  const isLoaded = useLoadSkeleton();
 
   return (
-    <div className={`${isLoaded ? styles.wrapper : stylesSkeleton.skeleton}`}>
+    <div className={`${isLoaded ? stylesSkeleton.skeleton : styles.wrapper}`}>
       <Splide options={optionsSlider} onMoved={(e) => setIndexSlide(e.index)}>
         {sliderData.map((item, index) => {
           return (

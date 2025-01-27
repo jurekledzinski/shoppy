@@ -5,6 +5,10 @@
   height: 100%;
 }
 
+.wrapperPlaceHolder {
+  height: 100%;
+}
+
 div.wrapperThumbNails {
   display: flex;
   justify-content: center;

@@ -6,10 +6,14 @@ import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { ThumbnailsSliderProps } from './types';
 import { useEffect, useRef } from 'react';
 import '@splidejs/splide/dist/css/splide.min.css';
+import stylesSkeleton from '@/styles/HomePage.module.css';
+import { useLoadSkeleton } from '@/hooks';
+import { classNames } from '@/helpers';
 
 export const ThumbnailsSlider = ({ images }: ThumbnailsSliderProps) => {
   const mainRef = useRef<Splide>(null);
   const thumbsRef = useRef<Splide>(null);
+  const isLoaded = useLoadSkeleton();
 
   useEffect(() => {
     if (mainRef.current && thumbsRef.current && thumbsRef.current.splide) {
@@ -18,7 +22,16 @@ export const ThumbnailsSlider = ({ images }: ThumbnailsSliderProps) => {
   }, []);
 
   return (
-    <>
+    <div
+      {...(isLoaded
+        ? {
+            className: classNames(
+              stylesSkeleton.skeleton,
+              styles.wrapperPlaceHolder
+            ),
+          }
+        : {})}
+    >
       <Splide options={mainOptions} ref={mainRef}>
         {images.map((item, index) => {
           return (
@@ -56,6 +69,6 @@ export const ThumbnailsSlider = ({ images }: ThumbnailsSliderProps) => {
           );
         })}
       </Splide>
-    </>
+    </div>
   );
 };
