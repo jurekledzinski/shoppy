@@ -1,20 +1,26 @@
-import { Collection } from 'mongodb';
+import { Cart } from '@/models';
 import { ObjectId } from 'mongodb';
 import {
-  Cart,
-  Order,
-  OrderCheckout,
-  OrderPlaceOrder,
-  OrderShipping,
-  OrderSuccess,
-  ProductCard,
-} from '@/models';
-import { CartInventoryPayload } from '@/lib';
+  CartInventoryPayload,
+  UpdateShipping,
+  UpdatePlaceOrder,
+  UpdateCheckoutOrder,
+  UpdateCart,
+  UpdateCartExpiryAt,
+  DeleteCart,
+  UpdateSuccessOrder,
+  UpdateProductsQuantity,
+  DeleteOrder,
+  UpdateExpiryAtOrder,
+  CheckProductsInventory,
+  GetUserCart,
+  UpdateCartProducts,
+} from '@/lib';
 
-export const updateShipping = async (
-  collection: Collection<Omit<Order, '_id'>>,
-  parsedData: OrderShipping,
-  userIdKey: 'userId' | 'guestId'
+export const updateShipping: UpdateShipping = async (
+  collection,
+  parsedData,
+  userIdKey
 ) => {
   const { _id, ...rest } = parsedData;
   const id = new ObjectId(_id);
@@ -33,9 +39,9 @@ export const updateShipping = async (
   );
 };
 
-export const updatePlaceOrder = async (
-  collection: Collection<Omit<Order, '_id'>>,
-  parsedData: OrderPlaceOrder
+export const updatePlaceOrder: UpdatePlaceOrder = async (
+  collection,
+  parsedData
 ) => {
   const { _id, ...rest } = parsedData;
   const id = new ObjectId(_id);
@@ -43,9 +49,9 @@ export const updatePlaceOrder = async (
   await collection.updateOne({ _id: id }, { $set: { ...rest } });
 };
 
-export const updateCheckoutOrder = async (
-  collection: Collection<Omit<Order, '_id'>>,
-  parsedData: OrderCheckout
+export const updateCheckoutOrder: UpdateCheckoutOrder = async (
+  collection,
+  parsedData
 ) => {
   const { _id, ...rest } = parsedData;
   const id = new ObjectId(_id);
@@ -53,10 +59,10 @@ export const updateCheckoutOrder = async (
   return await collection.updateOne({ _id: id }, { $set: { ...rest } });
 };
 
-export const updateCart = async (
-  collection: Collection<Omit<Cart, '_id'>>,
-  parsedData: Cart,
-  userIdKey: 'userId' | 'guestId'
+export const updateCart: UpdateCart = async (
+  collection,
+  parsedData,
+  userIdKey
 ) => {
   const { cartId, ...rest } = parsedData;
   const updateData = { ...rest };
@@ -80,26 +86,22 @@ export const updateCart = async (
   }
 };
 
-export const updateCartExpiryAt = async (
-  collection: Collection<Omit<Cart, '_id'>>,
-  guestId: string,
-  expiryAt: Date
+export const updateCartExpiryAt: UpdateCartExpiryAt = async (
+  collection,
+  guestId,
+  expiryAt
 ) => {
   await collection.updateOne({ guestId }, { $set: { expiryAt } });
 };
 
-export const deleteCart = async (
-  collection: Collection<Cart>,
-  userIdKey: 'userId' | 'guestId',
-  id: string
-) => {
+export const deleteCart: DeleteCart = async (collection, userIdKey, id) => {
   await collection.deleteOne({ [userIdKey]: id });
 };
 
-export const updateSuccessOrder = async (
-  collection: Collection<Omit<Order, '_id'>>,
-  parsedData: OrderSuccess,
-  orderId: string
+export const updateSuccessOrder: UpdateSuccessOrder = async (
+  collection,
+  parsedData,
+  orderId
 ) => {
   await collection.updateOne(
     { _id: new ObjectId(orderId) },
@@ -107,9 +109,9 @@ export const updateSuccessOrder = async (
   );
 };
 
-export const updateProductsQuantity = async (
-  collection: Collection<Omit<ProductCard, '_id'>>,
-  products: Cart['products']
+export const updateProductsQuantity: UpdateProductsQuantity = async (
+  collection,
+  products
 ) => {
   const bulkOperations = products.map(({ _id, quantity }) => ({
     updateOne: {
@@ -121,17 +123,14 @@ export const updateProductsQuantity = async (
   await collection.bulkWrite(bulkOperations);
 };
 
-export const deleteOrder = async (
-  collection: Collection<Omit<Order, '_id'>>,
-  orderId: string
-) => {
+export const deleteOrder: DeleteOrder = async (collection, orderId) => {
   await collection.deleteOne({ _id: new ObjectId(orderId) });
 };
 
-export const updateExpiryAtOrder = async (
-  collection: Collection<Omit<Order, '_id'>>,
-  orderId: string,
-  expiryAt: Date
+export const updateExpiryAtOrder: UpdateExpiryAtOrder = async (
+  collection,
+  orderId,
+  expiryAt
 ) => {
   await collection.updateOne(
     { _id: new ObjectId(orderId) },
@@ -139,9 +138,9 @@ export const updateExpiryAtOrder = async (
   );
 };
 
-export const checkProductsInventory = async (
-  collection: Collection<Omit<ProductCard, '_id'>>,
-  products: Cart['products']
+export const checkProductsInventory: CheckProductsInventory = async (
+  collection,
+  products
 ) => {
   const cartWithObjectId = products.map((item) => ({
     productId: new ObjectId(item._id),
@@ -198,21 +197,23 @@ export const checkProductsInventory = async (
   }));
 };
 
-export const getUserCart = async (
-  collection: Collection<Omit<Cart, '_id'>>,
-  cartId: string,
-  userId: string,
-  userIdKey: 'userId' | 'guestId'
+export const getUserCart: GetUserCart = async (
+  collection,
+  cartId,
+  userId,
+  userIdKey
 ) => {
-  return await collection.findOne({
+  const result = await collection.findOne({
     cartId: { $ne: cartId },
     [userIdKey]: userId,
   });
+
+  return result;
 };
 
-export const updateCartProducts = (
-  dbProducts: Cart['products'],
-  newProducts: Cart['products']
+export const updateCartProducts: UpdateCartProducts = (
+  dbProducts,
+  newProducts
 ) => {
   const allProducts = dbProducts.concat(newProducts);
   const products: Cart['products'] = [];

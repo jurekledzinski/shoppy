@@ -12,3 +12,5 @@ export * from './localStorage';
 export * from './formatText';
 export * from './navigation';
 export * from './helpersForm';
+export * from './breadcrumbs';
+export * from './getDomain';

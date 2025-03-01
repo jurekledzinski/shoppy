@@ -1,10 +1,10 @@
 import Stripe from 'stripe';
 import { Cart } from '@/models';
-import { getDomain } from '@/app/_helpers';
+import { CreateStripeSessionCheckout, FormatShippingData } from './types';
+import { getDomain } from '@/helpers';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-type ItemsData = Stripe.Checkout.SessionCreateParams.LineItem;
 type ShippingOptions = Stripe.Checkout.SessionCreateParams.ShippingOption;
 
 export const formatBuyedProducts = (products: Cart['products']) => {
@@ -23,10 +23,10 @@ export const formatBuyedProducts = (products: Cart['products']) => {
   });
 };
 
-export const formatShippingData = (
-  nameDelivery: string,
-  priceDelivery: number,
-  timeDelivery: number
+export const formatShippingData: FormatShippingData = (
+  nameDelivery,
+  priceDelivery,
+  timeDelivery
 ) => {
   const shippingData: ShippingOptions[] = [
     {
@@ -50,10 +50,10 @@ export const formatShippingData = (
   return shippingData;
 };
 
-export const createStripeSessionCheckout = async (
-  items: ItemsData[],
-  orderID: string,
-  shippingOptions: ShippingOptions[]
+export const createStripeSessionCheckout: CreateStripeSessionCheckout = async (
+  items,
+  orderID,
+  shippingOptions
 ) => {
   const domain = await getDomain();
 
