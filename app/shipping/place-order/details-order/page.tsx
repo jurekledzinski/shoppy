@@ -1,7 +1,8 @@
 import { auth } from '@/auth';
 import { cookies, headers } from 'next/headers';
 import { DetailsOrderSection } from '@/components/pages';
-import { fetchOrder, getDomain, tokenVerify } from '@/app/_helpers';
+import { fetchOrder, tokenVerify } from '@/lib';
+import { getDomain } from '@/helpers';
 import { Step, Stepper } from '@/components/shared';
 import { steps } from '@/data';
 

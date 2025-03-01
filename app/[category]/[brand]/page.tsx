@@ -1,10 +1,7 @@
 import { Breadcrumb, Breadcrumbs } from '@/components/shared';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import {
-  fetchProducts,
-  getBreadcrumbsProductsPage,
-  getDomain,
-} from '@/app/_helpers';
+import { fetchProducts } from '@/lib';
+import { getBreadcrumbsProductsPage, getDomain } from '@/helpers';
 import { ProductsSection } from '@/components/pages';
 
 type Params = Promise<{ category: string; brand: string }>;

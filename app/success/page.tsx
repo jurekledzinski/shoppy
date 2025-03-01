@@ -1,7 +1,7 @@
 import { auth } from '@/auth';
 import { cookies } from 'next/headers';
 import { SectionSuccess } from '@/components/pages';
-import { tokenVerify } from '../_helpers';
+import { tokenVerify } from '@/lib';
 
 type SearchParams = Promise<{ orderId: string }>;
 

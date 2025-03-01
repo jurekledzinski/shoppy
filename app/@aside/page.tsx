@@ -1,7 +1,8 @@
 import { Aside as MainAside } from '@/components/shared';
 import { auth } from '@/auth';
 import { cookies, headers } from 'next/headers';
-import { fetchUser, getDomain, tokenVerify } from '../_helpers';
+import { fetchUser, tokenVerify } from '@/lib';
+import { getDomain } from '@/helpers';
 
 const secretGuest = process.env.GUEST_SECRET!;
 

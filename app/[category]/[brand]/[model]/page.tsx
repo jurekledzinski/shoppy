@@ -2,14 +2,9 @@ import { auth } from '@/auth';
 import { Breadcrumb, Breadcrumbs } from '@/components/shared';
 import { DetailsProductSection } from '@/components/pages';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { fetchDetailsProduct, fetchProductReviews, fetchUser } from '@/lib';
+import { getBreadcrumbsDetails, getDomain } from '@/helpers';
 import { headers } from 'next/headers';
-import {
-  fetchDetailsProduct,
-  fetchProductReviews,
-  fetchUser,
-  getBreadcrumbsDetails,
-  getDomain,
-} from '@/app/_helpers';
 
 type Params = Promise<{ category: string; brand: string; model: string }>;
 type SearchParams = Promise<{ id: string }>;

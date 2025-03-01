@@ -1,13 +1,10 @@
 import { auth } from '@/auth';
 import { Breadcrumb, Breadcrumbs } from '@/components/shared';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { fetchUserOrders } from '@/lib';
+import { getBreadcrumbsOrders, getDomain } from '@/helpers';
 import { headers } from 'next/headers';
 import { OrdersSection } from '@/components/pages';
-import {
-  fetchUserOrders,
-  getBreadcrumbsOrders,
-  getDomain,
-} from '@/app/_helpers';
 
 type Params = Promise<{ id: string }>;
 

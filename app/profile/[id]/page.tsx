@@ -1,7 +1,8 @@
 import { auth } from '@/auth';
 import { Breadcrumb, Breadcrumbs } from '@/components/shared';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import { fetchUser, getBreadcrumbsProfile, getDomain } from '@/app/_helpers';
+import { fetchUser } from '@/lib';
+import { getBreadcrumbsProfile, getDomain } from '@/helpers';
 import { headers } from 'next/headers';
 import { ProfileSection } from '@/components/pages';
 

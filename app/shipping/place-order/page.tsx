@@ -1,7 +1,7 @@
 import { auth } from '@/auth';
 import { cookies, headers } from 'next/headers';
-import { fetchOrder, tokenVerify } from '@/app/_helpers';
-import { getDomain } from '@/app/_helpers';
+import { fetchOrder, tokenVerify } from '@/lib';
+import { getDomain } from '@/helpers';
 import { PlaceOrderSection } from '@/components/pages';
 import { Step, Stepper } from '@/components/shared';
 import { steps } from '@/data';

@@ -1,6 +1,7 @@
 import { auth } from '@/auth';
 import { cookies, headers } from 'next/headers';
-import { fetchOrder, fetchUser, getDomain, tokenVerify } from '../_helpers';
+import { fetchOrder, fetchUser, tokenVerify } from '@/lib';
+import { getDomain } from '@/helpers';
 import { ShippingSection } from '@/components/pages';
 import { Step, Stepper } from '@/components/shared';
 import { steps } from '@/data';

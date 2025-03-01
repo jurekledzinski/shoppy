@@ -1,6 +1,7 @@
 import styles from '@styles/HomePage.module.css';
 import { BasicSlider } from '@/components/shared';
-import { fetchBrands, getDomain } from './_helpers';
+import { fetchBrands } from '@/lib';
+import { getDomain } from '@/helpers';
 import { TabsCategoriesContainer } from '@/components/pages';
 
 type SearchParams = Promise<{ category: string }>;
