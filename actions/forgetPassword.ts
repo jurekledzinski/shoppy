@@ -1,8 +1,7 @@
 'use server';
 import { connectDBAction, createToken, getCollectionDb } from '@/lib';
-import { errorMessageAction } from '@/helpers';
+import { errorMessageAction, getDomain } from '@/helpers';
 import { ForgetPasswordSchema, UserForgetPassword } from '@/models';
-import { getDomain } from '@/app/_helpers';
 import nodemailer from 'nodemailer';
 import fs from 'fs';
 import path from 'path';

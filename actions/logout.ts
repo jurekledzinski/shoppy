@@ -1,7 +1,7 @@
 'use server';
 import { actionTryCatch } from '@/helpers';
 import { cookies } from 'next/headers';
-import { deleteCookie } from '@/app/_helpers';
+import { deleteCookie } from '@/lib';
 import { logOut } from '@/auth';
 
 export const logout = actionTryCatch(async () => {

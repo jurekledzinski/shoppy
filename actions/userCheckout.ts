@@ -1,7 +1,6 @@
 'use server';
 import { cookies } from 'next/headers';
-import { createToken } from '@/lib';
-import { getExpireInCookie, setCookieStepper } from '@/app/_helpers';
+import { createToken, getExpireInCookie, setCookieStepper } from '@/lib';
 
 const secretStepper = process.env.STEPPER_SECRET!;
 const expireStepperToken = process.env.EXPIRE_STEPPER_TOKEN!;

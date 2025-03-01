@@ -1,9 +1,8 @@
 'use server';
 import { actionTryCatch } from '@/helpers';
 import { cookies } from 'next/headers';
-import { createToken } from '@/lib';
+import { createToken, setCookieStepper } from '@/lib';
 import { LoginUserSchema } from '@/models';
-import { setCookieStepper } from '@/app/_helpers';
 import { signIn } from '@/auth';
 
 const secretStepper = process.env.STEPPER_SECRET!;

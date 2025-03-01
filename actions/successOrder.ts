@@ -5,17 +5,14 @@ import {
   getAuthToken,
   getCollectionDb,
   verifyToken,
-} from '@/lib';
-import { cookies, headers } from 'next/headers';
-import { errorMessageAction } from '@/helpers';
-import { revalidateTag } from 'next/cache';
-
-import {
   deleteCart,
   deleteCookie,
   updateProductsQuantity,
   updateSuccessOrder,
-} from '@/app/_helpers';
+} from '@/lib';
+import { cookies, headers } from 'next/headers';
+import { errorMessageAction } from '@/helpers';
+import { revalidateTag } from 'next/cache';
 
 const secretGuest = process.env.GUEST_SECRET!;
 const secretStepper = process.env.STEPPER_SECRET!;
