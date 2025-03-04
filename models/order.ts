@@ -1,5 +1,6 @@
 import { CartOrderSchema } from './cart';
 import { z } from 'zod';
+import { ProductCartSchema } from './product';
 
 export const OrderSchema = z.object({
   _id: z.string().optional(),
@@ -56,6 +57,10 @@ export const OrderCheckoutSchema = OrderSchema.pick({
   methodDelivery: true,
   timeDelivery: true,
   priceDelivery: true,
+}).extend({
+  products: z.array(ProductCartSchema, {
+    required_error: 'Products are requried',
+  }),
 });
 
 export const OrderSuccessSchema = OrderSchema.pick({
