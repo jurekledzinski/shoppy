@@ -101,7 +101,7 @@ export const verifyStepper: VerifyStepper = async (
 
 export const validateAuth = async (
   cookieGuest: RequestCookie | undefined,
-  token: JWT | null,
+  token?: JWT | null,
   cookieStepper?: RequestCookie
 ) => {
   const AUTH = await getAuthSecrets();
@@ -130,7 +130,7 @@ export const validateAuth = async (
 
 export const validationData = async (
   cookieGuest: RequestCookie | undefined,
-  token: JWT | null,
+  token?: JWT | null,
   cookieStepper?: RequestCookie
 ) => {
   const guest = await validateAuth(cookieGuest, token, cookieStepper);
