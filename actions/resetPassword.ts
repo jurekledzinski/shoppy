@@ -1,14 +1,20 @@
 'use server';
-import bcrypt from 'bcrypt';
-import { connectDBAction, getCollectionDb, verifyToken } from '@/lib';
-import { errorMessageAction } from '@/helpers';
 
+import bcrypt from 'bcrypt';
+import { errorMessageAction } from '@/helpers';
 import { PasswordSchema, UserResetPassword } from '@/models';
 
-const secret = process.env.JWT_SECRET_FORGET_PASSWORD!;
+import {
+  connectDBAction,
+  getAuthSecrets,
+  getCollectionDb,
+  verifyToken,
+} from '@/lib';
 
 export const resetPassword = connectDBAction(
   async (prevState: unknown, formData: FormData) => {
+    const AUTH = await getAuthSecrets();
+
     const body = Object.fromEntries(formData) as UserResetPassword;
     const resetToken = body.token;
     delete body.token;
@@ -17,7 +23,10 @@ export const resetPassword = connectDBAction(
 
     if (!resetToken) return errorMessageAction('Unauthorized');
 
-    const decoded = await verifyToken<{ value: string }>(resetToken, secret);
+    const decoded = await verifyToken<{ value: string }>(
+      resetToken,
+      AUTH.SECRET_FORGET_PASSWORD
+    );
 
     const collection = getCollectionDb<UserResetPassword>('users');
 
