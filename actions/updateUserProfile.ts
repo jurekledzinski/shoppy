@@ -9,11 +9,11 @@ import { UpdateUserProfileSchema, UserRegister } from '@/models';
 export const updateUserProfile = connectDBAction(
   async (prevState: unknown, formData: FormData) => {
     const headersData = await headers();
+    const token = await getAuthToken({ headers: headersData });
+
     const body = Object.fromEntries(formData);
 
     const parsedData = UpdateUserProfileSchema.parse(body);
-
-    const token = await getAuthToken({ headers: headersData });
 
     if (!token) return errorMessageAction('Unauthorized');
 
