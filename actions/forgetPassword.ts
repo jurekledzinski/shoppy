@@ -1,5 +1,4 @@
 'use server';
-
 import forgetPasswordTemplate from '../templates/forgetPassword.hbs';
 import { errorMessageAction, getDomain } from '@/helpers';
 import { ForgetPasswordSchema, UserForgetPassword } from '@/models';

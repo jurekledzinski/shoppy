@@ -1,5 +1,4 @@
 'use server';
-
 import bcrypt from 'bcrypt';
 import { errorMessageAction } from '@/helpers';
 import { PasswordSchema, UserResetPassword } from '@/models';

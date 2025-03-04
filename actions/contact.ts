@@ -1,5 +1,4 @@
 'use server';
-
 import contactEmailTemplate from '../templates/contactEmail.hbs';
 import { actionTryCatch } from '@/helpers';
 import { ContactEmailSchema } from '@/models';
