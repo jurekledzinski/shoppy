@@ -302,9 +302,8 @@ export const Aside = ({ guestId, userData }: AsideProps) => {
             }}
             onContinueAction={(name) => {
               const options = {
-                guest: () => {
-                  startTransition(() => action.formAction(new FormData()));
-                },
+                guest: () =>
+                  startTransition(() => action.formAction(new FormData())),
                 register: () => {
                   controlAside(
                     context,
