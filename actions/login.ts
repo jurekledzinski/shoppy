@@ -1,9 +1,9 @@
 'use server';
 import { actionTryCatch } from '@/helpers';
-import { cookies } from 'next/headers';
 import {
   createToken,
   getAuthSecrets,
+  getSessionData,
   setCookieStepper,
   stepperStepsStart,
 } from '@/lib';
@@ -14,7 +14,7 @@ export const login = actionTryCatch(
   async (prevState: unknown, formData: FormData) => {
     const AUTH = await getAuthSecrets();
     const STEPPER_PAYLOAD = await stepperStepsStart();
-    const cookieStore = await cookies();
+    const { cookieStore } = await getSessionData();
 
     const body = Object.fromEntries(formData);
 
