@@ -1,5 +1,4 @@
 import { Collection, UpdateResult } from 'mongodb';
-import Stripe from 'stripe';
 
 import {
   Cart,
@@ -11,16 +10,11 @@ import {
   ProductCard,
 } from '@/models';
 
-type ItemsData = Stripe.Checkout.SessionCreateParams.LineItem;
-type ShippingOptions = Stripe.Checkout.SessionCreateParams.ShippingOption;
-
 export type State<T> = {
   message: string;
   success: boolean;
   payload?: T;
 };
-
-export type IdPayload = { id: string };
 
 export type CartInventoryPayload = {
   name: string;
@@ -29,17 +23,6 @@ export type CartInventoryPayload = {
   onStock: number;
   cartQuantity: number;
 };
-
-export type comparePasswordsFn = (
-  password: string,
-  hash: string
-) => Promise<boolean>;
-
-export type createTokenFn = (
-  payload: string | object,
-  secret: string,
-  timeExp: string
-) => Promise<string>;
 
 type UserIdKey = 'userId' | 'guestId';
 
@@ -56,7 +39,7 @@ export type UpdatePlaceOrder = (
 
 export type UpdateCheckoutOrder = (
   collection: Collection<Omit<Order, '_id'>>,
-  parsedData: OrderCheckout
+  parsedData: Partial<OrderCheckout>
 ) => Promise<UpdateResult>;
 
 export type UpdateCart = (
@@ -115,15 +98,3 @@ export type UpdateCartProducts = (
   dbProducts: Cart['products'],
   newProducts: Cart['products']
 ) => Cart['products'];
-
-export type FormatShippingData = (
-  nameDelivery: string,
-  priceDelivery: number,
-  timeDelivery: number
-) => ShippingOptions[];
-
-export type CreateStripeSessionCheckout = (
-  items: ItemsData[],
-  orderID: string,
-  shippingOptions: ShippingOptions[]
-) => Promise<Stripe.Response<Stripe.Checkout.Session>>;

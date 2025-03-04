@@ -1,5 +1,6 @@
 import { Cart } from '@/models';
 import { ObjectId } from 'mongodb';
+import { cloneDeep } from 'lodash';
 import {
   CartInventoryPayload,
   UpdateShipping,
@@ -53,7 +54,9 @@ export const updateCheckoutOrder: UpdateCheckoutOrder = async (
   collection,
   parsedData
 ) => {
-  const { _id, ...rest } = parsedData;
+  const copyParsedData = cloneDeep(parsedData);
+  delete copyParsedData.products;
+  const { _id, ...rest } = copyParsedData;
   const id = new ObjectId(_id);
 
   return await collection.updateOne({ _id: id }, { $set: { ...rest } });
