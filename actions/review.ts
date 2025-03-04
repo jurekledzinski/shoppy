@@ -1,26 +1,27 @@
 'use server';
-import { connectDBAction, getAuthToken, getCollectionDb } from '@/lib';
+import { connectDBAction, getCollectionDb, getSessionData } from '@/lib';
 import { errorMessageAction, roundAvergeRate } from '@/helpers';
-import { headers } from 'next/headers';
 import { ObjectId } from 'mongodb';
 import { Product, Review, ReviewSchema } from '@/models';
 import { revalidateTag } from 'next/cache';
 
 export const review = connectDBAction(
   async (prevState: unknown, formData: FormData) => {
-    const headersData = await headers();
+    const { token } = await getSessionData();
+
     const body = Object.fromEntries(formData);
     const fomattedBody = { ...body, rate: parseFloat(body.rate.toString()) };
 
     const parsedData = ReviewSchema.parse(fomattedBody) as Omit<Review, '_id'>;
 
-    const token = await getAuthToken({ headers: headersData });
-
     if (!token) return errorMessageAction('Unauthorized');
 
     const collectionReview = getCollectionDb<Omit<Review, '_id'>>('reviews');
+    const collectionProducts =
+      getCollectionDb<Omit<Product, '_id'>>('products');
 
-    if (!collectionReview) return errorMessageAction('Internal server error');
+    if (!collectionProducts || !collectionReview)
+      return errorMessageAction('Internal server error');
 
     await collectionReview.insertOne({ ...parsedData });
 
@@ -42,11 +43,6 @@ export const review = connectDBAction(
       .toArray();
 
     const averageRate = productSumRate[0].totalRate / productSumRate[0].amount;
-
-    const collectionProducts =
-      getCollectionDb<Omit<Product, '_id'>>('products');
-
-    if (!collectionProducts) return errorMessageAction('Internal server error');
 
     const newRate = roundAvergeRate(averageRate);
 
