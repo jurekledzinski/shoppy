@@ -13,14 +13,13 @@ export const clearDataDeleteAccount = connectDBAction(
 
     const userId = token.id as string;
 
-    const collection = getCollectionDb<Omit<Cart, '_id'>>('carts');
-    if (!collection) return errorMessageAction('Internal server error');
-
-    await collection.deleteOne({ userId });
-
+    const collectionCarts = getCollectionDb<Omit<Cart, '_id'>>('carts');
     const collectionOrders = getCollectionDb<Omit<Order, '_id'>>('orders');
-    if (!collectionOrders) return errorMessageAction('Internal server error');
 
+    if (!collectionCarts || !collectionOrders)
+      return errorMessageAction('Internal server error');
+
+    await collectionCarts.deleteOne({ userId });
     await collectionOrders.deleteMany({ userId });
 
     return { message: 'Clear data successful', success: true };
