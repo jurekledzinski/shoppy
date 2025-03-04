@@ -1,43 +1,33 @@
 'use server';
-import { cookies, headers } from 'next/headers';
-import { errorMessageAction } from '@/helpers';
-import { Cart, Order, OrderPlaceOrderSchema } from '@/models';
+import { OrderPlaceOrderSchema } from '@/models';
 import { revalidateTag } from 'next/cache';
 
 import {
   connectDBAction,
   createToken,
-  getAuthToken,
-  getCollectionDb,
-  verifyToken,
   getExpireInCookie,
   setCookieGuestId,
   setCookieStepper,
   updateCartExpiryAt,
   updatePlaceOrder,
+  stepperStepsPlaceOrder,
+  getAuthSecrets,
+  getSessionData,
+  validationData,
 } from '@/lib';
-
-const secretGuest = process.env.GUEST_SECRET!;
-const secretStepper = process.env.STEPPER_SECRET!;
-const expireGuestToken = process.env.EXPIRE_GUEST_TOKEN!;
-const expireStepperToken = process.env.EXPIRE_STEPPER_TOKEN!;
-
-const payloadStepper = {
-  allowed: '/shipping/place-order/details-order',
-  completed: ['/', '/shipping', '/shipping/place-order'],
-};
 
 export const placeOrder = connectDBAction(
   async (prevState: unknown, formData: FormData) => {
-    const cookieStore = await cookies();
-    const headersData = await headers();
-    const cookieGuest = cookieStore.get('guestId');
-    const cookieStepper = cookieStore.get('stepper');
-    const body = Object.fromEntries(formData);
+    const AUTH = await getAuthSecrets();
+    const STEPPER_PAYLOAD = await stepperStepsPlaceOrder();
 
-    const token = await getAuthToken({ headers: headersData });
+    const { cookieGuest, cookieStepper, cookieStore, token } =
+      await getSessionData();
 
     const expiresIn = getExpireInCookie();
+
+    const body = Object.fromEntries(formData);
+
     const parsedData = OrderPlaceOrderSchema.parse({
       ...body,
       priceDelivery: parseFloat(body.priceDelivery as string),
@@ -45,74 +35,35 @@ export const placeOrder = connectDBAction(
       ...(cookieGuest && { expiryAt: expiresIn }),
     });
 
-    if (!token && !cookieGuest && !cookieStepper) {
-      return errorMessageAction('Unauthorized');
-    }
-
-    const collection = getCollectionDb<Omit<Order, '_id'>>('orders');
-    if (!collection) return errorMessageAction('Internal server error');
+    const result = await validationData(cookieGuest, token, cookieStepper);
+    if ('message' in result) return result;
+    const { collectionCarts, collectionOrders, guest } = result;
 
     const tokenStepper = await createToken(
-      payloadStepper,
-      secretStepper,
-      expireStepperToken
+      STEPPER_PAYLOAD,
+      AUTH.SECRET_STEPPER,
+      AUTH.EXPIRE_STEPPER_TOKEN
     );
 
     if (!token && cookieGuest && cookieStepper) {
-      const dataGuest = await verifyToken<{ value: string }>(
-        cookieGuest.value,
-        secretGuest
-      );
-
-      await verifyToken<{
-        value: { allowed: string; completed: string[] };
-      }>(cookieStepper.value, secretStepper);
-
       const tokenGuest = await createToken(
-        dataGuest.payload.value,
-        secretGuest,
-        expireGuestToken
+        guest,
+        AUTH.SECRET_GUEST,
+        AUTH.EXPIRE_GUEST_TOKEN
       );
 
-      const collectionCarts = getCollectionDb<Omit<Cart, '_id'>>('carts');
-      if (!collectionCarts) return errorMessageAction('Internal server error');
-
-      await updateCartExpiryAt(
-        collectionCarts,
-        dataGuest.payload.value,
-        expiresIn
-      );
-
-      await updatePlaceOrder(collection, parsedData);
-
+      await updateCartExpiryAt(collectionCarts, guest, expiresIn);
       setCookieGuestId(cookieStore, tokenGuest, expiresIn);
-      setCookieStepper(cookieStore, tokenStepper, expiresIn);
-
-      revalidateTag('get_order');
-
-      return {
-        message: 'Place order data added successful',
-        success: true,
-      };
     }
 
-    if (token && !cookieGuest && cookieStepper) {
-      await verifyToken<{
-        value: { allowed: string; completed: string[] };
-      }>(cookieStepper.value, secretStepper);
+    await updatePlaceOrder(collectionOrders, parsedData);
+    setCookieStepper(cookieStore, tokenStepper, expiresIn);
 
-      await updatePlaceOrder(collection, parsedData);
+    revalidateTag('get_order');
 
-      setCookieStepper(cookieStore, tokenStepper, expiresIn);
-
-      revalidateTag('get_order');
-
-      return {
-        message: 'Place order data added successful',
-        success: true,
-      };
-    }
-
-    return errorMessageAction('Unauthorized');
+    return {
+      message: 'Place order data added successful',
+      success: true,
+    };
   }
 );
