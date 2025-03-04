@@ -1,21 +1,26 @@
 'use server';
 import { cookies } from 'next/headers';
-import { createToken, getExpireInCookie, setCookieStepper } from '@/lib';
-
-const secretStepper = process.env.STEPPER_SECRET!;
-const expireStepperToken = process.env.EXPIRE_STEPPER_TOKEN!;
-const payloadStepper = { allowed: '/shipping', completed: ['/'] };
+import {
+  createToken,
+  getAuthSecrets,
+  getExpireInCookie,
+  setCookieStepper,
+  stepperStepsStart,
+} from '@/lib';
 
 export const userCheckout = async (prevState: unknown, formData: FormData) => {
+  const AUTH = await getAuthSecrets();
+  const STEPPER_PAYLOAD = await stepperStepsStart();
+
   Object.fromEntries(formData);
   const cookieStore = await cookies();
 
   const expiresIn = getExpireInCookie();
 
   const tokenStepper = await createToken(
-    payloadStepper,
-    secretStepper,
-    expireStepperToken
+    STEPPER_PAYLOAD,
+    AUTH.SECRET_STEPPER,
+    AUTH.EXPIRE_STEPPER_TOKEN
   );
 
   setCookieStepper(cookieStore, tokenStepper, expiresIn);
