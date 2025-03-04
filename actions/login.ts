@@ -14,8 +14,8 @@ export const login = actionTryCatch(
   async (prevState: unknown, formData: FormData) => {
     const AUTH = await getAuthSecrets();
     const STEPPER_PAYLOAD = await stepperStepsStart();
-
     const cookieStore = await cookies();
+
     const body = Object.fromEntries(formData);
 
     const paramsCheckout = body.params;
