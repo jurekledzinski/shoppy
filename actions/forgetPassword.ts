@@ -1,33 +1,38 @@
 'use server';
-import { connectDBAction, createToken, getCollectionDb } from '@/lib';
+
+import forgetPasswordTemplate from '../templates/forgetPassword.hbs';
 import { errorMessageAction, getDomain } from '@/helpers';
 import { ForgetPasswordSchema, UserForgetPassword } from '@/models';
-import nodemailer from 'nodemailer';
-import fs from 'fs';
-import path from 'path';
-import juice from 'juice';
-import forgetPasswordTemplate from '../templates/forgetPassword.hbs';
 
-const secret = process.env.JWT_SECRET_FORGET_PASSWORD!;
-const lifeTimeAccessToken = process.env.JWT_LIFETIME_SECRET_FORGET_PASSWORD!;
+import {
+  connectDBAction,
+  createToken,
+  getAuthSecrets,
+  getCollectionDb,
+  mergeTemplate,
+  nodemailerTransporter,
+  setMailOptions,
+} from '@/lib';
 
 export const forgetPassword = connectDBAction(
   async (prevState: unknown, formData: FormData) => {
+    const AUTH = await getAuthSecrets();
+    const domain = await getDomain();
     const body = Object.fromEntries(formData);
 
     const parsedData = ForgetPasswordSchema.parse(body);
 
     const collection = getCollectionDb<UserForgetPassword>('users');
-
     if (!collection) return errorMessageAction('Internal server error');
 
     const user = await collection.findOne({ email: parsedData.email });
-
     if (!user) return errorMessageAction('Incorrect credentials');
 
-    const token = await createToken(user.email, secret, lifeTimeAccessToken);
-
-    const domain = await getDomain();
+    const token = await createToken(
+      user.email,
+      AUTH.SECRET_FORGET_PASSWORD,
+      AUTH.LIFETIME_ACCESS_TOKEN
+    );
 
     const resetUrl = `${domain}/?token=${token}&action_type=reset_password`;
 
@@ -38,30 +43,18 @@ export const forgetPassword = connectDBAction(
       resetUrl,
     });
 
-    const cssPath = path.join(process.cwd(), 'templates/forgetPassword.css');
-    const cssContent = fs.readFileSync(cssPath, 'utf-8');
+    const htmlWithCss = await mergeTemplate(
+      'templates/forgetPassword.css',
+      htmlContent
+    );
 
-    const htmlWithCss = juice.inlineContent(htmlContent, cssContent);
+    const transporter = await nodemailerTransporter();
 
-    const transporter = nodemailer.createTransport({
-      host: process.env.HOST_EMAIL,
-      port: process.env.PORT_PROVIDER_EMAIL,
-      secure: true,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.PASSWORD_USER,
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    } as nodemailer.TransportOptions);
-
-    const mailOptions = {
-      from: `Shoopy shop <${process.env.EMAIL_USER}>`,
-      to: parsedData.email,
-      subject: 'Reset password',
-      html: htmlWithCss,
-    };
+    const mailOptions = await setMailOptions(
+      'Shoopy shop',
+      'Reset password',
+      htmlWithCss
+    );
 
     await transporter.sendMail(mailOptions);
 
