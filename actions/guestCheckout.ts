@@ -1,26 +1,33 @@
 'use server';
-import { createToken } from '@/lib';
+import {
+  createToken,
+  getAuthSecrets,
+  getSessionData,
+  stepperStepsStart,
+  setCookieGuestId,
+  setCookieStepper,
+} from '@/lib';
 import { v4 as uuidv4 } from 'uuid';
-import { cookies } from 'next/headers';
-import { setCookieGuestId, setCookieStepper } from '@/lib';
-
-const secretGuest = process.env.GUEST_SECRET!;
-const secretStepper = process.env.STEPPER_SECRET!;
-const expireGuestToken = process.env.EXPIRE_GUEST_TOKEN!;
-const expireStepperToken = process.env.EXPIRE_STEPPER_TOKEN!;
 
 export const guestCheckout = async (prevState: unknown, formData: FormData) => {
   Object.fromEntries(formData);
-  const cookieStore = await cookies();
+  const AUTH = await getAuthSecrets();
+  const STEPPER_PAYLOAD = await stepperStepsStart();
+  const { cookieStore } = await getSessionData();
 
   const guestId = uuidv4();
-  const tokenGuest = await createToken(guestId, secretGuest, expireGuestToken);
+  const tokenGuest = await createToken(
+    guestId,
+    AUTH.SECRET_GUEST,
+    AUTH.EXPIRE_GUEST_TOKEN
+  );
+
   const expiresIn = new Date(Date.now() + 30 * 60 * 1000);
-  const payloadStepper = { allowed: '/shipping', completed: ['/'] };
+
   const tokenStepper = await createToken(
-    payloadStepper,
-    secretStepper,
-    expireStepperToken
+    STEPPER_PAYLOAD,
+    AUTH.SECRET_STEPPER,
+    AUTH.EXPIRE_STEPPER_TOKEN
   );
 
   setCookieGuestId(cookieStore, tokenGuest, expiresIn);
