@@ -1,6 +1,4 @@
-export const errorMessageAction = (message: string) => {
-  return {
-    message,
-    success: false,
-  };
-};
+export const errorMessageAction = (message: string) => ({
+  message,
+  success: false,
+});
