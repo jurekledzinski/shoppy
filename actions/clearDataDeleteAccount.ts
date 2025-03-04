@@ -1,15 +1,13 @@
 'use server';
-import { connectDBAction, getAuthToken, getCollectionDb } from '@/lib';
+import { connectDBAction, getCollectionDb, getSessionData } from '@/lib';
 import { errorMessageAction } from '@/helpers';
-import { headers } from 'next/headers';
 import { Cart, Order } from '@/models';
 
 export const clearDataDeleteAccount = connectDBAction(
   async (prevState: unknown, formData: FormData) => {
-    const headersData = await headers();
-    Object.fromEntries(formData);
+    const { token } = await getSessionData();
 
-    const token = await getAuthToken({ headers: headersData });
+    Object.fromEntries(formData);
 
     if (!token) return errorMessageAction('Unauthorized');
 
