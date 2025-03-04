@@ -1,12 +1,12 @@
 'use server';
 import {
   createToken,
-  verifyToken,
   getExpireInCookie,
   setCookieGuestId,
   setCookieStepper,
   getSessionData,
   getAuthSecrets,
+  validationData,
 } from '@/lib';
 
 export const extendGuestSession = async (
@@ -15,28 +15,24 @@ export const extendGuestSession = async (
 ) => {
   const AUTH = await getAuthSecrets();
   const { cookieGuest, cookieStepper, cookieStore } = await getSessionData();
+
   Object.fromEntries(formData);
+
+  const result = await validationData(cookieGuest, null, cookieStepper);
+  if ('message' in result) return result;
+  const { guest, stepper } = result;
 
   const expiresIn = getExpireInCookie();
 
   if (cookieGuest && cookieStepper) {
-    const dataGuest = await verifyToken<{ value: string }>(
-      cookieGuest.value,
-      AUTH.SECRET_GUEST
-    );
-
-    const dataStepper = await verifyToken<{
-      value: { allowed: string; completed: string[] };
-    }>(cookieStepper.value, AUTH.SECRET_STEPPER);
-
     const tokenGuest = await createToken(
-      dataGuest.payload.value,
+      guest,
       AUTH.SECRET_GUEST,
       AUTH.EXPIRE_GUEST_TOKEN
     );
 
     const tokenStepper = await createToken(
-      dataStepper.payload.value,
+      stepper ?? '',
       AUTH.SECRET_STEPPER,
       AUTH.EXPIRE_STEPPER_TOKEN
     );
