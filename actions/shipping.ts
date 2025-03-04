@@ -1,43 +1,32 @@
 'use server';
-import { cookies, headers } from 'next/headers';
-import { errorMessageAction } from '@/helpers';
-import { Cart, Order, OrderShippingSchema } from '@/models';
+import { OrderShippingSchema } from '@/models';
 import { revalidateTag } from 'next/cache';
 
 import {
   connectDBAction,
   createToken,
-  getAuthToken,
-  getCollectionDb,
-  verifyToken,
   getExpireInCookie,
   setCookieGuestId,
   setCookieStepper,
   updateCartExpiryAt,
   updateShipping,
+  stepperStepsShipping,
+  getAuthSecrets,
+  getSessionData,
+  validationData,
 } from '@/lib';
-
-const secretGuest = process.env.GUEST_SECRET!;
-const secretStepper = process.env.STEPPER_SECRET!;
-const expireGuestToken = process.env.EXPIRE_GUEST_TOKEN!;
-const expireStepperToken = process.env.EXPIRE_STEPPER_TOKEN!;
-
-const payloadStepper = {
-  allowed: '/shipping/place-order',
-  completed: ['/', '/shipping'],
-};
 
 export const shipping = connectDBAction(
   async (prevState: unknown, formData: FormData) => {
-    const cookieStore = await cookies();
-    const headersData = await headers();
-    const cookieGuest = cookieStore.get('guestId');
-    const cookieStepper = cookieStore.get('stepper');
-    const body = Object.fromEntries(formData);
+    const AUTH = await getAuthSecrets();
+    const STEPPER_PAYLOAD = await stepperStepsShipping();
 
-    const token = await getAuthToken({ headers: headersData });
+    const { cookieGuest, cookieStepper, cookieStore, token } =
+      await getSessionData();
 
     const expiresIn = getExpireInCookie();
+
+    const body = Object.fromEntries(formData);
 
     const parsedData = OrderShippingSchema.parse({
       ...body,
@@ -48,74 +37,39 @@ export const shipping = connectDBAction(
       ...(cookieGuest && { expiryAt: expiresIn }),
     });
 
-    if (!token && !cookieGuest && !cookieStepper) {
-      return errorMessageAction('Unauthorized');
-    }
-
-    const collection = getCollectionDb<Omit<Order, '_id'>>('orders');
-    if (!collection) return errorMessageAction('Internal server error');
+    const result = await validationData(cookieGuest, token, cookieStepper);
+    if ('message' in result) return result;
+    const { collectionCarts, collectionOrders, guest } = result;
 
     const tokenStepper = await createToken(
-      payloadStepper,
-      secretStepper,
-      expireStepperToken
+      STEPPER_PAYLOAD,
+      AUTH.SECRET_STEPPER,
+      AUTH.EXPIRE_STEPPER_TOKEN
     );
 
     if (!token && cookieGuest && cookieStepper) {
-      const dataGuest = await verifyToken<{ value: string }>(
-        cookieGuest.value,
-        secretGuest
-      );
-
-      await verifyToken<{
-        value: { allowed: string; completed: string[] };
-      }>(cookieStepper.value, secretStepper);
-
       const tokenGuest = await createToken(
-        dataGuest.payload.value,
-        secretGuest,
-        expireGuestToken
+        guest,
+        AUTH.SECRET_GUEST,
+        AUTH.EXPIRE_GUEST_TOKEN
       );
 
-      const collectionCarts = getCollectionDb<Omit<Cart, '_id'>>('carts');
-      if (!collectionCarts) return errorMessageAction('Internal server error');
-
-      await updateCartExpiryAt(
-        collectionCarts,
-        dataGuest.payload.value,
-        expiresIn
-      );
-
-      await updateShipping(collection, parsedData, 'guestId');
-
+      await updateCartExpiryAt(collectionCarts, guest, expiresIn);
+      await updateShipping(collectionOrders, parsedData, 'guestId');
       setCookieGuestId(cookieStore, tokenGuest, expiresIn);
-      setCookieStepper(cookieStore, tokenStepper, expiresIn);
-
-      revalidateTag('get_order');
-
-      return {
-        message: 'Shipping data added successful',
-        success: true,
-      };
     }
 
     if (token && !cookieGuest && cookieStepper) {
-      await verifyToken<{
-        value: { allowed: string; completed: string[] };
-      }>(cookieStepper.value, secretStepper);
-
-      await updateShipping(collection, parsedData, 'userId');
-
-      setCookieStepper(cookieStore, tokenStepper, expiresIn);
-
-      revalidateTag('get_order');
-
-      return {
-        message: 'Shipping data added successful',
-        success: true,
-      };
+      await updateShipping(collectionOrders, parsedData, 'userId');
     }
 
-    return errorMessageAction('Unauthorized');
+    setCookieStepper(cookieStore, tokenStepper, expiresIn);
+
+    revalidateTag('get_order');
+
+    return {
+      message: 'Shipping data added successful',
+      success: true,
+    };
   }
 );
