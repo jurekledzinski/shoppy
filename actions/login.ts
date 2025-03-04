@@ -1,17 +1,20 @@
 'use server';
 import { actionTryCatch } from '@/helpers';
 import { cookies } from 'next/headers';
-import { createToken, setCookieStepper } from '@/lib';
+import {
+  createToken,
+  getAuthSecrets,
+  setCookieStepper,
+  stepperStepsStart,
+} from '@/lib';
 import { LoginUserSchema } from '@/models';
 import { signIn } from '@/auth';
 
-const secretStepper = process.env.STEPPER_SECRET!;
-const expireStepperToken = process.env.EXPIRE_STEPPER_TOKEN!;
-
-const payloadStepper = { allowed: '/shipping', completed: ['/'] };
-
 export const login = actionTryCatch(
   async (prevState: unknown, formData: FormData) => {
+    const AUTH = await getAuthSecrets();
+    const STEPPER_PAYLOAD = await stepperStepsStart();
+
     const cookieStore = await cookies();
     const body = Object.fromEntries(formData);
 
@@ -28,9 +31,9 @@ export const login = actionTryCatch(
 
     if (paramsCheckout === 'login') {
       const tokenStepper = await createToken(
-        payloadStepper,
-        secretStepper,
-        expireStepperToken
+        STEPPER_PAYLOAD,
+        AUTH.SECRET_STEPPER,
+        AUTH.EXPIRE_STEPPER_TOKEN
       );
 
       const expiresIn = new Date(Date.now() + 30 * 60 * 1000);
