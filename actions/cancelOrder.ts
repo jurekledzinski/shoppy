@@ -1,87 +1,45 @@
 'use server';
-import { Cart, Order } from '@/models';
+
+import { revalidateTag } from 'next/cache';
+
 import {
   connectDBAction,
-  getAuthToken,
-  getCollectionDb,
-  verifyToken,
   deleteOrder,
   deleteCart,
   deleteCookie,
+  getSessionData,
+  validationData,
 } from '@/lib';
-import { cookies, headers } from 'next/headers';
-import { errorMessageAction } from '@/helpers';
-import { revalidateTag } from 'next/cache';
-
-const secretGuest = process.env.GUEST_SECRET!;
-const secretStepper = process.env.STEPPER_SECRET!;
 
 export const cancelOrder = connectDBAction(
   async (prevState: unknown, formData: FormData) => {
-    const cookieStore = await cookies();
-    const headersData = await headers();
-    const cookieGuest = cookieStore.get('guestId');
-    const cookieStepper = cookieStore.get('stepper');
+    const { cookieGuest, cookieStepper, cookieStore, token } =
+      await getSessionData();
 
     const body = Object.fromEntries(formData);
     const orderId = body.orderId as string;
 
-    const token = await getAuthToken({ headers: headersData });
-
-    if (!token && !cookieGuest && !cookieStepper) {
-      return errorMessageAction('Unauthorized');
-    }
-
-    const collectionOrders = getCollectionDb<Omit<Order, '_id'>>('orders');
-    if (!collectionOrders) return errorMessageAction('Internal server error');
-
-    const collectionCarts = getCollectionDb<Omit<Cart, '_id'>>('carts');
-    if (!collectionCarts) return errorMessageAction('Internal server error');
+    const result = await validationData(cookieGuest, token, cookieStepper);
+    if ('message' in result) return result;
+    const { collectionCarts, collectionOrders, guest } = result;
 
     if (!token && cookieGuest && cookieStepper) {
-      const dataGuest = await verifyToken<{ value: string }>(
-        cookieGuest.value,
-        secretGuest
-      );
-
-      await verifyToken<{
-        value: { allowed: string; completed: string[] };
-      }>(cookieStepper.value, secretStepper);
-
-      await deleteOrder(collectionOrders, orderId);
-
-      await deleteCart(collectionCarts, 'guestId', dataGuest.payload.value);
-
+      await deleteCart(collectionCarts, 'guestId', guest);
       deleteCookie(cookieStore, 'guestId');
-      deleteCookie(cookieStore, 'stepper');
-
-      revalidateTag('get_order');
-
-      return {
-        message: 'Cancel order successful',
-        success: true,
-      };
     }
 
     if (token && !cookieGuest && cookieStepper) {
-      await verifyToken<{
-        value: { allowed: string; completed: string[] };
-      }>(cookieStepper.value, secretStepper);
-
-      await deleteOrder(collectionOrders, orderId);
-
       await deleteCart(collectionCarts, 'userId', token.id as string);
-
-      deleteCookie(cookieStore, 'stepper');
-
-      revalidateTag('get_order');
-
-      return {
-        message: 'Cancel order successful',
-        success: true,
-      };
     }
 
-    return errorMessageAction('Unauthorized');
+    await deleteOrder(collectionOrders, orderId);
+    deleteCookie(cookieStore, 'stepper');
+
+    revalidateTag('get_order');
+
+    return {
+      message: 'Cancel order successful',
+      success: true,
+    };
   }
 );
