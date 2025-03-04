@@ -1,49 +1,44 @@
 'use server';
-import { cookies } from 'next/headers';
 import {
   createToken,
   verifyToken,
   getExpireInCookie,
   setCookieGuestId,
   setCookieStepper,
+  getSessionData,
+  getAuthSecrets,
 } from '@/lib';
-
-const secretGuest = process.env.GUEST_SECRET!;
-const secretStepper = process.env.STEPPER_SECRET!;
-const expireGuestToken = process.env.EXPIRE_GUEST_TOKEN!;
-const expireStepperToken = process.env.EXPIRE_STEPPER_TOKEN!;
 
 export const extendGuestSession = async (
   prevState: unknown,
   formData: FormData
 ) => {
+  const AUTH = await getAuthSecrets();
+  const { cookieGuest, cookieStepper, cookieStore } = await getSessionData();
   Object.fromEntries(formData);
-  const cookieStore = await cookies();
-  const cookieGuest = cookieStore.get('guestId');
-  const cookieStepper = cookieStore.get('stepper');
 
   const expiresIn = getExpireInCookie();
 
   if (cookieGuest && cookieStepper) {
     const dataGuest = await verifyToken<{ value: string }>(
       cookieGuest.value,
-      secretGuest
+      AUTH.SECRET_GUEST
     );
 
     const dataStepper = await verifyToken<{
       value: { allowed: string; completed: string[] };
-    }>(cookieStepper.value, secretStepper);
+    }>(cookieStepper.value, AUTH.SECRET_STEPPER);
 
     const tokenGuest = await createToken(
       dataGuest.payload.value,
-      secretGuest,
-      expireGuestToken
+      AUTH.SECRET_GUEST,
+      AUTH.EXPIRE_GUEST_TOKEN
     );
 
     const tokenStepper = await createToken(
       dataStepper.payload.value,
-      secretStepper,
-      expireStepperToken
+      AUTH.SECRET_STEPPER,
+      AUTH.EXPIRE_STEPPER_TOKEN
     );
 
     setCookieGuestId(cookieStore, tokenGuest, expiresIn);
