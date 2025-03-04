@@ -1,4 +1,5 @@
 'use server';
+
 import {
   createToken,
   getAuthSecrets,
@@ -34,7 +35,7 @@ export const guestCheckout = async (prevState: unknown, formData: FormData) => {
   setCookieStepper(cookieStore, tokenStepper, expiresIn);
 
   return {
-    message: 'Procces checkout as guest successful',
+    message: 'Procces checkout guest successful',
     success: true,
   };
 };
