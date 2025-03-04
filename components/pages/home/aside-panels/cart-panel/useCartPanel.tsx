@@ -39,6 +39,7 @@ export const useCartPanel = ({
     });
     updateSyncCart(resultUpdateCart, userId, guestId);
   };
+
   const subtractGlobalQuantity = (id: string) => {
     const payload = { id };
     dispatch({ type: 'SUBTRACT_ITEM', payload });
