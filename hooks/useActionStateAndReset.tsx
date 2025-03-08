@@ -1,13 +1,14 @@
 'use client';
 import { State } from '@/lib';
-import { startTransition, useActionState } from 'react';
+import { startTransition, useActionState, useCallback, useEffect } from 'react';
 
 type useActionStateAndResetProps<T> = {
   onResetAction?: () => void;
   fnAction: (prevState: unknown, formData: FormData) => Promise<State<T>>;
+  autoReset?: boolean;
 };
 
-const initialState = {
+export const initialState = {
   message: '',
   success: false,
 };
@@ -15,19 +16,14 @@ const initialState = {
 export const useActionStateAndReset = <T,>({
   onResetAction,
   fnAction,
+  autoReset,
 }: useActionStateAndResetProps<T>) => {
   const [state, formAction, isPending] = useActionState(
     async (state: unknown, payload: FormData | null) => {
-      if (payload === null) {
-        return {
-          message: '',
-          success: false,
-        } as State<T>;
-      }
+      if (payload === null) return initialState as State<T>;
 
       try {
-        const response = await fnAction(state, payload);
-        return response;
+        return await fnAction(state, payload);
       } catch {
         return { message: 'An error occurred', success: false } as State<T>;
       }
@@ -35,12 +31,19 @@ export const useActionStateAndReset = <T,>({
     initialState as State<T>
   );
 
-  const resetStateAction = (formData?: FormData) => {
-    startTransition(() => {
-      formAction(formData || null);
-      if (onResetAction) onResetAction();
-    });
-  };
+  const resetStateAction = useCallback(
+    (formData?: FormData) => {
+      startTransition(() => {
+        formAction(formData || null);
+        if (onResetAction) onResetAction();
+      });
+    },
+    [formAction, onResetAction]
+  );
+
+  useEffect(() => {
+    if (autoReset && state.success && !isPending) resetStateAction();
+  }, [autoReset, state, isPending, resetStateAction]);
 
   return {
     action: { state, formAction, isPending },
