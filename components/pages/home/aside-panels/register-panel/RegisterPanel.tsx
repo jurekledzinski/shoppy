@@ -8,8 +8,8 @@ import { useActionState } from 'react';
 import { register } from '@/actions';
 
 export const RegisterPanel = ({
-  onRedirectLogin,
-  onSuccessAction,
+  onRedirect,
+  onSuccess,
 }: RegisterPanelProps) => {
   const [stateRegister, formActionRegister, isPendingRegister] = useActionState(
     register,
@@ -20,10 +20,10 @@ export const RegisterPanel = ({
   );
 
   const { methodsRegister, onSubmitRegister } = useRegisterForm({
-    formAction: formActionRegister,
+    onSubmitForm: formActionRegister,
     isPending: isPendingRegister,
     isSuccess: stateRegister.success,
-    onSuccess: onSuccessAction,
+    onSuccess,
   });
   return (
     <>
@@ -39,7 +39,7 @@ export const RegisterPanel = ({
         <QuestionRedirect
           buttonText="Sign in here"
           question=" Already registered?"
-          onClick={onRedirectLogin}
+          onClick={(e) => onRedirect(e, 'login')}
         />
       </div>
     </>
