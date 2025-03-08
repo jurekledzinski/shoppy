@@ -16,8 +16,8 @@ import { ProccedCheckoutPanelProps } from './types';
 
 export const ProccedCheckoutPanel = ({
   isPending,
-  onCancelAction,
-  onContinueAction,
+  onCancel,
+  onContinue,
 }: ProccedCheckoutPanelProps) => {
   const [selectedValue, setSelectedValue] = useState('login');
 
@@ -68,9 +68,7 @@ export const ProccedCheckoutPanel = ({
           className={classNames(stylesButton.buttonConfirmFullWidth)}
           disabled={isPending}
           text="Continue"
-          onClick={() => {
-            onContinueAction(selectedValue);
-          }}
+          onClick={() => onContinue(selectedValue)}
         >
           {isPending && <Loader />}
         </Button>
@@ -78,7 +76,7 @@ export const ProccedCheckoutPanel = ({
           className={classNames(stylesButton.buttonCancelFullWidth)}
           disabled={isPending}
           text="Cancel"
-          onClick={onCancelAction}
+          onClick={onCancel}
         />
       </div>
     </>

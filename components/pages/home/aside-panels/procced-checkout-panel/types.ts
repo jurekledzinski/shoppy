@@ -1,5 +1,7 @@
+import { MouseEventHandler } from 'react';
+
 export type ProccedCheckoutPanelProps = {
-  onCancelAction: () => void;
-  onContinueAction: (name: string) => void;
-  isPending: boolean;
+  onCancel: MouseEventHandler<HTMLButtonElement>;
+  onContinue: (name: string) => void;
+  isPending?: boolean;
 };
