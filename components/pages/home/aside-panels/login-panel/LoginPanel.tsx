@@ -1,33 +1,23 @@
-'use client';
 import styles from './LoginPanel.module.css';
 import { login } from '@/actions';
 import { LoginForm } from '../../forms';
 import { LoginPanelProps } from './types';
 import { QuestionRedirect } from '@/components/shared';
-import { useEffect } from 'react';
 import { useActionStateAndReset, useLoginForm } from '@/hooks';
 
 export const LoginPanel = ({
-  onRedirectForgetPassword,
-  onRedirectRegister,
   optionCheckout,
-  onSuccessAction,
+  onRedirect,
+  onSuccess,
 }: LoginPanelProps) => {
-  const { action, resetStateAction } = useActionStateAndReset({
+  const { action } = useActionStateAndReset({
     fnAction: login,
-    onResetAction: () => {
-      onSuccessAction();
-    },
+    onResetAction: () => onSuccess(),
+    autoReset: true,
   });
 
-  useEffect(() => {
-    if (action.state.success && !action.isPending) {
-      resetStateAction();
-    }
-  }, [action, resetStateAction]);
-
   const { methodsLogin, onSubmitLogin } = useLoginForm({
-    formAction: action.formAction,
+    onSubmitForm: action.formAction,
     isPending: action.isPending,
     isSuccess: action.state.success,
     onSuccess: () => {},
@@ -48,13 +38,13 @@ export const LoginPanel = ({
         <QuestionRedirect
           buttonText="Sign up here"
           question="Not registered?"
-          onClick={onRedirectRegister}
+          onClick={(e) => onRedirect(e, 'register')}
         />
 
         <QuestionRedirect
           buttonText="Click here"
           question="Forget password?"
-          onClick={onRedirectForgetPassword}
+          onClick={(e) => onRedirect(e, 'forget-password')}
         />
       </div>
     </>

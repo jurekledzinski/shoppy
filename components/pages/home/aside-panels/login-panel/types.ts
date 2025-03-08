@@ -1,8 +1,7 @@
-import { MouseEventHandler } from 'react';
+import { EventButton, Redirect } from '../aside-panels';
 
 export type LoginPanelProps = {
-  onRedirectRegister: MouseEventHandler<HTMLButtonElement>;
-  onRedirectForgetPassword: MouseEventHandler<HTMLButtonElement>;
-  onSuccessAction: () => void;
+  onRedirect: (e: EventButton, panel: Redirect) => void;
+  onSuccess: () => void;
   optionCheckout?: string | null;
 };
