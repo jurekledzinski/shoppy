@@ -79,7 +79,4 @@ export type UpdateCartBaseOnInventoryIssue = (
   inventoryIssues: CartInventoryPayload[]
 ) => Promise<Cart>;
 
-export type UpdateDbCart = (
-  dbCart: Omit<Cart, '_id'>,
-  cartData: Cart
-) => Promise<Cart>;
+export type UpdateDbCart = (dbCart: Cart, cartData: Cart) => Promise<Cart>;
