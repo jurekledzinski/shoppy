@@ -27,7 +27,7 @@ export const PlaceOrderSection = ({
   const { Controller, methodsPlaceOrder, onSubmitPlaceOrder } =
     usePlaceOrderForm({
       defaultData: orderData,
-      formAction: formActionPlaceOrder,
+      onSubmitForm: formActionPlaceOrder,
       isPending: isPendingPlaceOrder,
       isSuccess: statePlaceOrder.success,
       onSuccess: () => {

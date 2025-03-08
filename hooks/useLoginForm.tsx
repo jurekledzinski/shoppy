@@ -1,10 +1,11 @@
+'use client';
+import { LoginFormInputs } from '@/components/pages';
 import { startTransition } from 'react';
 import { useForm } from 'react-hook-form';
-import { LoginFormInputs } from '@/components/pages';
 import { useResetForm } from './useResetForm';
 
 type UseLoginFormProps = {
-  formAction: (payload: FormData) => void;
+  onSubmitForm: (payload: FormData) => void;
   isPending: boolean;
   isSuccess: boolean;
   onSuccess: () => void;
@@ -12,7 +13,7 @@ type UseLoginFormProps = {
 };
 
 export const useLoginForm = ({
-  formAction,
+  onSubmitForm,
   isPending,
   isSuccess,
   onSuccess,
@@ -31,9 +32,7 @@ export const useLoginForm = ({
     formData.set('password', data.password);
     if (optionCheckout) formData.set('params', optionCheckout);
 
-    startTransition(() => {
-      formAction(formData);
-    });
+    startTransition(() => onSubmitForm(formData));
   };
 
   useResetForm({

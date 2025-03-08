@@ -1,3 +1,4 @@
+'use client';
 import { Controller, useForm } from 'react-hook-form';
 import { Order } from '@/models';
 import { PlaceOrderFormInputs } from '@/components/pages';
@@ -6,7 +7,7 @@ import { useResetForm } from './useResetForm';
 
 type UsePlaceOrderFormProps = {
   defaultData: Order | null;
-  formAction: (payload: FormData) => void;
+  onSubmitForm: (payload: FormData) => void;
   isPending: boolean;
   isSuccess: boolean;
   onSuccess: () => void;
@@ -14,7 +15,7 @@ type UsePlaceOrderFormProps = {
 
 export const usePlaceOrderForm = ({
   defaultData,
-  formAction,
+  onSubmitForm,
   isPending,
   isSuccess,
   onSuccess,
@@ -40,9 +41,7 @@ export const usePlaceOrderForm = ({
     formData.set('timeDelivery', data.timeDelivery.toString());
     if (defaultData?._id) formData.set('_id', defaultData._id);
 
-    startTransition(() => {
-      formAction(formData);
-    });
+    startTransition(() => onSubmitForm(formData));
   };
 
   useResetForm({

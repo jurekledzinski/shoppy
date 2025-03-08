@@ -1,3 +1,4 @@
+'use client';
 import { startTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { useResetForm } from './useResetForm';
@@ -6,7 +7,7 @@ import { UserRegister } from '@/models';
 
 type UseUpdateProfileFormProps = {
   defaults: Omit<UserRegister, 'password' | '_id'> | null;
-  formAction: (payload: FormData) => void;
+  onSubmitForm: (payload: FormData) => void;
   isPending: boolean;
   isSuccess: boolean;
   onSuccess: () => void;
@@ -14,7 +15,7 @@ type UseUpdateProfileFormProps = {
 
 export const useUpdateProfileForm = ({
   defaults,
-  formAction,
+  onSubmitForm,
   isPending,
   isSuccess,
   onSuccess,
@@ -31,9 +32,7 @@ export const useUpdateProfileForm = ({
     formData.set('email', data.email);
     formData.set('name', data.name);
 
-    startTransition(() => {
-      formAction(formData);
-    });
+    startTransition(() => onSubmitForm(formData));
   };
 
   useResetForm({

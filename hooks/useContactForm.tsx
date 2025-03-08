@@ -1,17 +1,18 @@
+'use client';
 import { startTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { ContactFormInputs } from '@/components/pages';
 import { useResetForm } from './useResetForm';
 
 type UseContactFormProps = {
-  formAction: (payload: FormData) => void;
+  onSubmitForm: (payload: FormData) => void;
   isPending: boolean;
   isSuccess: boolean;
   onSuccess: () => void;
 };
 
 export const useContactForm = ({
-  formAction,
+  onSubmitForm,
   isPending,
   isSuccess,
   onSuccess,
@@ -30,9 +31,7 @@ export const useContactForm = ({
     formData.set('email', data.email);
     formData.set('message', data.message);
 
-    startTransition(() => {
-      formAction(formData);
-    });
+    startTransition(() => onSubmitForm(formData));
   };
 
   useResetForm({

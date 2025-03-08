@@ -1,17 +1,18 @@
+'use client';
 import { startTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { ChangePasswordFormInputs } from '@/components/pages';
 import { useResetForm } from './useResetForm';
 
 type UseChangePasswordFormProps = {
-  formAction: (payload: FormData) => void;
+  onSubmitForm: (payload: FormData) => void;
   isPending: boolean;
   isSuccess: boolean;
   onSuccess: () => void;
 };
 
 export const useChangePasswordForm = ({
-  formAction,
+  onSubmitForm,
   isPending,
   isSuccess,
   onSuccess,
@@ -27,9 +28,7 @@ export const useChangePasswordForm = ({
     const formData = new FormData();
     formData.set('password', data.password);
 
-    startTransition(() => {
-      formAction(formData);
-    });
+    startTransition(() => onSubmitForm(formData));
   };
 
   useResetForm({

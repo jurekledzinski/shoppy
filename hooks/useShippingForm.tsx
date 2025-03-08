@@ -1,3 +1,4 @@
+'use client';
 import { startTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { ShippingFormInputs } from '@/components/pages';
@@ -6,7 +7,7 @@ import { Order } from '@/models';
 
 type useShippingFormProps = {
   defaultData: Order | null;
-  formAction: (payload: FormData) => void;
+  onSubmitForm: (payload: FormData) => void;
   isPending: boolean;
   isSuccess: boolean;
   onSuccess: () => void;
@@ -16,7 +17,7 @@ type useShippingFormProps = {
 
 export const useShippingForm = ({
   defaultData,
-  formAction,
+  onSubmitForm,
   isPending,
   isSuccess,
   onSuccess,
@@ -47,9 +48,7 @@ export const useShippingForm = ({
     if (userId) formData.set('userId', userId);
     if (guestId) formData.set('guestId', guestId);
 
-    startTransition(() => {
-      formAction(formData);
-    });
+    startTransition(() => onSubmitForm(formData));
   };
 
   useResetForm({

@@ -1,10 +1,11 @@
+'use client';
 import { ReviewFormInputs } from '@/components/pages';
 import { startTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { useResetForm } from './useResetForm';
 
 type UseReviewFormProps = {
-  formAction: (payload: FormData) => void;
+  onSubmitForm: (payload: FormData) => void;
   isPending: boolean;
   isSuccess: boolean;
   onSuccess: () => void;
@@ -14,7 +15,7 @@ type UseReviewFormProps = {
 };
 
 export const useReviewForm = ({
-  formAction,
+  onSubmitForm,
   isPending,
   isSuccess,
   onSuccess,
@@ -37,9 +38,7 @@ export const useReviewForm = ({
     formData.set('productId', productId);
     formData.set('userName', userName);
 
-    startTransition(() => {
-      formAction(formData);
-    });
+    startTransition(() => onSubmitForm(formData));
   };
 
   useResetForm<ReviewFormInputs>({

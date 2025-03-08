@@ -33,7 +33,7 @@ export const DetailsOrderSection = ({
     useTermsConditionsForm({
       cartData: state.cart,
       defaultData: orderData,
-      formAction: action.formAction,
+      onSubmitForm: action.formAction,
       isPending: action.isPending,
       isSuccess: action.state.success,
       onSuccess: async () => {

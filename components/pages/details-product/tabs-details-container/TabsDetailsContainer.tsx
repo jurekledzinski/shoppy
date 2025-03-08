@@ -40,7 +40,7 @@ export const TabsDetailsContainer = ({
   });
 
   const { methodsReview, onSubmitReview } = useReviewForm({
-    formAction: action.formAction,
+    onSubmitForm: action.formAction,
     isPending: action.isPending,
     isSuccess: action.state.success,
     onSuccess: () => {

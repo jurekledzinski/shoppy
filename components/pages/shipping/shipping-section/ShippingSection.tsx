@@ -29,7 +29,7 @@ export const ShippingSection = ({
 
   const { methodsShipping, onSubmitShipping } = useShippingForm({
     defaultData: orderData,
-    formAction: formActionShipping,
+    onSubmitForm: formActionShipping,
     isPending: isPendingShipping,
     isSuccess: stateShipping.success,
     onSuccess: () => {

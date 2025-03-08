@@ -41,7 +41,7 @@ export const ProfileSection = ({ children, userData }: ProfileSectionProps) => {
 
   const { methodsUpdateProfile, onSubmitUpdateProfile } = useUpdateProfileForm({
     defaults: userData,
-    formAction: actionProfile.formAction,
+    onSubmitForm: actionProfile.formAction,
     isPending: actionProfile.isPending,
     isSuccess: actionProfile.state.success,
     onSuccess: () => {
@@ -52,7 +52,7 @@ export const ProfileSection = ({ children, userData }: ProfileSectionProps) => {
 
   const { methodsChangePassword, onSubmitChangePassword } =
     useChangePasswordForm({
-      formAction: actionPassword.formAction,
+      onSubmitForm: actionPassword.formAction,
       isPending: actionPassword.isPending,
       isSuccess: actionPassword.state.success,
       onSuccess: () => {

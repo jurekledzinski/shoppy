@@ -1,17 +1,18 @@
+'use client';
 import { startTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { RegisterFormInputs } from '@/components/pages';
 import { useResetForm } from './useResetForm';
 
 type UseRegisterFormProps = {
-  formAction: (payload: FormData) => void;
+  onSubmitForm: (payload: FormData) => void;
   isPending: boolean;
   isSuccess: boolean;
   onSuccess: () => void;
 };
 
 export const useRegisterForm = ({
-  formAction,
+  onSubmitForm,
   isPending,
   isSuccess,
   onSuccess,
@@ -31,9 +32,7 @@ export const useRegisterForm = ({
     formData.set('name', data.name);
     formData.set('password', data.password);
 
-    startTransition(() => {
-      formAction(formData);
-    });
+    startTransition(() => onSubmitForm(formData));
   };
 
   useResetForm({
