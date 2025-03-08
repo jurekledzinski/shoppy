@@ -1,3 +1,4 @@
+'use client';
 import { Cart } from '@/models';
 import { getItemFromLocalStorage } from '@/helpers';
 import { useCallback, useEffect } from 'react';
@@ -27,6 +28,7 @@ export const useSetCartOnRefresh = ({
       }
 
       const data = await response.json();
+
       onLoad(data.payload);
     } catch {}
   }, [onLoad]);

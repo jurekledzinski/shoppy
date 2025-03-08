@@ -1,3 +1,4 @@
+'use client';
 import { SessionContextType } from '@/store/session';
 import { useEffect } from 'react';
 
@@ -27,9 +28,7 @@ export const useSetUserSession = ({
 
     if (userId && !sessionUser.userSession) onLoggedUser(userId);
 
-    if (!userId && sessionUser.userSession) {
-      onNotLoggedUser();
-    }
+    if (!userId && sessionUser.userSession) onNotLoggedUser();
   }, [
     guestId,
     userId,

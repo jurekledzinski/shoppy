@@ -1,3 +1,4 @@
+'use client';
 import { AsideState } from '@/store/aside';
 import { useEffect } from 'react';
 
