@@ -10,40 +10,35 @@ import { useCartPanel } from './useCartPanel';
 export const CartPanel = ({
   actionElement,
   context,
-  data,
-  dispatch,
-  userId,
-  userName,
-  guestId,
+  cartState,
+  onDispatch,
+  user,
   stateOpen,
   onSuccess,
-  state,
   isPending,
 }: CartPanelProps) => {
   const { addGlobalQuantity, onClick, removeItem, subtractGlobalQuantity } =
     useCartPanel({
       actionElement,
       context,
-      dispatch,
-      guestId,
+      onDispatch,
       onSuccess,
       stateOpen,
-      userId,
-      userName,
-      state,
+      cartState,
+      user,
     });
 
   return (
     <>
       <header className={stylesAside.headerCart}>
         <span>Shopping cart</span>
-        {data.cart.products.length ? (
-          <span> {`${data.cart.totalAmountCart} Items`}</span>
+        {cartState.cart.products.length ? (
+          <span> {`${cartState.cart.totalAmountCart} Items`}</span>
         ) : null}
       </header>
       <div className={styles.container}>
         <Cart
-          data={data}
+          data={cartState}
           addGlobalQuantity={addGlobalQuantity}
           removeItem={removeItem}
           subtractGlobalQuantity={subtractGlobalQuantity}
@@ -52,7 +47,7 @@ export const CartPanel = ({
           className={classNames(stylesButton.buttonConfirmFullWidth)}
           onClick={onClick}
           text="Procced to checkout"
-          disabled={!data.cart.products.length || isPending ? true : false}
+          disabled={!cartState.cart.products.length || isPending ? true : false}
         >
           {isPending && <Loader />}
         </Button>

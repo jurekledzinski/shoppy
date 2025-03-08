@@ -10,19 +10,18 @@ import {
 export const useCartPanel = ({
   actionElement,
   context,
-  dispatch,
-  guestId,
+  onDispatch,
   onSuccess,
-  userId,
-  userName,
+  user,
   stateOpen,
-  state,
+  cartState,
 }: UseCartPanelProps) => {
+  const { guestId, userName, userId } = user;
   const addGlobalQuantity = (id: string) => {
     const payload = { id };
-    dispatch({ type: 'INCREASE_ITEM', payload });
+    onDispatch('INCREASE_ITEM', payload);
 
-    const resultUpdateCart = increaseItem(state, {
+    const resultUpdateCart = increaseItem(cartState, {
       type: 'INCREASE_ITEM',
       payload,
     });
@@ -31,9 +30,9 @@ export const useCartPanel = ({
 
   const removeItem = (id: string) => {
     const payload = { id };
-    dispatch({ type: 'REMOVE_ITEM', payload });
+    onDispatch('REMOVE_ITEM', payload);
 
-    const resultUpdateCart = removeCartItem(state, {
+    const resultUpdateCart = removeCartItem(cartState, {
       type: 'REMOVE_ITEM',
       payload,
     });
@@ -42,9 +41,9 @@ export const useCartPanel = ({
 
   const subtractGlobalQuantity = (id: string) => {
     const payload = { id };
-    dispatch({ type: 'SUBTRACT_ITEM', payload });
+    onDispatch('SUBTRACT_ITEM', payload);
 
-    const resultUpdateCart = subtractItem(state, {
+    const resultUpdateCart = subtractItem(cartState, {
       type: 'SUBTRACT_ITEM',
       payload,
     });
@@ -52,10 +51,7 @@ export const useCartPanel = ({
   };
 
   const onClick = () => {
-    if ((userId && userName) || guestId) {
-      return onSuccess();
-    }
-
+    if ((userId && userName) || guestId) return onSuccess();
     controlAside(context, 'procced-checkout-options', actionElement, stateOpen);
   };
 

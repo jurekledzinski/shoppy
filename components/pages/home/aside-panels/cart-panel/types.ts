@@ -1,29 +1,19 @@
 import { AsideState, AsideType } from '@/store/aside';
-import { CartAction, CartState } from '@/store/cart';
-import { Dispatch } from 'react';
+import { CartState } from '@/store/cart';
+import { Type, User } from '../aside-panels';
 
-export type CartPanelProps = {
+type BaseCartPanelTypes = {
   actionElement: AsideType;
+  cartState: CartState;
   context: AsideState;
-  data: CartState;
-  dispatch: Dispatch<CartAction>;
-  userId: string;
-  userName: string;
-  guestId: string | null;
-  stateOpen: boolean;
+  onDispatch: (type: Type, payload: { id: string }) => void;
   onSuccess: () => void;
-  state: CartState;
+  stateOpen: boolean;
+  user: User;
+};
+
+export interface CartPanelProps extends BaseCartPanelTypes {
   isPending?: boolean;
-};
+}
 
-export type UseCartPanelProps = {
-  actionElement: AsideType;
-  context: AsideState;
-  dispatch: Dispatch<CartAction>;
-  stateOpen: boolean;
-  onSuccess: () => void;
-  userId: string;
-  userName: string;
-  guestId: string | null;
-  state: CartState;
-};
+export type UseCartPanelProps = BaseCartPanelTypes;
