@@ -25,6 +25,7 @@ const updateDbCart: UpdateDbCart = async (dbCart, cartData) => {
 
   const newCart = {
     ...dbCart,
+    _id: dbCart._id?.toString(),
     products: updatedProducts,
     totalAmountCart: updateCartTotalAmount(updatedProducts),
     totalPriceCart: updateCartTotalPrice(updatedProducts),
@@ -68,6 +69,7 @@ export const processCartUpdate: ProcessCartUpdate = async (
   );
 
   let newCart = dbCart ? await updateDbCart(dbCart, cartData) : cartData;
+
   const updatedProducts = newCart.products;
 
   const inventoryIssues = await checkProductsInventory(
@@ -83,9 +85,9 @@ export const processCartUpdate: ProcessCartUpdate = async (
 
     return newCart;
   } else {
-    await updateCart(collectionCarts, cartData, userIdKey);
+    await updateCart(collectionCarts, newCart, userIdKey);
     if (tokenGuest) setCookieGuestId(cookieStore, tokenGuest, expiresIn!);
 
-    return cartData;
+    return newCart;
   }
 };
