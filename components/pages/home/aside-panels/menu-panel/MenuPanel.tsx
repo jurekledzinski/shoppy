@@ -10,7 +10,7 @@ export const MenuPanel = ({
   context,
   stateOpen,
   user,
-  onSuccessAction,
+  onSuccess,
 }: MenuPanelProps) => {
   const {
     onCloseAside,
@@ -22,22 +22,22 @@ export const MenuPanel = ({
     actionElement,
     context,
     stateOpen,
-    onSuccess: onSuccessAction,
+    onSuccess,
   });
 
   return (
     <>
-      <header className={styles.header}>Welcome {user.name ?? ''}</header>
+      <header className={styles.header}>Welcome {user.userName}</header>
       <Menu>
         <MenuItem className={styles.menuItemLink}>
           <Link href="/" className={styles.link} onClick={onCloseAside}>
             Home
           </Link>
         </MenuItem>
-        {user.id && (
+        {user.userId && (
           <MenuItem className={styles.menuItemLink}>
             <Link
-              href={`/orders/${user.id}`}
+              href={`/orders/${user.userId}`}
               className={styles.link}
               onClick={onCloseAside}
             >
@@ -45,10 +45,10 @@ export const MenuPanel = ({
             </Link>
           </MenuItem>
         )}
-        {user.id && (
+        {user.userId && (
           <MenuItem className={styles.menuItemLink}>
             <Link
-              href={`/profile/${user.id}`}
+              href={`/profile/${user.userId}`}
               className={styles.link}
               onClick={onCloseAside}
             >
@@ -57,9 +57,11 @@ export const MenuPanel = ({
           </MenuItem>
         )}
         <MenuItem onClick={onRedirectContact}>Contact</MenuItem>
-        {!user.id && <MenuItem onClick={onRedirectLogin}>Sign In</MenuItem>}
-        {!user.id && <MenuItem onClick={onRedirectRegister}>Sign Up</MenuItem>}
-        {user.id && <MenuItem onClick={onLogout}>Logout</MenuItem>}
+        {!user.userId && <MenuItem onClick={onRedirectLogin}>Sign In</MenuItem>}
+        {!user.userId && (
+          <MenuItem onClick={onRedirectRegister}>Sign Up</MenuItem>
+        )}
+        {user.userId && <MenuItem onClick={onLogout}>Logout</MenuItem>}
       </Menu>
     </>
   );

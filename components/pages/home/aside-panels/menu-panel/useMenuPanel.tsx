@@ -2,7 +2,6 @@
 import { controlAside, showToast } from '@/helpers';
 import { logout } from '@/actions';
 import { useActionStateAndReset } from '@/hooks';
-import { useEffect } from 'react';
 import { UseMenuPanelProps } from './types';
 
 export const useMenuPanel = ({
@@ -11,8 +10,9 @@ export const useMenuPanel = ({
   stateOpen,
   onSuccess,
 }: UseMenuPanelProps) => {
-  const { action: actionLogout, resetStateAction } = useActionStateAndReset({
+  const { resetStateAction } = useActionStateAndReset({
     fnAction: logout,
+    onResetAction: () => onSuccess(),
   });
 
   const onCloseAside = () => {
@@ -32,18 +32,6 @@ export const useMenuPanel = ({
   const onRedirectRegister = () => {
     controlAside(context, 'register', actionElement, stateOpen);
   };
-
-  useEffect(() => {
-    if (actionLogout.state.success && !actionLogout.isPending) {
-      resetStateAction();
-      onSuccess();
-    }
-  }, [
-    actionLogout.state.success,
-    actionLogout.isPending,
-    resetStateAction,
-    onSuccess,
-  ]);
 
   return {
     onCloseAside,
