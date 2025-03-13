@@ -1,5 +1,4 @@
 import styles from './ProfileControl.module.css';
-import stylesButton from '@styles/buttons.module.css';
 import { Alert, ModalDelete } from '@/components/shared';
 import { ChangePasswordForm, UpdateProfileForm } from '../forms';
 import { clearDataDeleteAccount } from '@/actions';
@@ -49,7 +48,6 @@ export const ProfileControl = ({
       <ModalDelete
         isPending={actionDelete.isPending}
         isSuccess={actionDelete.state.success}
-        classButton={stylesButton.buttonDelete}
         onConfirm={(e) => {
           e.preventDefault();
           startTransition(() => {
@@ -83,7 +81,9 @@ export const ProfileControl = ({
       </ModalDelete>
 
       {!actionDelete.state.success && actionDelete.state.message && (
-        <Alert>{actionDelete.state.message}</Alert>
+        <Alert marginTop={8} color="negative">
+          {actionDelete.state.message}
+        </Alert>
       )}
     </>
   );

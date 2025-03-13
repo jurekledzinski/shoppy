@@ -51,7 +51,9 @@ export const TabsCategoriesContainer = ({
       </Tabs>
 
       {error && !error.success && error.message && (
-        <Alert>{error.message}</Alert>
+        <Alert marginTop={8} color="negative">
+          {error.message}
+        </Alert>
       )}
     </>
   );

@@ -108,7 +108,11 @@ export const TabsDetailsContainer = ({
 
                 {errorReviews &&
                   !errorReviews.success &&
-                  errorReviews.message && <Alert>{errorReviews.message}</Alert>}
+                  errorReviews.message && (
+                    <Alert marginTop={8} color="negative">
+                      {errorReviews.message}
+                    </Alert>
+                  )}
               </div>
             </>
           )}
