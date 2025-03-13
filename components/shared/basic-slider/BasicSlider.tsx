@@ -1,6 +1,5 @@
 'use client';
 import Image from 'next/image';
-import Link from 'next/link';
 import styles from './BasicSlider.module.css';
 import stylesSkeleton from '@/styles/HomePage.module.css';
 import { classNames } from '@/helpers';
@@ -10,6 +9,7 @@ import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { useState } from 'react';
 import { useLoadSkeleton } from '@/hooks';
 import '@splidejs/splide/dist/css/splide.min.css';
+import { Button } from '../button';
 
 export const BasicSlider = () => {
   const [indexSlide, setIndexSlide] = useState(0);
@@ -33,9 +33,7 @@ export const BasicSlider = () => {
                   >
                     <h3 className={styles.title}>{item.title}</h3>
                     <p className={styles.subTitle}>{item.description}</p>
-                    <Link className={styles.link} href={item.redirect}>
-                      Buy now
-                    </Link>
+                    <Button href={item.redirect} label="Buy now" radius={2} />
                   </div>
                 </div>
                 <div className={styles.rightBoxSlide}>

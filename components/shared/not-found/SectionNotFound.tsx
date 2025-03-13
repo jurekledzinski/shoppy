@@ -1,6 +1,5 @@
 'use client';
 import styles from './SectionNotFound.module.css';
-import stylesButton from '@styles/buttons.module.css';
 import stylesSection from '@/components/shared/section/Section.module.css';
 import { Button } from '../button';
 import { Section } from '../section';
@@ -13,9 +12,9 @@ export const SectionNotFound = () => {
     <Section className={stylesSection.sectionCentered}>
       <h3 className={styles.title}>Page not found!</h3>
       <Button
-        className={stylesButton.buttonConfirm}
-        text="Back to previous page"
+        label="Back to previous page"
         onClick={() => router.back()}
+        radius={2}
       />
     </Section>
   );

@@ -1,12 +1,5 @@
-import stylesButton from '@styles/buttons.module.css';
+import { Alert, Button, ErrorMessage, FieldInput } from '@/components/shared';
 import { ForgetPasswordFormProps } from './types';
-import {
-  Alert,
-  Button,
-  ErrorMessage,
-  FieldInput,
-  Loader,
-} from '@/components/shared';
 
 export const ForgetPasswordForm = ({
   isPending,
@@ -35,16 +28,20 @@ export const ForgetPasswordForm = ({
 
       {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
 
-      {!state.success && state.message && <Alert>{state.message}</Alert>}
+      {!state.success && state.message && (
+        <Alert marginTop={8} color="negative">
+          {state.message}
+        </Alert>
+      )}
 
       <Button
-        className={stylesButton.buttonConfirmFullWidth}
         disabled={isPending}
+        fullWidth={true}
+        isLoading={isPending}
         type="submit"
-        text="Change password"
-      >
-        {isPending && <Loader />}
-      </Button>
+        label="Change password"
+        radius={2}
+      />
     </form>
   );
 };

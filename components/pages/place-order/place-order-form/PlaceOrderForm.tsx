@@ -1,6 +1,8 @@
 import styles from './PlaceOrderForm.module.css';
-import { Alert, ErrorMessage, SelectButton } from '@/components/shared';
+import { Alert, Button, ErrorMessage } from '@/components/shared';
 import { PlaceOrderFormProps } from './types';
+
+type EventButton = React.MouseEvent<HTMLButtonElement, MouseEvent>;
 
 export const PlaceOrderForm = ({
   Controller,
@@ -27,15 +29,16 @@ export const PlaceOrderForm = ({
             return (
               <>
                 {methodsPayment.map((namePayment) => (
-                  <SelectButton
+                  <Button
                     key={namePayment}
-                    selected={watch('methodPayment') === namePayment}
-                    onClick={(e) => {
+                    label={namePayment}
+                    onClick={(e: EventButton) => {
                       e.preventDefault();
                       e.stopPropagation();
                       setValue('methodPayment', namePayment);
                     }}
-                    text={namePayment}
+                    singleSelect={watch('methodPayment') === namePayment}
+                    radius={2}
                   />
                 ))}
               </>
@@ -58,17 +61,18 @@ export const PlaceOrderForm = ({
             return (
               <>
                 {methodsDelivery.map((delivery) => (
-                  <SelectButton
+                  <Button
                     key={delivery.name}
-                    selected={watch('methodDelivery') === delivery.name}
-                    onClick={(e) => {
+                    label={delivery.name}
+                    onClick={(e: EventButton) => {
                       e.preventDefault();
                       e.stopPropagation();
                       setValue('methodDelivery', delivery.name);
                       setValue('priceDelivery', delivery.price);
                       setValue('timeDelivery', delivery.time);
                     }}
-                    text={delivery.name}
+                    singleSelect={watch('methodDelivery') === delivery.name}
+                    radius={2}
                   />
                 ))}
               </>
@@ -81,7 +85,11 @@ export const PlaceOrderForm = ({
         <ErrorMessage>{errors.methodDelivery.message}</ErrorMessage>
       )}
 
-      {!state.success && state.message && <Alert>{state.message}</Alert>}
+      {!state.success && state.message && (
+        <Alert marginTop={8} color="negative">
+          {state.message}
+        </Alert>
+      )}
     </form>
   );
 };

@@ -2,7 +2,3 @@
   width: min(600px, 100%);
   padding: 1rem 0;
 }
-
-.button {
-  max-width: fit-content;
-}

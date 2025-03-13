@@ -1,10 +1,8 @@
-import { CartItemCounter } from '../cart-item-counter';
-import styles from './CartItem.module.css';
-import { CartItemProps } from './types';
 import Image from 'next/image';
+import styles from './CartItem.module.css';
 import { Button } from '../button';
-import stylesButton from '@styles/buttons.module.css';
-import { classNames } from '@/helpers';
+import { CartItemCounter } from '../cart-item-counter';
+import { CartItemProps } from './types';
 
 export const CartItem = ({
   data,
@@ -42,10 +40,6 @@ export const CartItem = ({
             <div>
               <h6 className={styles.title}>Quantity</h6>
               <CartItemCounter
-                classNameIcon={styles.icon}
-                classNameInput={styles.input}
-                classNameMinus={styles.buttonMinus}
-                classNamePlus={styles.buttonPlus}
                 quanity={data.quantity}
                 idProduct={data._id}
                 localQuantity={false}
@@ -61,15 +55,12 @@ export const CartItem = ({
 
       <footer className={styles.footer}>
         <Button
-          className={classNames(
-            stylesButton.buttonRemoveItem,
-            styles.buttonRemoveItem
-          )}
+          fullWidth={true}
           onClick={() => {
             if (!data._id) return;
             removeItem(data._id);
           }}
-          text="Remove item"
+          label="Remove item"
         />
       </footer>
     </div>

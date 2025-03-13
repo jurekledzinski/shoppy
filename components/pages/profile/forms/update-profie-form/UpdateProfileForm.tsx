@@ -1,14 +1,6 @@
 import styles from '../Form.module.css';
-import stylesButton from '@styles/buttons.module.css';
+import { Alert, Button, ErrorMessage, FieldInput } from '@/components/shared';
 import { UpdateProfileFormProps } from './types';
-
-import {
-  Alert,
-  Button,
-  ErrorMessage,
-  FieldInput,
-  Loader,
-} from '@/components/shared';
 
 export const UpdateProfileForm = ({
   isPending,
@@ -49,16 +41,19 @@ export const UpdateProfileForm = ({
 
       {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
 
-      {!state.success && state.message && <Alert>{state.message}</Alert>}
+      {!state.success && state.message && (
+        <Alert marginTop={8} color="negative">
+          {state.message}
+        </Alert>
+      )}
 
       <Button
-        className={stylesButton.buttonConfirm}
         disabled={isPending}
+        isLoading={isPending}
         type="submit"
-        text="Update profile"
-      >
-        {isPending && <Loader />}
-      </Button>
+        label="Update profile"
+        radius={2}
+      />
     </form>
   );
 };

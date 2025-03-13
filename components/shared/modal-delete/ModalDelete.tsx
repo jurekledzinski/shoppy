@@ -2,13 +2,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from '../modal/Modal.module.css';
 import { Backdrop } from '../backdrop';
-import { Button } from '../button';
+import { Button, Modal, ModalDeleteContent } from '@/components/shared';
 import { CSSTransition } from 'react-transition-group';
-import { Modal, ModalDeleteContent } from '@/components/shared';
 import { ModalDeleteProps } from './types';
 
 export const ModalDelete = ({
-  classButton,
   cancel = 'Cancel',
   confirm = 'Confirm',
   children,
@@ -33,9 +31,10 @@ export const ModalDelete = ({
   return (
     <>
       <Button
-        className={classButton}
+        color="negative"
         onClick={() => setModal(true)}
-        text={textButton}
+        label={textButton}
+        radius={2}
       />
       <Backdrop show={showBackdrop} />
       <CSSTransition

@@ -1,7 +1,6 @@
 'use client';
-import styles from '@styles/buttons.module.css';
+import { Button } from '../button';
 import { AddToCartButtonProps } from './types';
-import { Button } from '@/components/shared';
 
 export const AddToCartButton = ({
   disabled,
@@ -9,10 +8,10 @@ export const AddToCartButton = ({
 }: AddToCartButtonProps) => {
   return (
     <Button
-      className={styles.buttonAddToCart}
       onClick={onClick}
-      text="Add to cart"
+      label="Add to cart"
       disabled={disabled}
+      radius={2}
     />
   );
 };

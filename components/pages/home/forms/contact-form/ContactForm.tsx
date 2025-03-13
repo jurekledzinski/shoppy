@@ -1,13 +1,11 @@
-import stylesButton from '@styles/buttons.module.css';
+import { ContactFormProps } from './types';
 import {
   Alert,
   Button,
   ErrorMessage,
   FieldInput,
   FieldTextarea,
-  Loader,
 } from '@/components/shared';
-import { ContactFormProps } from './types';
 
 export const ContactForm = ({
   isPending,
@@ -61,16 +59,20 @@ export const ContactForm = ({
 
       {errors.message && <ErrorMessage>{errors.message.message}</ErrorMessage>}
 
-      {!state.success && state.message && <Alert>{state.message}</Alert>}
+      {!state.success && state.message && (
+        <Alert marginTop={8} color="negative">
+          {state.message}
+        </Alert>
+      )}
 
       <Button
-        className={stylesButton.buttonConfirmFullWidth}
         disabled={isPending}
+        fullWidth={true}
+        isLoading={isPending}
         type="submit"
-        text="Send message"
-      >
-        {isPending && <Loader />}
-      </Button>
+        label="Send message"
+        radius={2}
+      />
     </form>
   );
 };

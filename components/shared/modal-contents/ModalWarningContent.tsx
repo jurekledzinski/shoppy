@@ -1,9 +1,7 @@
 import styles from './ModalContent.module.css';
-import stylesButton from '@styles/buttons.module.css';
 import { Button } from '../button';
-import { Loader } from '../loader';
-import { ModalWarningContentProps } from './types';
 import { classNames } from '@/helpers';
+import { ModalWarningContentProps } from './types';
 
 export const ModalWarningContent = ({
   children,
@@ -20,13 +18,13 @@ export const ModalWarningContent = ({
       <div className={styles.body}>{children}</div>
       <footer className={styles.footer}>
         <Button
-          className={stylesButton.buttonConfirm}
+          color="warning"
           disabled={isPending}
-          text={confirm}
+          isLoading={isPending}
+          label={confirm ?? ''}
           onClick={onConfirm}
-        >
-          {isPending && <Loader />}
-        </Button>
+          radius={2}
+        />
       </footer>
     </>
   );

@@ -1,8 +1,6 @@
 import styles from './ModalContent.module.css';
-import stylesButton from '@styles/buttons.module.css';
 import { Button } from '../button';
 import { classNames } from '@/helpers';
-import { Loader } from '../loader';
 import { ModalCheckInventoryContentProps } from './types';
 
 export const ModalCheckInventoryContent = ({
@@ -21,17 +19,20 @@ export const ModalCheckInventoryContent = ({
       </header>
       <div className={styles.body}>{children}</div>
       <footer className={styles.footer}>
-        <button className={stylesButton.buttonCancel} onClick={onCancel}>
-          {cancel}
-        </button>
         <Button
-          className={stylesButton.buttonConfirm}
+          color="secondary"
+          label={cancel ?? ''}
+          onClick={onCancel}
+          variant="outlined"
+          radius={2}
+        />
+        <Button
           disabled={isPending}
-          text={confirm}
+          isLoading={isPending}
+          label={confirm ?? ''}
           onClick={onConfirm}
-        >
-          {isPending && <Loader />}
-        </Button>
+          radius={2}
+        />
       </footer>
     </>
   );

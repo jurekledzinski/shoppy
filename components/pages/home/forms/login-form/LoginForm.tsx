@@ -1,12 +1,4 @@
-import stylesButton from '@styles/buttons.module.css';
-import {
-  Alert,
-  Button,
-  ErrorMessage,
-  FieldInput,
-  Loader,
-} from '@/components/shared';
-
+import { Alert, Button, ErrorMessage, FieldInput } from '@/components/shared';
 import { LoginFormProps } from './types';
 
 export const LoginForm = ({
@@ -50,16 +42,20 @@ export const LoginForm = ({
         <ErrorMessage>{errors.password.message}</ErrorMessage>
       )}
 
-      {!state.success && state.message && <Alert>{state.message}</Alert>}
+      {!state.success && state.message && (
+        <Alert marginTop={8} color="negative">
+          {state.message}
+        </Alert>
+      )}
 
       <Button
-        className={stylesButton.buttonConfirmFullWidth}
         disabled={isPending}
+        fullWidth={true}
+        isLoading={isPending}
         type="submit"
-        text="Sign In"
-      >
-        {isPending && <Loader />}
-      </Button>
+        label="Sign In"
+        radius={2}
+      />
     </form>
   );
 };

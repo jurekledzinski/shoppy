@@ -1,9 +1,9 @@
 'use client';
-import styles from './ThemeButton.module.css';
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Toaster } from 'react-hot-toast';
 import { useTheme } from '@/store/theme';
+import { IconButton } from '../icon-button/IconButton';
+import { controlThemeMode } from './helpers';
 
 export const ThemeButton = () => {
   const theme = useTheme();
@@ -21,21 +21,11 @@ export const ThemeButton = () => {
           },
         }}
       />
-      <button
-        className={styles.themeButton}
-        onClick={() => {
-          if (theme && theme.onChange && theme.mode === 'light') {
-            return theme.onChange('dark');
-          }
-
-          if (theme && theme.onChange && theme.mode === 'dark') {
-            theme.onChange('light');
-          }
-        }}
-      >
-        {theme && theme.mode === 'light' && <FontAwesomeIcon icon={faMoon} />}
-        {theme && theme.mode === 'dark' && <FontAwesomeIcon icon={faSun} />}
-      </button>
+      <IconButton
+        icon={theme && theme.mode === 'light' ? faMoon : faSun}
+        variant="minimal"
+        onClick={() => controlThemeMode(theme)}
+      />
     </>
   );
 };

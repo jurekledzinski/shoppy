@@ -1,6 +1,5 @@
 import styles from './TermsConditionsForm.module.css';
-import stylesButton from '@styles/buttons.module.css';
-import { Alert, Button, ErrorMessage, Loader } from '@/components/shared';
+import { Alert, Button, ErrorMessage } from '@/components/shared';
 import { TermsConditionsFormProps } from './types';
 
 export const TermsConditionsForm = ({
@@ -16,13 +15,13 @@ export const TermsConditionsForm = ({
   return (
     <form className={styles.form} onSubmit={onSubmit}>
       <Button
-        className={stylesButton.buttonConfirmFullWidth}
         disabled={isEmpty || isPending}
+        fullWidth={true}
+        isLoading={isPending}
         type="submit"
-        text={textSubmit}
-      >
-        {isPending && <Loader />}
-      </Button>
+        label={textSubmit}
+        radius={2}
+      />
 
       <label className={styles.label} htmlFor="termsConditions">
         <input
@@ -43,7 +42,9 @@ export const TermsConditionsForm = ({
       )}
 
       {!state.success && state.message && !isEmpty && (
-        <Alert>{state.message}</Alert>
+        <Alert marginTop={8} color="negative">
+          {state.message}
+        </Alert>
       )}
     </form>
   );

@@ -1,13 +1,6 @@
-import stylesButton from '@styles/buttons.module.css';
-import { RegisterFormProps } from './types';
-import {
-  Alert,
-  Button,
-  ErrorMessage,
-  FieldInput,
-  Loader,
-} from '@/components/shared';
+import { Alert, Button, ErrorMessage, FieldInput } from '@/components/shared';
 import { patternPassword, validateConfirmPassword } from '@/helpers';
+import { RegisterFormProps } from './types';
 
 export const RegisterForm = ({
   isPending,
@@ -78,16 +71,20 @@ export const RegisterForm = ({
         <ErrorMessage>{errors.confirmPassword.message}</ErrorMessage>
       )}
 
-      {!state.success && state.message && <Alert>{state.message}</Alert>}
+      {!state.success && state.message && (
+        <Alert marginTop={8} color="negative">
+          {state.message}
+        </Alert>
+      )}
 
       <Button
-        className={stylesButton.buttonConfirmFullWidth}
         disabled={isPending}
+        fullWidth={true}
+        isLoading={isPending}
         type="submit"
-        text="Sign Up"
-      >
-        {isPending && <Loader />}
-      </Button>
+        label="Sign Up"
+        radius={2}
+      />
     </form>
   );
 };

@@ -1,14 +1,6 @@
 import styles from '../Form.module.css';
-import stylesButton from '@styles/buttons.module.css';
+import { Alert, Button, ErrorMessage, FieldInput } from '@/components/shared';
 import { ChangePasswordFormProps } from './types';
-
-import {
-  Alert,
-  Button,
-  ErrorMessage,
-  FieldInput,
-  Loader,
-} from '@/components/shared';
 import { patternPassword, validateConfirmPassword } from '@/helpers';
 
 export const ChangePasswordForm = ({
@@ -58,16 +50,19 @@ export const ChangePasswordForm = ({
         <ErrorMessage>{errors.confirmPassword.message}</ErrorMessage>
       )}
 
-      {!state.success && state.message && <Alert>{state.message}</Alert>}
+      {!state.success && state.message && (
+        <Alert marginTop={8} color="negative">
+          {state.message}
+        </Alert>
+      )}
 
       <Button
-        className={stylesButton.buttonConfirm}
         disabled={isPending}
+        isLoading={isPending}
         type="submit"
-        text="Change password"
-      >
-        {isPending && <Loader />}
-      </Button>
+        label="Change password"
+        radius={2}
+      />
     </form>
   );
 };

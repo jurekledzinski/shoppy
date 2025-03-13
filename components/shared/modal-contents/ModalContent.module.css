@@ -20,7 +20,7 @@
 }
 
 .title {
-  color: var(--color-text-bg-dark);
+  color: var(--color-text-white);
   font-size: 1rem;
   font-weight: 400;
 }

@@ -1,14 +1,6 @@
-import stylesButton from '@styles/buttons.module.css';
-import { ResetPasswordFormProps } from './types';
-
-import {
-  Alert,
-  Button,
-  ErrorMessage,
-  FieldInput,
-  Loader,
-} from '@/components/shared';
+import { Alert, Button, ErrorMessage, FieldInput } from '@/components/shared';
 import { patternPassword, validateConfirmPassword } from '@/helpers';
+import { ResetPasswordFormProps } from './types';
 
 export const ResetPasswordForm = ({
   methods,
@@ -52,21 +44,26 @@ export const ResetPasswordForm = ({
         <ErrorMessage>{errors.confirmPassword.message}</ErrorMessage>
       )}
 
-      {!state.success && state.message && <Alert>{state.message}</Alert>}
+      {!state.success && state.message && (
+        <Alert marginTop={8} color="negative">
+          {state.message}
+        </Alert>
+      )}
 
       <Button
-        className={stylesButton.buttonConfirmFullWidth}
         disabled={isPending}
+        fullWidth={true}
+        isLoading={isPending}
         type="submit"
-        text="Change password"
-      >
-        {isPending && <Loader />}
-      </Button>
+        label="Change password"
+        radius={2}
+      />
       <Button
-        className={stylesButton.buttonCancelFullWidth}
         disabled={isPending}
-        text="Cancel"
+        fullWidth={true}
+        label="Cancel"
         onClick={onCancel}
+        radius={2}
       />
     </form>
   );

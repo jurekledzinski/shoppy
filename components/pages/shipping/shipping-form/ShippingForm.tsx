@@ -1,14 +1,6 @@
-import stylesButton from '@styles/buttons.module.css';
 import stylesShipping from './ShippingForm.module.css';
+import { Alert, Button, ErrorMessage, FieldInput } from '@/components/shared';
 import { ShippingFormProps } from './types';
-
-import {
-  Alert,
-  Button,
-  ErrorMessage,
-  FieldInput,
-  Loader,
-} from '@/components/shared';
 
 export const ShippingForm = ({
   methods,
@@ -91,18 +83,20 @@ export const ShippingForm = ({
 
       {errors.country && <ErrorMessage>{errors.country.message}</ErrorMessage>}
 
-      {!state.success && state.message && <Alert>{state.message}</Alert>}
+      {!state.success && state.message && (
+        <Alert marginTop={8} color="negative">
+          {state.message}
+        </Alert>
+      )}
 
-      <div className={stylesShipping.buttonGroup}>
-        <Button
-          className={stylesButton.buttonConfirmFullWidth}
-          disabled={isPending}
-          type="submit"
-          text="Add shipping address"
-        >
-          {isPending && <Loader />}
-        </Button>
-      </div>
+      <Button
+        disabled={isPending}
+        fullWidth={true}
+        isLoading={isPending}
+        type="submit"
+        label="Add shipping address"
+        radius={2}
+      />
     </form>
   );
 };
