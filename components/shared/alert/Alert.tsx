@@ -2,18 +2,20 @@ import styles from './Alert.module.css';
 import { AlertProps } from './types';
 import { classNames } from '@/helpers';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Icon } from '../icon';
 
 export const Alert = ({
-  className,
   children,
   icon = faExclamationCircle,
+  color = 'warning',
+  marginBottom,
+  marginTop,
 }: AlertProps) => {
+  const classNamesAlert = classNames(styles.alert, styles[color]);
+
   return (
-    <div className={classNames(styles.alert, className!)}>
-      <span className={styles.icon}>
-        <FontAwesomeIcon icon={icon} />
-      </span>
+    <div className={classNamesAlert} style={{ marginBottom, marginTop }}>
+      <Icon icon={icon} size="sm" />
       <p className={styles.text}>{children}</p>
     </div>
   );

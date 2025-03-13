@@ -2,26 +2,45 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: var(--color-error);
   padding: 0.25rem 0.5rem;
   width: 100%;
   border-radius: 2px;
   margin-bottom: 0.5rem;
 }
 
-.icon {
-  display: inline-block;
-  color: var(--color-text-bg-dark);
-}
-
 .text {
-  color: var(--color-text-bg-dark);
+  color: var(--color-text-white);
   font-size: 0.65rem;
   font-weight: 400;
   text-wrap: wrap;
 }
 
+.info,
+.primary {
+  background-color: var(--color-primary);
+}
+
+.secondary {
+  background-color: var(--color-secondary);
+}
+
+.success {
+  background-color: var(--color-success);
+}
+
+.negative {
+  background-color: var(--color-negative);
+}
+
 .warning {
-  margin-top: 0.25rem;
-  background-color: #ff851b;
+  background-color: var(--color-warning);
+}
+
+.info > span,
+.primary > span,
+.secondary > span,
+.success > span,
+.negative > span,
+.warning > span {
+  color: var(--color-text-white);
 }
