@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import styles from './button.module.css';
+import styles from './Button.module.css';
 import { ButtonBaseContent } from './ButtonBaseContent';
 import { ButtonProps, LinkButtonProps } from './types';
 import { classNames } from '@/helpers';

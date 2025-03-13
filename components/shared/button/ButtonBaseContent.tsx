@@ -1,4 +1,4 @@
-import styles from './button.module.css';
+import styles from './Button.module.css';
 import { ButtonBaseContentProps } from './types';
 import { Icon } from '../icon';
 import { Loader } from '../loader/Loader';
