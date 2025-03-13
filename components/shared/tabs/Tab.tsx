@@ -18,7 +18,7 @@ export const Tab = ({
           ? classNames(styles.tab, styles.active, className!)
           : classNames(styles.tab, className!)
       }
-      onClick={() => onClick(id)}
+      onClick={() => onClick(id.toLowerCase())}
       {...props}
       role="tab"
       title={title}
