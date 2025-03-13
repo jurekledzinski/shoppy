@@ -1,10 +1,11 @@
 .loader {
+  display: block;
   animation: spin 1s linear infinite;
   border: 1px solid var(--color-border-loader);
   border-top: 1px solid var(--color-primary);
   border-radius: 50%;
-  width: 0.75rem;
-  height: 0.75rem;
+  width: 20px;
+  height: 20px;
 }
 
 @keyframes spin {
@@ -16,16 +17,60 @@
   }
 }
 
-.loaderBigger {
-  width: 2rem;
-  height: 2rem;
+/* Sizes Schema */
+
+.small {
+  width: 16px;
+  height: 16px;
 }
 
-.loaderCenter {
+.medium {
+  width: 24px;
+  height: 24px;
+}
+
+.large {
+  width: 28px;
+  height: 28px;
+}
+
+.extra-large {
+  width: 56px;
+  height: 56px;
+}
+
+/* Position */
+
+.center {
   position: fixed;
   top: 50%;
   left: 50%;
-  width: 2rem;
-  height: 2rem;
   transform: translate(-50%, -50%);
+}
+
+/* Border */
+
+.xs {
+  border-width: 1px;
+  border-top-width: 1px;
+}
+
+.sm {
+  border-width: 2px;
+  border-top-width: 2px;
+}
+
+.md {
+  border-width: 3px;
+  border-top-width: 3px;
+}
+
+.lg {
+  border-width: 4px;
+  border-top-width: 4px;
+}
+
+.xl {
+  border-width: 5px;
+  border-top-width: 5px;
 }
