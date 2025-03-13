@@ -1,14 +1,311 @@
 .button {
   display: flex;
-  justify-content: space-between;
+  position: relative;
+  justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  max-width: fit-content;
-  margin: initial;
-  border: none;
+  transition: 0.3s linear;
+  cursor: pointer;
+  border-radius: initial;
+  width: fit-content;
+  min-width: 64px;
+  line-height: 1;
+  user-select: none;
+  text-decoration: none;
 }
 
-.text {
-  display: block;
-  min-width: 2rem;
+.label {
+  display: contents;
+}
+
+.iconStart {
+  display: inherit;
+  margin-right: 4px;
+  margin-left: -4px;
+}
+
+.iconCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.iconEnd {
+  display: inherit;
+  margin-right: -4px;
+  margin-left: 4px;
+}
+
+/* Colors */
+
+.button.primary {
+  background-color: var(--color-primary);
+  color: var(--color-text-white);
+  border: 1px solid var(--color-primary);
+}
+
+.button.secondary {
+  background-color: var(--color-secondary);
+  color: var(--color-text-white);
+  border: 1px solid var(--color-secondary);
+}
+
+.button.success {
+  background-color: var(--color-success);
+  color: var(--color-text-white);
+  border: 1px solid var(--color-success);
+}
+
+.button.negative {
+  background-color: var(--color-negative);
+  color: var(--color-text-white);
+  border: 1px solid var(--color-negative);
+}
+
+.button.warning {
+  background-color: var(--color-warning);
+  color: var(--color-text-white);
+  border: 1px solid var(--color-warning);
+}
+
+/* Hover color button */
+
+.primary:hover {
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+
+.secondary:hover {
+  background-color: var(--color-secondary-hover);
+}
+
+.success:hover {
+  background-color: var(--color-success-hover);
+  border-color: var(--color-success-hover);
+}
+
+.negative:hover {
+  background-color: var(--color-negative-hover);
+  border-color: var(--color-negative-hover);
+}
+
+.warning:hover {
+  background-color: var(--color-warning-hover);
+  border-color: var(--color-warning-hover);
+}
+
+/* ---------------- variants ----------------- */
+
+.outlined.primary,
+.outlined.secondary,
+.outlined.success,
+.outlined.negative,
+.outlined.warning,
+.text.primary,
+.text.secondary,
+.text.success,
+.text.negative,
+.text.warning {
+  background: initial;
+  background-color: transparent;
+}
+
+.outlined.primary,
+.text.primary {
+  color: var(--color-primary);
+}
+
+.outlined.secondary,
+.text.secondary {
+  color: var(--color-secondary);
+}
+
+.outlined.success,
+.text.success {
+  color: var(--color-success);
+}
+
+.outlined.negative,
+.text.negative {
+  color: var(--color-negative);
+}
+
+.outlined.warning,
+.text.warning {
+  color: var(--color-warning);
+}
+
+/* Hover outline variant */
+
+.outlined.primary:hover,
+.text.primary:hover {
+  background-color: var(--color-primary-light);
+}
+
+.outlined.secondary:hover,
+.text.secondary:hover {
+  background-color: var(--color-secondary-light);
+}
+
+.outlined.success:hover,
+.text.success:hover {
+  background-color: var(--color-success-light);
+}
+
+.outlined.negative:hover,
+.text.negative:hover {
+  background-color: var(--color-negative-light);
+}
+
+.outlined.warning:hover,
+.text.warning:hover {
+  background-color: var(--color-warning-light);
+}
+
+.text.primary,
+.text.secondary,
+.text.success,
+.text.negative,
+.text.warning {
+  border-color: transparent;
+}
+
+/* sizes */
+
+.small {
+  height: 28px;
+  max-height: 28px;
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.medium {
+  height: 30px;
+  max-height: 30px;
+  padding: 6px 12px;
+  font-size: 14px;
+}
+
+.large {
+  height: 36px;
+  max-height: 36px;
+  padding: 8px 16px;
+  font-size: 16px;
+}
+
+/* full width */
+
+a.fullWidth,
+.button.fullWidth {
+  width: 100%;
+}
+
+/* disabled */
+
+.button:disabled,
+a.disabled {
+  display: flex;
+  background-color: var(--color-disabled);
+  border-color: var(--color-disabled);
+  cursor: not-allowed;
+}
+
+.button.outlined:disabled,
+a.outlined.disabled {
+  border-color: var(--color-disabled);
+}
+
+.button.outlined:disabled,
+.button.outlined:disabled span,
+.button.text:disabled,
+.button.text:disabled span,
+a.outlined.disabled,
+a.outlined.disabled span,
+a.text.disabled,
+a.text.disabled span {
+  color: var(--color-disabled);
+  background-color: transparent;
+}
+
+/* Clear hover on disable */
+
+.button.text:disabled:hover,
+a.text.disabled:hover {
+  border-color: transparent;
+}
+
+.button.outlined:disabled:hover,
+.button.text:disabled:hover,
+a.outlined.disabled:hover,
+a.text.disabled:hover {
+  background-color: transparent;
+}
+
+.button:disabled:hover,
+a.disabled:hover {
+  background-color: var(--color-disabled);
+  border-color: var(--color-disabled);
+}
+
+/* border-width */
+
+.xs {
+  border-width: 1px;
+}
+
+.sm {
+  border-width: 2px;
+}
+
+.md {
+  border-width: 3px;
+}
+
+.lg {
+  border-width: 4px;
+}
+
+.xl {
+  border-width: 5px;
+}
+
+.singleSelect.primary {
+  background-color: var(--color-primary-hover);
+}
+
+.singleSelect.secondary {
+  background-color: var(--color-secondary-hover);
+}
+
+.singleSelect.success {
+  background-color: var(--color-success-hover);
+}
+
+.singleSelect.negative {
+  background-color: var(--color-negative-hover);
+}
+
+.singleSelect.warning {
+  background-color: var(--color-warning-hover);
+}
+
+.singleSelect.outlined.text.primary {
+  background-color: var(--color-primary-light);
+}
+
+.singleSelect.outlined.text.secondary {
+  background-color: var(--color-secondary-light);
+}
+
+.singleSelect.outlined.text.success {
+  background-color: var(--color-success-light);
+}
+
+.singleSelect.outlined.text.negative {
+  background-color: var(--color-negative-light);
+}
+
+.singleSelect.outlined.text.warning {
+  background-color: var(--color-warning-light);
 }
