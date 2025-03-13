@@ -78,9 +78,6 @@ export const ModalControlInventoryCheck = ({
                         addLocalQuantity(itemInventory.productId)
                       }
                       className={styles.container}
-                      classNameMinus={styles.minus}
-                      classNameInput={styles.input}
-                      classNamePlus={styles.plus}
                       subtractLocalQuantity={() =>
                         subtractLocalQuantity(itemInventory.productId)
                       }

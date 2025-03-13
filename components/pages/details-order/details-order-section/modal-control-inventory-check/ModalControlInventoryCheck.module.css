@@ -50,14 +50,6 @@ div.container {
   font-size: 14px;
 }
 
-p.input,
-button.plus,
-button.minus {
-  max-width: initial;
-  padding: 0.25rem 1rem;
-  font-weight: 300;
-}
-
 .wrapper {
   display: flex;
   flex-direction: column;
