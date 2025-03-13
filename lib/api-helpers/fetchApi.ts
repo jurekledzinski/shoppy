@@ -39,7 +39,9 @@ export const fetchUser = tryCatch<Omit<UserRegister, 'password'>>(
 );
 
 export const fetchBrands = tryCatch<Brand[]>(async (url: string) => {
-  const response = await fetch(url, { cache: 'force-cache' });
+  const response = await fetch(url, {
+    cache: 'force-cache',
+  });
 
   if (!response.ok) {
     throw new Error(response.statusText);
