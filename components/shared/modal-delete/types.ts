@@ -1,7 +1,6 @@
 import { MouseEventHandler } from 'react';
 
 export type ModalDeleteProps = {
-  classButton?: string;
   cancel?: string;
   confirm?: string;
   children?: React.ReactNode;
