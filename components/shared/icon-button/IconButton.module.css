@@ -323,7 +323,7 @@ a.text.disabled:hover {
 
 .iconButton:disabled:hover,
 a.disabled:hover {
-  background-color: transparent;
+  background-color: var(--color-disabled);
   border-color: var(--color-disabled);
 }
 
