@@ -1,4 +1,5 @@
 import styles from './ResponsiveTable.module.css';
+import { classNames } from '@/helpers';
 import { Fragment } from 'react';
 import { ResponsiveTableProps } from './types';
 
@@ -9,10 +10,10 @@ export const ResponsiveTable = ({ data }: ResponsiveTableProps) => {
         {data.map((item1, index) => {
           return (
             <Fragment key={index}>
-              <tr className={[styles.tr, styles.trTitle].join(' ')}>
+              <tr className={classNames(styles.tr, styles.trTitle)}>
                 <td
                   colSpan={2}
-                  className={[styles.td, styles.header].join(' ')}
+                  className={classNames(styles.td, styles.header)}
                 >
                   <h4 className={styles.title}>{item1.title}</h4>
                 </td>
