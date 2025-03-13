@@ -13,15 +13,14 @@
   max-height: 100vh;
 }
 
-button.button {
-  width: 100%;
-  max-width: initial;
-  margin: initial;
-}
-
 .title {
   color: var(--color-text-primary);
   text-transform: uppercase;
+  text-align: center;
+}
+
+.text {
+  color: var(--color-text-primary);
   text-align: center;
 }
 

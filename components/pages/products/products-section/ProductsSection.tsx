@@ -1,4 +1,3 @@
-import stylesLoader from '@/components/shared/loader/Loader.module.css';
 import { Loader, Section } from '@/components/shared';
 import { ProdcutsContainer } from '../products-container';
 import { ProductsSectionProps } from './types';
@@ -8,7 +7,7 @@ export const ProductsSection = ({ children, data }: ProductsSectionProps) => {
   return (
     <Section>
       {children}
-      <Suspense fallback={<Loader className={stylesLoader.loaderCenter} />}>
+      <Suspense fallback={<Loader position="center" size={30} />}>
         <ProdcutsContainer data={data} />
       </Suspense>
     </Section>

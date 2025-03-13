@@ -1,6 +1,5 @@
 'use client';
 import { Suspense } from 'react';
-import stylesLoader from '@/components/shared/loader/Loader.module.css';
 import { Loader, Section } from '@/components/shared';
 import { shipping } from '@/actions';
 import { ShippingForm } from '../shipping-form';
@@ -43,7 +42,7 @@ export const ShippingSection = ({
   return (
     <Section>
       {children}
-      <Suspense fallback={<Loader className={stylesLoader.loaderCenter} />}>
+      <Suspense fallback={<Loader position="center" size={30} />}>
         <ShippingForm
           isPending={isPendingShipping}
           methods={methodsShipping}

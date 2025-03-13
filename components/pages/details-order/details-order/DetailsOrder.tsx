@@ -1,5 +1,4 @@
 import styles from './DetailsOrder.module.css';
-import stylesAlert from '@/components/shared/alert/Alert.module.css';
 import stylesOrderProducts from '@/components/shared/order-products-list/OrderProductsList.module.css';
 import { DetailsOrderProps } from './types';
 import { formatText } from '@/helpers';
@@ -70,7 +69,7 @@ export const DetailsOrder = ({
           />
 
           {cartData && !Boolean(cartData.products.length) && (
-            <Alert className={stylesAlert.warning}>
+            <Alert marginTop={8} color="warning">
               Your shopping cart is empty, please add products.
             </Alert>
           )}

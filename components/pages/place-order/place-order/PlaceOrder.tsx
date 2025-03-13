@@ -1,11 +1,9 @@
 import styles from './PlaceOrder.module.css';
-import stylesButton from '@styles/buttons.module.css';
+import { Button, ButtonGroup } from '@/components/shared';
 import { PlaceOrderForm } from '../place-order-form';
 import { PlaceOrderProps } from './types';
 
 import {
-  Button,
-  Loader,
   OrderAddress,
   OrderSummary,
   OrderProductsList,
@@ -58,16 +56,17 @@ export const PlaceOrder = ({
             titleSummary={titleSummary}
             totalPrice={cartData?.totalPriceCart ?? 0}
           />
-
-          <Button
-            className={stylesButton.buttonConfirmFullWidth}
-            disabled={isPending}
-            form="place-order-form"
-            type="submit"
-            text={textSubmit}
-          >
-            {isPending && <Loader />}
-          </Button>
+          <ButtonGroup fullWidth={true} marginTop={8}>
+            <Button
+              disabled={isPending}
+              fullWidth={true}
+              form="place-order-form"
+              isLoading={isPending}
+              label={textSubmit}
+              radius={2}
+              type="submit"
+            />
+          </ButtonGroup>
         </div>
       </div>
     </>

@@ -1,6 +1,5 @@
 'use client';
 import { Suspense } from 'react';
-import stylesLoader from '@/components/shared/loader/Loader.module.css';
 import { checkout } from '@/actions';
 import { DetailsOrder } from '../details-order/DetailsOrder';
 import { DetailsOrderSectionProps } from './types';
@@ -98,7 +97,7 @@ export const DetailsOrderSection = ({
       ) : null}
       <Section>
         {children}
-        <Suspense fallback={<Loader className={stylesLoader.loaderCenter} />}>
+        <Suspense fallback={<Loader position="center" size={30} />}>
           <DetailsOrder
             cartData={state.cart}
             dataOrder={orderData}

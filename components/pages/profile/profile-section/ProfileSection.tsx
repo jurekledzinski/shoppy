@@ -1,5 +1,4 @@
 'use client';
-import stylesLoader from '@/components/shared/loader/Loader.module.css';
 import { Loader, Section } from '@/components/shared';
 import { ProfileControl } from '../profile-control';
 import { ProfileSectionProps } from './types';
@@ -64,7 +63,7 @@ export const ProfileSection = ({ children, userData }: ProfileSectionProps) => {
   return (
     <Section>
       {children}
-      <Suspense fallback={<Loader className={stylesLoader.loaderCenter} />}>
+      <Suspense fallback={<Loader position="center" size={30} />}>
         <ProfileControl
           actionDelete={actionDelete}
           actionProfile={actionProfile}

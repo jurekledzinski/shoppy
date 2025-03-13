@@ -1,19 +1,17 @@
 'use client';
 import styles from './SectionCancel.module.css';
-import stylesButton from '@styles/buttons.module.css';
 import stylesSection from '@/components/shared/section/Section.module.css';
+import { Alert, Button, Icon, Section } from '@/components/shared';
 import { cancelOrder, noCancelOrder } from '@/actions';
+import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { SectionCancelProps } from './types';
 import { startTransition, useActionState, useEffect } from 'react';
 import { useCart } from '@/store/cart';
 import { useRouter } from 'next/navigation';
-import { classNames } from '@/helpers';
-
-import { Alert, Button, CrossIcon, Loader, Section } from '@/components/shared';
 
 export const SectionCancel = ({ orderId }: SectionCancelProps) => {
   const router = useRouter();
-  const { dispatch } = useCart();
+  const { dispatch, state } = useCart();
 
   const [stateCancelOrder, formActionCancelOrder, isPendingCancelOrder] =
     useActionState(cancelOrder, {
@@ -42,47 +40,54 @@ export const SectionCancel = ({ orderId }: SectionCancelProps) => {
   return (
     <Section className={stylesSection.sectionCentered}>
       <h4 className={styles.title}>Your order has been canceled!</h4>
-      <CrossIcon />
-      <h4 className={styles.title}>
-        You have canceled your order. Would you like to continue previous
-        shopping?
-      </h4>
+      <Icon icon={faCircleXmark} size="2x" color="negative" />
+      <p className={styles.text}>
+        Would you like to continue previous shopping?
+      </p>
       <div className={styles.buttonGroup}>
         <Button
-          className={classNames(stylesButton.buttonConfirm, styles.button)}
-          disabled={isPendingNoCancelOrder || isPendingCancelOrder}
-          text="Yes, I want to continue"
+          disabled={
+            isPendingCancelOrder ||
+            isPendingNoCancelOrder ||
+            !state.cart.totalAmountCart
+          }
+          isLoading={isPendingCancelOrder}
+          label="No"
+          onClick={() => {
+            dispatch({ type: 'CLEAR_CART' });
+            const formData = new FormData();
+            formData.set('orderId', orderId);
+            startTransition(() => formActionCancelOrder(formData));
+          }}
+          radius={2}
+        />
+        <Button
+          disabled={
+            isPendingNoCancelOrder ||
+            isPendingCancelOrder ||
+            !state.cart.totalAmountCart
+          }
+          isLoading={isPendingNoCancelOrder}
+          label="Yes"
           onClick={() => {
             const formData = new FormData();
             formData.set('orderId', orderId);
             startTransition(() => formActionNoCancelOrder(formData));
           }}
-        >
-          {isPendingNoCancelOrder && <Loader />}
-        </Button>
-
-        <Button
-          className={classNames(stylesButton.buttonConfirm, styles.button)}
-          disabled={isPendingCancelOrder || isPendingNoCancelOrder}
-          text="No, I don't want to continue"
-          onClick={() => {
-            dispatch({ type: 'CLEAR_CART' });
-
-            const formData = new FormData();
-            formData.set('orderId', orderId);
-            startTransition(() => formActionCancelOrder(formData));
-          }}
-        >
-          {isPendingCancelOrder && <Loader />}
-        </Button>
+          radius={2}
+        />
       </div>
 
       {!stateCancelOrder.success && stateCancelOrder.message && (
-        <Alert>{stateCancelOrder.message}</Alert>
+        <Alert marginTop={8} color="negative">
+          {stateCancelOrder.message}
+        </Alert>
       )}
 
       {!stateNoCancelOrder.success && stateNoCancelOrder.message && (
-        <Alert>{stateNoCancelOrder.message}</Alert>
+        <Alert marginTop={8} color="negative">
+          {stateNoCancelOrder.message}
+        </Alert>
       )}
     </Section>
   );
