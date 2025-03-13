@@ -3,7 +3,7 @@ import { Alert } from '@/components/shared';
 import { CardBrand, Tab, Tabs, TabsList, TabsPanel } from '@/components/shared';
 import { TabsCategoriesContainerProps } from './types';
 import { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 const tabs = ['Phones', 'Tablets', 'Watches'];
 
@@ -11,7 +11,6 @@ export const TabsCategoriesContainer = ({
   data,
   error,
 }: TabsCategoriesContainerProps) => {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const category = searchParams.get('category') || 'phones';
   const [activeTab, setActiveTab] = useState(category);
@@ -29,9 +28,10 @@ export const TabsCategoriesContainer = ({
               id={tab.toLowerCase()}
               title={tab}
               onClick={(id) => {
-                router.push(`?category=${id.toLowerCase()}`, {
-                  scroll: false,
-                });
+                const updatedParams = new URLSearchParams(searchParams);
+                updatedParams.set('category', id);
+                const query = updatedParams.toString();
+                window.history.pushState(null, '', '?' + query);
               }}
             >
               {tab}
@@ -39,14 +39,16 @@ export const TabsCategoriesContainer = ({
           ))}
         </TabsList>
         <TabsPanel>
-          {data.map((item, index) => (
-            <CardBrand
-              src={item.image}
-              title={item.brand}
-              key={index}
-              url={`/${item.category}/${item.brand}`}
-            />
-          ))}
+          {data
+            .filter((item) => item.category === category)
+            .map((item, index) => (
+              <CardBrand
+                src={item.image}
+                title={item.brand}
+                key={index}
+                url={`/${item.category}/${item.brand}`}
+              />
+            ))}
         </TabsPanel>
       </Tabs>
 
