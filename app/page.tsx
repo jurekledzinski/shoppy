@@ -4,12 +4,9 @@ import { fetchBrands } from '@/lib';
 import { getDomain } from '@/helpers';
 import { TabsCategoriesContainer } from '@/components/pages';
 
-type SearchParams = Promise<{ category: string }>;
-
-export default async function Home(props: { searchParams: SearchParams }) {
+export default async function Home() {
   const domain = await getDomain();
-  const category = (await props.searchParams).category ?? 'phones';
-  const urlGetBrands = `${domain}/api/v1/brands?category=${category}`;
+  const urlGetBrands = `${domain}/api/v1/brands`;
   const resBrands = await fetchBrands(urlGetBrands);
 
   return (
