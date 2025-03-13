@@ -1,0 +1,28 @@
+.icon {
+  display: flex;
+  color: var(--color-secondary);
+}
+
+.icon.info {
+  color: var(--color-primary);
+}
+
+.icon.negative {
+  color: var(--color-negative);
+}
+
+.icon.primary {
+  color: var(--color-primary);
+}
+
+.icon.secondary {
+  color: var(--color-secondary);
+}
+
+.icon.success {
+  color: var(--color-success);
+}
+
+.icon.warning {
+  color: var(--color-warning);
+}
