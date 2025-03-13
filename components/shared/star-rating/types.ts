@@ -1,6 +1,3 @@
-export type StarRatingProps = {
-  initialValue?: number;
-  readonly?: boolean;
-  size?: number;
-  onChange?: (value: number) => void;
-};
+import { RatingProps } from 'react-simple-star-rating';
+
+export type StarRatingProps = RatingProps;

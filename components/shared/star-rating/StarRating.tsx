@@ -7,8 +7,8 @@ import { classNames } from '@/helpers';
 
 export const StarRating = ({
   initialValue,
-  readonly,
   size = 14,
+  ...props
 }: StarRatingProps) => {
   const [rating, setRating] = useState<number | null>(null);
 
@@ -31,9 +31,9 @@ export const StarRating = ({
     <Rating
       allowFraction={true}
       initialValue={rating}
-      readonly={readonly}
       size={size}
       style={{ height: 16 }}
+      {...props}
     />
   );
 };

@@ -2,7 +2,7 @@
 import styles from './FieldRating.module.css';
 import { FieldRatingProps } from './types';
 import { FieldValues, Path, PathValue, useController } from 'react-hook-form';
-import { Rating } from 'react-simple-star-rating';
+import { StarRating } from '../star-rating';
 
 export const FieldRating = <T extends FieldValues>({
   label,
@@ -25,11 +25,9 @@ export const FieldRating = <T extends FieldValues>({
   return (
     <fieldset className={styles.fieldset}>
       {label && <label className={styles.label}>{label}</label>}
-      <Rating
-        className={styles.rating}
+      <StarRating
         onClick={onChange}
         initialValue={value as number}
-        allowFraction={true}
         size={16}
         {...rest}
       />
