@@ -9,7 +9,7 @@ export const fetchOrder = tryCatch<Order>(
     const response = await fetch(url, {
       method: 'GET',
       headers: formattedHeaders,
-      next: { revalidate: 3600, tags: ['get_order'] },
+      next: { tags: ['get_order'] },
     });
 
     if (!response.ok) {
@@ -27,7 +27,7 @@ export const fetchUser = tryCatch<Omit<UserRegister, 'password'>>(
     const response = await fetch(url, {
       method: 'GET',
       headers: formattedHeaders,
-      next: { revalidate: 3600, tags: ['get_user'] },
+      next: { tags: ['get_user'] },
     });
 
     if (!response.ok) {
@@ -50,7 +50,7 @@ export const fetchBrands = tryCatch<Brand[]>(async (url: string) => {
 
 export const fetchProducts = tryCatch<Product[]>(async (url: string) => {
   const response = await fetch(url, {
-    next: { revalidate: 3600, tags: ['get_products'] },
+    next: { tags: ['get_products'] },
   });
 
   if (!response.ok) {
@@ -65,7 +65,7 @@ export const fetchProductReviews = tryCatch<Review[]>(async (url: string) => {
     headers: {
       'Content-Type': 'application/json',
     },
-    next: { revalidate: 3600, tags: ['get_product_reviews'] },
+    next: { tags: ['get_product_reviews'] },
   });
 
   if (!response.ok) {
@@ -80,7 +80,7 @@ export const fetchDetailsProduct = tryCatch<Product>(async (url: string) => {
     headers: {
       'Content-Type': 'application/json',
     },
-    next: { revalidate: 3600, tags: ['get_products'] },
+    next: { tags: ['get_products'] },
   });
 
   if (!response.ok) {
@@ -97,7 +97,7 @@ export const fetchUserOrders = tryCatch<Order[]>(
     const response = await fetch(url, {
       method: 'GET',
       headers: formattedHeaders,
-      next: { revalidate: 3600, tags: ['get_user_orders'] },
+      next: { tags: ['get_user_orders'] },
     });
 
     if (!response.ok) {
