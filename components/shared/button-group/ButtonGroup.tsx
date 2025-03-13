@@ -5,10 +5,10 @@ import { classNames } from '@/helpers';
 export const ButtonGroup = ({
   children,
   fullWidth = false,
-  orientation = 'row',
-  spacing = 'none',
   marginBottom,
   marginTop,
+  orientation = 'row',
+  spacing = 'none',
 }: ButtonGroupProps) => {
   const buttonGroupClassNames = classNames(
     styles.buttonGroup,
