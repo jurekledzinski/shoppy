@@ -12,8 +12,11 @@
 
 .tab {
   display: flex;
-  position: relative;
+  align-items: center;
   flex: auto;
+  position: relative;
+  height: 30px;
+  max-height: 30px;
   border: initial;
   border-radius: initial;
   padding: 0.25rem 1rem;
@@ -37,7 +40,7 @@
 .active {
   min-width: max-content;
   background-color: var(--color-primary);
-  color: var(--color-text-bg-dark);
+  color: var(--color-text-white);
 }
 
 .tab.active:hover {
