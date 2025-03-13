@@ -1,0 +1,350 @@
+.iconButton {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s linear;
+  cursor: pointer;
+  border-radius: initial;
+  width: fit-content;
+  min-width: 30px;
+  line-height: 1;
+  user-select: none;
+  text-decoration: none;
+}
+
+.iconCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.extra-small {
+  min-width: initial;
+  padding: 3px 5px;
+  font-size: 14px;
+}
+
+.small {
+  height: 28px;
+  max-height: 28px;
+  padding: 6px;
+  font-size: 14px;
+}
+
+.medium {
+  height: 30px;
+  max-height: 30px;
+  padding: 7.5px;
+  font-size: 14px;
+}
+
+.large {
+  height: 36px;
+  max-height: 36px;
+  padding: 9.5px;
+  font-size: 16px;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+/* Colors */
+
+.primary {
+  background-color: var(--color-primary);
+  color: var(--color-text-white);
+  border: 1px solid var(--color-primary);
+}
+
+.secondary {
+  background-color: var(--color-secondary);
+  color: var(--color-secondary);
+  border: 1px solid var(--color-secondary);
+}
+
+.success {
+  background-color: var(--color-success);
+  color: var(--color-text-white);
+  border: 1px solid var(--color-success);
+}
+
+.negative {
+  background-color: var(--color-negative);
+  color: var(--color-text-white);
+  border: 1px solid var(--color-negative);
+}
+
+.warning {
+  background-color: var(--color-warning);
+  color: var(--color-text-white);
+  border: 1px solid var(--color-warning);
+}
+
+.contrast {
+  background-color: var(--color-contrast);
+  color: var(--color-text-contrast);
+  border: 1px solid var(--color-contrast);
+}
+
+/* Hover color button */
+
+.primary:hover {
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+
+.secondary:hover {
+  background-color: var(--color-secondary-hover);
+}
+
+.success:hover {
+  background-color: var(--color-success-hover);
+  border-color: var(--color-success-hover);
+}
+
+.negative:hover {
+  background-color: var(--color-negative-hover);
+  border-color: var(--color-negative-hover);
+}
+
+.warning:hover {
+  background-color: var(--color-warning-hover);
+  border-color: var(--color-warning-hover);
+}
+
+.contrast:hover {
+  background-color: var(--color-contrast-hover);
+  border-color: var(--color-contrast-hover);
+}
+
+/* Variant minimal only for icon button */
+
+.iconButton.minimal {
+  background-color: transparent;
+  border: none;
+  padding: initial;
+  min-width: initial;
+  height: initial;
+  max-height: initial;
+}
+
+.iconButton.minimal > span {
+  color: var(--color-text-primary);
+  transition: 300ms linear;
+}
+
+.iconButton.minimal:hover > span + span {
+  color: var(--color-text-white);
+}
+
+.iconButton.minimal:hover > span {
+  color: var(--color-secondary-hover);
+}
+
+.iconButton.minimal.primary > span {
+  color: var(--color-primary);
+}
+
+.iconButton.minimal.primary:hover > span {
+  color: var(--color-primary-hover);
+}
+
+.iconButton.minimal.secondary > span {
+  color: var(--color-secondary);
+}
+
+.iconButton.minimal.secondary:hover > span {
+  color: var(--color-secondary-hover);
+}
+
+.iconButton.minimal.success > span {
+  color: var(--color-success);
+}
+
+.iconButton.minimal.success:hover > span {
+  color: var(--color-success-hover);
+}
+
+.iconButton.minimal.negative > span {
+  color: var(--color-negative);
+}
+
+.iconButton.minimal.negative:hover > span {
+  color: var(--color-negative-hover);
+}
+
+.iconButton.minimal.warning > span {
+  color: var(--color-warning);
+}
+
+.iconButton.minimal.warning:hover > span {
+  color: var(--color-warning-hover);
+}
+
+.iconButton.contained > span {
+  color: var(--color-text-white);
+}
+/* ---------------- variants ----------------- */
+
+.outlined.primary,
+.outlined.secondary,
+.outlined.success,
+.outlined.negative,
+.outlined.warning,
+.outlined.contrast,
+.text.primary,
+.text.secondary,
+.text.success,
+.text.negative,
+.text.warning,
+.text.contrast {
+  background: initial;
+  background-color: transparent;
+}
+
+.outlined.primary > span,
+.text.primary > span {
+  color: var(--color-primary);
+}
+
+.outlined.secondary > span,
+.text.secondary > span {
+  color: var(--color-secondary);
+}
+
+.outlined.success > span,
+.text.success > span {
+  color: var(--color-success);
+}
+
+.outlined.negative > span,
+.text.negative > span {
+  color: var(--color-negative);
+}
+
+.outlined.warning > span,
+.text.warning > span {
+  color: var(--color-warning);
+}
+
+.contained.contrast > span {
+  color: var(--color-text-primary);
+}
+
+.outlined.contrast > span,
+.text.contrast > span {
+  color: var(--color-text-contrast);
+}
+
+/* Hover outline variant */
+
+.outlined.primary:hover,
+.text.primary:hover {
+  background-color: var(--color-primary-light);
+}
+
+.outlined.secondary:hover,
+.text.secondary:hover {
+  background-color: var(--color-secondary-light);
+}
+
+.outlined.success:hover,
+.text.success:hover {
+  background-color: var(--color-success-light);
+}
+
+.outlined.negative:hover,
+.text.negative:hover {
+  background-color: var(--color-negative-light);
+}
+
+.outlined.warning:hover,
+.text.warning:hover {
+  background-color: var(--color-warning-light);
+}
+
+.outlined.contrast:hover,
+.text.contrast:hover {
+  background-color: var(--color-contrast-light);
+}
+
+.text.primary,
+.text.secondary,
+.text.success,
+.text.negative,
+.text.warning,
+.text.contrast {
+  border-color: transparent;
+}
+
+/* disabled */
+
+.iconButton.contained:disabled,
+a.contained.disabled {
+  display: flex;
+  background-color: var(--color-disabled);
+  border-color: var(--color-disabled);
+  cursor: not-allowed;
+}
+
+.iconButton.outlined:disabled,
+a.outlined.disabled {
+  border-color: var(--color-disabled);
+}
+
+.iconButton.outlined:disabled,
+.iconButton.outlined:disabled > span,
+.iconButton.text:disabled,
+.iconButton.text:disabled > span,
+a.outlined.disabled,
+a.outlined.disabled > span,
+a.text.disabled,
+a.text.disabled > span {
+  color: var(--color-disabled);
+  background-color: transparent;
+}
+
+/* Clear hover on disable */
+
+.iconButton.text:disabled:hover,
+a.text.disabled:hover {
+  border-color: transparent;
+}
+
+.iconButton.outlined:disabled:hover,
+.iconButton.text:disabled:hover,
+a.outlined.disabled:hover,
+a.text.disabled:hover {
+  background-color: transparent;
+}
+
+.iconButton:disabled:hover,
+a.disabled:hover {
+  background-color: transparent;
+  border-color: var(--color-disabled);
+}
+
+/* border-width */
+
+.xs {
+  border-width: 1px;
+}
+
+.sm {
+  border-width: 2px;
+}
+
+.md {
+  border-width: 3px;
+}
+
+.lg {
+  border-width: 4px;
+}
+
+.xl {
+  border-width: 5px;
+}
