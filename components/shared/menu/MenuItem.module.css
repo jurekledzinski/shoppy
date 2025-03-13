@@ -8,5 +8,5 @@
 }
 
 .menuItem:hover {
-  background-color: var(--background-color-menu-item-hover);
+  background-color: var(--color-surface-menu-item-hover);
 }

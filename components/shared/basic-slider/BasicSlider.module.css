@@ -1,7 +1,7 @@
 .wrapper {
   display: 'flex';
   justify-content: center;
-  background-color: var(--background-color);
+  background-color: var(--color-surface);
 }
 
 .wrapperContent {
@@ -84,7 +84,7 @@ a.link {
   padding: 0.25rem 1rem;
   background-color: var(--color-primary);
   border-radius: 2px;
-  color: var(--color-text-bg-dark);
+  color: var(--color-text-white);
   font-weight: 300;
   text-decoration: none;
   transition: 0.3s linear;

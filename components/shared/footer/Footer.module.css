@@ -5,7 +5,7 @@
   width: 100%;
   min-height: 3.125rem;
   padding: 0 1rem;
-  background-color: var(--background-color-footer);
+  background-color: var(--color-surface-footer);
   color: white;
   font-size: 0.75rem;
 }

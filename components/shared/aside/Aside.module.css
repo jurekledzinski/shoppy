@@ -4,7 +4,7 @@
   right: 0;
   width: 15.625rem;
   height: 100%;
-  background-color: var(--background-color-aside);
+  background-color: var(--color-surface-aside);
   z-index: 3;
   transform: translateX(15.625rem);
   transition: transform 0.3s linear;
