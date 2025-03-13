@@ -30,7 +30,12 @@ export const MenuPanel = ({
       <header className={styles.header}>Welcome {user.userName}</header>
       <Menu>
         <MenuItem className={styles.menuItemLink}>
-          <Link href="/" className={styles.link} onClick={onCloseAside}>
+          <Link
+            href="/"
+            className={styles.link}
+            onClick={onCloseAside}
+            prefetch={true}
+          >
             Home
           </Link>
         </MenuItem>
@@ -40,6 +45,7 @@ export const MenuPanel = ({
               href={`/orders/${user.userId}`}
               className={styles.link}
               onClick={onCloseAside}
+              prefetch={true}
             >
               Orders
             </Link>
@@ -51,6 +57,7 @@ export const MenuPanel = ({
               href={`/profile/${user.userId}`}
               className={styles.link}
               onClick={onCloseAside}
+              prefetch={true}
             >
               Profile
             </Link>

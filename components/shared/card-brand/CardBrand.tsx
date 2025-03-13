@@ -18,7 +18,7 @@ export const CardBrand = ({ src, title, url }: CardBrandProps) => {
         />
       </header>
       <footer className={styles.footer}>
-        <Link className={styles.link} href={url}>
+        <Link className={styles.link} href={url} prefetch={true}>
           {title}
         </Link>
       </footer>

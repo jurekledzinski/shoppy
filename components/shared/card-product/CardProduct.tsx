@@ -17,6 +17,7 @@ export const CardProduct = ({ product }: CardProductProps) => {
           href={`/${category}/${brand}/${encodeURIComponent(
             name
           ).toLowerCase()}?id=${_id}`}
+          prefetch={true}
         >
           <Image
             className={styles.image}

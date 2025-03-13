@@ -38,6 +38,7 @@ export const IconButton = ({
         {...(disabled || isLoading ? {} : { href: props.href })}
         style={{ borderRadius: `${radius}px` }}
         {...props}
+        prefetch={true}
       >
         <IconButtonBaseContent icon={icon} isLoading={isLoading} size={size}>
           {children}

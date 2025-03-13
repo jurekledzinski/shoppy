@@ -44,6 +44,7 @@ export const Button = ({
         {...(disabled || isLoading ? {} : { href: props.href })}
         style={{ borderRadius: `${radius}px` }}
         {...props}
+        prefetch={true}
       >
         <ButtonBaseContent
           label={label}

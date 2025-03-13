@@ -6,7 +6,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const Breadcrumb = ({ icon, text, path, query }: BreadcrumbProps) => {
   return (
-    <Link className={styles.breadcrumb} href={query ? `${path}${query}` : path}>
+    <Link
+      className={styles.breadcrumb}
+      href={query ? `${path}${query}` : path}
+      prefetch={true}
+    >
       <BreadcrumbText path={path} text={text ?? ''} />
       {icon ? (
         <span className={styles.icon}>

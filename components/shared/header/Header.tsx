@@ -7,7 +7,9 @@ export const Header = ({ children }: HeaderProps) => {
     <header className={styles.header}>
       <nav className={styles.nav}>
         <h2 className={styles.logo}>
-          <Link href="/">Shoppy</Link>
+          <Link href="/" prefetch={true}>
+            Shoppy
+          </Link>
         </h2>
         <div className={styles.actionsButtons}>{children}</div>
       </nav>
