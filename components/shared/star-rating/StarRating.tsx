@@ -2,7 +2,7 @@
 import { Rating } from 'react-simple-star-rating';
 import { StarRatingProps } from './types';
 import { useEffect, useState } from 'react';
-import stylesSkeleton from '@/styles/HomePage.module.css';
+import stylesSkeleton from '@/styles/Globals.module.css';
 import { classNames } from '@/helpers';
 
 export const StarRating = ({

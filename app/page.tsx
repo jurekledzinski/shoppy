@@ -1,4 +1,4 @@
-import styles from '@styles/HomePage.module.css';
+import styles from '@styles/Globals.module.css';
 import { BasicSlider } from '@/components/shared';
 import { fetchBrands } from '@/lib';
 import { getDomain } from '@/helpers';

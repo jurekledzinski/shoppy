@@ -6,7 +6,7 @@ import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { ThumbnailsSliderProps } from './types';
 import { useEffect, useRef } from 'react';
 import '@splidejs/splide/dist/css/splide.min.css';
-import stylesSkeleton from '@/styles/HomePage.module.css';
+import stylesSkeleton from '@/styles/Globals.module.css';
 import { useLoadSkeleton } from '@/hooks';
 import { classNames } from '@/helpers';
 

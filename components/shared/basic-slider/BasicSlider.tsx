@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import styles from './BasicSlider.module.css';
-import stylesSkeleton from '@/styles/HomePage.module.css';
+import stylesSkeleton from '@/styles/Globals.module.css';
 import { classNames } from '@/helpers';
 import { optionsSlider } from './optionsSlider';
 import { sliderData } from '@/data';
