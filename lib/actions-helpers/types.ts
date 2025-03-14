@@ -29,7 +29,7 @@ export type VerifyGuestUser = (
 ) => Promise<string | null>;
 
 export type VerifyStepper = (
-  cookieStepper: RequestCookie | undefined,
+  cookieStepper: RequestCookie,
   secretStepper: string
 ) => Promise<JWTVerifyResult<{
   value: {
