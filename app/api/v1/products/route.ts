@@ -9,8 +9,14 @@ export const GET = connectDB(async (request: NextRequest) => {
   const category = searchParams.get('category');
   const brand = searchParams.get('brand');
 
-  if (!category || category === 'undefined') return errorMessage(404);
-  if (!brand || brand === 'undefined') return errorMessage(404);
+  if (
+    !category ||
+    !brand ||
+    category === 'undefined' ||
+    brand === 'undefined'
+  ) {
+    return errorMessage(404);
+  }
 
   const collection = getCollectionDb<ProductCard>('products');
 
