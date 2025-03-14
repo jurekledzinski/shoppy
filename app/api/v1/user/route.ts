@@ -10,8 +10,7 @@ export const GET = connectDBAuth(
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get('id');
 
-    if (!request.auth) return errorMessage(401);
-    if (!userId) return errorMessage(401);
+    if (!request.auth || !userId) return errorMessage(401);
 
     const collection = getCollectionDb<Omit<UserRegister, '_id'>>('users');
 
