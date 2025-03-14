@@ -78,8 +78,6 @@ export const verifyGuestUser: VerifyGuestUser = async (
   cookieGuest,
   secretGuest
 ) => {
-  if (!cookieGuest?.value) return null;
-
   const guestData = await verifyToken<{ value: string }>(
     cookieGuest.value,
     secretGuest
@@ -92,8 +90,6 @@ export const verifyStepper: VerifyStepper = async (
   cookieStepper,
   secretStepper
 ) => {
-  if (!cookieStepper) return null;
-
   return await verifyToken<{
     value: { allowed: string; completed: string[] };
   }>(cookieStepper.value, secretStepper);
