@@ -16,3 +16,18 @@ export const redirectWithQueries = () => {
   const newUrl = `${url}${currentSearchParams}`;
   return newUrl;
 };
+
+export const setQueriesWithoutReload = (
+  searchParams: ReadonlyURLSearchParams,
+  queries: string[][]
+) => {
+  const updatedParams = new URLSearchParams(searchParams);
+  const objectEntries = Object.fromEntries(queries);
+
+  for (const key in objectEntries) {
+    updatedParams.set(key, objectEntries[key]);
+  }
+
+  const query = updatedParams.toString();
+  window.history.pushState(null, '', '?' + query);
+};
