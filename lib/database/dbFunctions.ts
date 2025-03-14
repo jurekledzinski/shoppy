@@ -16,6 +16,7 @@ import {
   CheckProductsInventory,
   GetUserCart,
   UpdateCartProducts,
+  GetCartByUser,
 } from '@/lib';
 
 export const updateShipping: UpdateShipping = async (
@@ -248,4 +249,14 @@ export const updateCartTotalPrice = (updatedProducts: Cart['products']) => {
     0
   );
   return totalPriceIncreaseCart;
+};
+
+export const getCartByUser: GetCartByUser = async (
+  collection,
+  userIdKey,
+  id
+) => {
+  return await collection.findOne({
+    [userIdKey]: id,
+  });
 };
