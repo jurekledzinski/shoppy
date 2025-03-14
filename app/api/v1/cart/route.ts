@@ -1,79 +1,51 @@
 import 'server-only';
 import { auth } from '@/auth';
 import { Cart } from '@/models';
-import { connectDBAuth, getCollectionDb, verifyToken } from '@/lib';
 import { errorMessage } from '@/helpers';
 import { NextResponse } from 'next/server';
 
-const secretGuest = process.env.GUEST_SECRET!;
-const secretStepper = process.env.STEPPER_SECRET!;
+import {
+  connectDBAuth,
+  getCollectionDb,
+  getSessionData,
+  getCartByUser,
+  validateAuth,
+} from '@/lib';
 
 export const GET = connectDBAuth(
   auth(async (request) => {
-    const cookieGuest = request.cookies.get('guestId')!;
-    const cookieStepper = request.cookies.get('stepper')!;
+    const { cookieGuest, cookieStepper, token } = await getSessionData();
 
-    if (!request.auth && !cookieGuest && !cookieStepper) {
-      return errorMessage(401);
-    }
+    const checkAuth = await validateAuth(cookieGuest, token, cookieStepper);
 
-    const collection = getCollectionDb<Omit<Cart, '_id'>>('carts');
+    if ('message' in checkAuth) return errorMessage(401, 'Unauthorized');
+
+    const { guest } = checkAuth;
+
+    const userId = request.auth?.user.id ?? null;
+
+    const collection = getCollectionDb<Cart>('carts');
     if (!collection) return errorMessage(500);
 
-    if (!request.auth && cookieGuest && cookieStepper) {
-      const dataGuest = await verifyToken<{ value: string }>(
-        cookieGuest.value,
-        secretGuest
-      );
+    let result: Cart | null = null;
 
-      await verifyToken<{ value: { allowed: string; completed: string[] } }>(
-        cookieStepper.value,
-        secretStepper
-      );
-
-      const result = await collection.findOne({
-        guestId: dataGuest.payload.value,
-      });
-
-      const response = NextResponse.json({
-        success: true,
-        payload: result,
-      });
-
-      return response;
+    if (!userId && cookieGuest && cookieStepper) {
+      result = await getCartByUser(collection, 'guestId', guest);
     }
 
-    if (request.auth && !cookieGuest && cookieStepper) {
-      await verifyToken<{ value: { allowed: string; completed: string[] } }>(
-        cookieStepper.value,
-        secretStepper
-      );
-
-      const result = await collection.findOne({
-        userId: request.auth.user.id,
-      });
-
-      const response = NextResponse.json({
-        success: true,
-        payload: result,
-      });
-
-      return response;
+    if (userId && !cookieGuest && cookieStepper) {
+      result = await getCartByUser(collection, 'userId', userId);
     }
 
-    if (request.auth && !cookieGuest && !cookieStepper) {
-      const result = await collection.findOne({
-        userId: request.auth.user.id,
-      });
-
-      const response = NextResponse.json({
-        success: true,
-        payload: result,
-      });
-
-      return response;
+    if (userId && !cookieGuest && !cookieStepper) {
+      result = await getCartByUser(collection, 'userId', userId);
     }
 
-    return errorMessage(401);
+    const response = NextResponse.json({
+      success: true,
+      payload: result,
+    });
+
+    return response;
   })
 );
