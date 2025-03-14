@@ -3,11 +3,11 @@ import styles from './TabsDetailsContainer.module.css';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ReviewForm } from '../review-form';
-import { showToast } from '@/helpers';
+import { setQueriesWithoutReload, showToast } from '@/helpers';
 import { TabsDetailsContainerProps } from './types';
 import { useActionStateAndReset, useReviewForm } from '@/hooks';
 import { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { review } from '@/actions';
 
 import {
@@ -29,7 +29,6 @@ export const TabsDetailsContainer = ({
   userName,
   errorReviews,
 }: TabsDetailsContainerProps) => {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const idProduct = searchParams.get('id');
   const view = searchParams.get('view') || 'specification';
@@ -64,9 +63,11 @@ export const TabsDetailsContainer = ({
               id={tab.toLowerCase()}
               title={tab}
               onClick={(tabName) => {
-                router.push(`?id=${idProduct}&view=${tabName.toLowerCase()}`, {
-                  scroll: false,
-                });
+                if (!idProduct) return;
+                setQueriesWithoutReload(searchParams, [
+                  ['id', idProduct],
+                  ['view', tabName],
+                ]);
               }}
             >
               {tab}

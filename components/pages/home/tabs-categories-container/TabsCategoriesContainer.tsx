@@ -1,6 +1,7 @@
 'use client';
 import { Alert } from '@/components/shared';
 import { CardBrand, Tab, Tabs, TabsList, TabsPanel } from '@/components/shared';
+import { setQueriesWithoutReload } from '@/helpers';
 import { TabsCategoriesContainerProps } from './types';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -28,10 +29,7 @@ export const TabsCategoriesContainer = ({
               id={tab.toLowerCase()}
               title={tab}
               onClick={(id) => {
-                const updatedParams = new URLSearchParams(searchParams);
-                updatedParams.set('category', id);
-                const query = updatedParams.toString();
-                window.history.pushState(null, '', '?' + query);
+                setQueriesWithoutReload(searchParams, [['category', id]]);
               }}
             >
               {tab}
