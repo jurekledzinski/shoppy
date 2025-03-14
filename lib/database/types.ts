@@ -98,3 +98,9 @@ export type UpdateCartProducts = (
   dbProducts: Cart['products'],
   newProducts: Cart['products']
 ) => Cart['products'];
+
+export type GetCartByUser = (
+  collection: Collection<Cart>,
+  userIdKey: UserIdKey,
+  id: string
+) => Promise<Cart | null>;
