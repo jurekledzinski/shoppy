@@ -107,13 +107,11 @@ export const TabsDetailsContainer = ({
                   return <Review key={review._id} data={review} />;
                 })}
 
-                {errorReviews &&
-                  !errorReviews.success &&
-                  errorReviews.message && (
-                    <Alert marginTop={8} color="negative">
-                      {errorReviews.message}
-                    </Alert>
-                  )}
+                {errorReviews && (
+                  <Alert marginTop={8} color="negative">
+                    {errorReviews}
+                  </Alert>
+                )}
               </div>
             </>
           )}

@@ -4,5 +4,5 @@ export type ProductDetailsProps = {
   dataProduct: Product | null;
   dataReviews: Review[];
   dataUser: Omit<UserRegister, 'password'> | null;
-  errorReviews?: { message: string; success: boolean };
+  errorReviews?: string;
 };
