@@ -1,13 +1,12 @@
 import styles from '@styles/Globals.module.css';
 import { BasicSlider } from '@/components/shared';
-import { fetchBrands } from '@/lib';
+import { endpoints, fetchBrands } from '@/lib';
 import { getDomain } from '@/helpers';
 import { TabsCategoriesContainer } from '@/components/pages';
 
 export default async function Home() {
   const domain = await getDomain();
-  const urlGetBrands = `${domain}/api/v1/brands`;
-  const resBrands = await fetchBrands(urlGetBrands);
+  const resBrands = await fetchBrands(endpoints.brands(domain));
 
   return (
     <div className={styles.home}>
