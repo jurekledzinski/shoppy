@@ -1,6 +1,11 @@
 'use server';
-
+import { auth } from '@/auth';
+import { Cart, Order, ProductCard } from '@/models';
 import { cookies, headers } from 'next/headers';
+import { errorMessageAction } from '@/helpers';
+import { JWT } from 'next-auth/jwt';
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
+
 import {
   getAuthToken,
   getCollectionDb,
@@ -8,22 +13,21 @@ import {
   VerifyStepper,
   verifyToken,
 } from '@/lib';
-import { errorMessageAction } from '@/helpers';
-import { Cart, Order, ProductCard } from '@/models';
-import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
-import { JWT } from 'next-auth/jwt';
 
 export const getSessionData = async () => {
   const cookieStore = await cookies();
   const headersData = await headers();
   const cookieGuest = cookieStore.get('guestId');
   const cookieStepper = cookieStore.get('stepper');
+  const session = await auth();
   const token = await getAuthToken({ headers: headersData });
 
   return {
     cookieStore,
     cookieGuest,
     cookieStepper,
+    headersData,
+    session,
     token,
   };
 };
@@ -78,21 +82,31 @@ export const verifyGuestUser: VerifyGuestUser = async (
   cookieGuest,
   secretGuest
 ) => {
-  const guestData = await verifyToken<{ value: string }>(
-    cookieGuest.value,
-    secretGuest
-  );
+  if (!cookieGuest) return null;
+  try {
+    const guestData = await verifyToken<{ value: string }>(
+      cookieGuest.value,
+      secretGuest
+    );
 
-  return guestData.payload.value;
+    return guestData.payload.value;
+  } catch {
+    return null;
+  }
 };
 
 export const verifyStepper: VerifyStepper = async (
   cookieStepper,
   secretStepper
 ) => {
-  return await verifyToken<{
-    value: { allowed: string; completed: string[] };
-  }>(cookieStepper.value, secretStepper);
+  if (!cookieStepper) return null;
+  try {
+    return await verifyToken<{
+      value: { allowed: string; completed: string[] };
+    }>(cookieStepper.value, secretStepper);
+  } catch {
+    return null;
+  }
 };
 
 export const validateAuth = async (
