@@ -12,11 +12,7 @@ export const fetchOrder = tryCatch<Order>(
       next: { tags: ['get_order'] },
     });
 
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-
-    return await response.json();
+    return fetchResponse(response);
   }
 );
 
@@ -30,11 +26,7 @@ export const fetchUser = tryCatch<Omit<UserRegister, 'password'>>(
       next: { tags: ['get_user'] },
     });
 
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-
-    return await response.json();
+    return fetchResponse(response);
   }
 );
 
@@ -55,11 +47,7 @@ export const fetchProducts = tryCatch<Product[]>(async (url: string) => {
     next: { tags: ['get_products'] },
   });
 
-  if (!response.ok) {
-    throw new Error(response.statusText);
-  }
-
-  return await response.json();
+  return fetchResponse(response);
 });
 
 export const fetchProductReviews = tryCatch<Review[]>(async (url: string) => {
@@ -70,11 +58,7 @@ export const fetchProductReviews = tryCatch<Review[]>(async (url: string) => {
     next: { tags: ['get_product_reviews'] },
   });
 
-  if (!response.ok) {
-    throw new Error(response.statusText);
-  }
-
-  return await response.json();
+  return fetchResponse(response);
 });
 
 export const fetchDetailsProduct = tryCatch<Product>(async (url: string) => {
@@ -85,11 +69,7 @@ export const fetchDetailsProduct = tryCatch<Product>(async (url: string) => {
     next: { tags: ['get_products'] },
   });
 
-  if (!response.ok) {
-    throw new Error(response.statusText);
-  }
-
-  return await response.json();
+  return fetchResponse(response);
 });
 
 export const fetchUserOrders = tryCatch<Order[]>(
@@ -102,11 +82,7 @@ export const fetchUserOrders = tryCatch<Order[]>(
       next: { tags: ['get_user_orders'] },
     });
 
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-
-    return await response.json();
+    return fetchResponse(response);
   }
 );
 
@@ -120,3 +96,14 @@ function formatHeaders(headers?: ReadonlyHeaders) {
 
   return formattedHeader;
 }
+
+async function fetchResponse(response: Response) {
+  if (!response.ok) throw new Error(response.statusText);
+  return await response.json();
+}
+
+// function getOptions(method: string = 'GET') {
+//   return {
+//     method,
+//   };
+// }
