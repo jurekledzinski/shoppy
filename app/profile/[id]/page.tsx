@@ -1,26 +1,22 @@
-import { auth } from '@/auth';
 import { Breadcrumb, Breadcrumbs } from '@/components/shared';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import { fetchUser } from '@/lib';
 import { getBreadcrumbsProfile, getDomain } from '@/helpers';
-import { headers } from 'next/headers';
+import { getSessionData, getUserData } from '@/lib';
 import { ProfileSection } from '@/components/pages';
 
 type Params = Promise<{ id: string }>;
 
 const Profile = async (props: { params: Params }) => {
-  const session = await auth();
+  const { session, headersData } = await getSessionData();
   const domain = await getDomain();
   const params = await props.params;
 
-  const urlGetUser = `${domain}/api/v1/user?id=${session?.user.id}`;
-  const userHeaders = await headers();
-  const resUser = session ? await fetchUser(urlGetUser, userHeaders) : null;
+  const userData = await getUserData(session, domain, headersData);
 
   const breadcrumbs = getBreadcrumbsProfile(params.id);
 
   return (
-    <ProfileSection userData={resUser && resUser.success ? resUser.data : null}>
+    <ProfileSection userData={userData ? userData : null}>
       <Breadcrumbs>
         {breadcrumbs.map((segment, index) => {
           return (
