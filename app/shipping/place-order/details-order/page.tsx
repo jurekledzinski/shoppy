@@ -1,50 +1,17 @@
-import { auth } from '@/auth';
-import { cookies, headers } from 'next/headers';
 import { DetailsOrderSection } from '@/components/pages';
-import { fetchOrder, tokenVerify } from '@/lib';
-import { getDomain } from '@/helpers';
+import { getProccedCheckoutData } from '@/lib';
 import { Step, Stepper } from '@/components/shared';
 import { steps } from '@/data';
 
-const secretGuest = process.env.GUEST_SECRET!;
-const secretStepper = process.env.STEPPER_SECRET!;
-
 const DetailsOrder = async () => {
-  const session = await auth();
-  const domain = await getDomain();
-  const headersFetch = await headers();
-  const cookieStore = await cookies();
-  const guestCookie = cookieStore.get('guestId') ?? null;
-  const stepperCookie = cookieStore.get('stepper') ?? null;
-
-  const guestCookieDecoded = guestCookie?.value
-    ? await tokenVerify<{ value: string }>(guestCookie.value, secretGuest)
-    : null;
-
-  const stepperCookieDecoded = stepperCookie?.value
-    ? await tokenVerify<{ value: { allowed: string; completed: string[] } }>(
-        stepperCookie.value,
-        secretStepper
-      )
-    : null;
-
-  const urlGetOrder = `${domain}/api/v1/order`;
-  const resOrder =
-    guestCookieDecoded || session
-      ? await fetchOrder(urlGetOrder, headersFetch)
-      : null;
-
-  const completedSteps = stepperCookieDecoded
-    ? stepperCookieDecoded.payload.value.completed
-    : [];
+  const { completedSteps, guestId, orderData, userData } =
+    await getProccedCheckoutData(true);
 
   return (
     <DetailsOrderSection
-      orderData={resOrder && resOrder.success ? resOrder.data : null}
-      guestSession={
-        guestCookieDecoded ? guestCookieDecoded?.payload.value : null
-      }
-      userSession={session ? session.user.id : null}
+      orderData={orderData ? orderData : null}
+      guestSession={guestId ? guestId : null}
+      userSession={userData ? userData._id! : null}
     >
       <Stepper>
         {steps.map((step) => {
