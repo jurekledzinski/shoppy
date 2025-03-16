@@ -1,30 +1,27 @@
-import { auth } from '@/auth';
-import { cookies } from 'next/headers';
 import { SectionSuccess } from '@/components/pages';
-import { tokenVerify } from '@/lib';
+import {
+  getAuthSecrets,
+  getSessionData,
+  verifyGuestUser,
+  verifyStepper,
+} from '@/lib';
 
 type SearchParams = Promise<{ orderId: string }>;
 
-const secretGuest = process.env.GUEST_SECRET!;
-const secretStepper = process.env.STEPPER_SECRET!;
-
 const Success = async ({ searchParams }: { searchParams: SearchParams }) => {
   const orderId = (await searchParams).orderId;
-  const session = await auth();
-  const cookieStore = await cookies();
-  const guestCookie = cookieStore.get('guestId') ?? null;
-  const stepperCookie = cookieStore.get('stepper') ?? null;
+  const AUTH = await getAuthSecrets();
+  const { cookieGuest, cookieStepper, session } = await getSessionData();
 
-  const guestCookieDecoded = guestCookie?.value
-    ? await tokenVerify<{ value: string }>(guestCookie.value, secretGuest)
-    : null;
+  const guestCookieDecoded = await verifyGuestUser(
+    cookieGuest!,
+    AUTH.SECRET_GUEST
+  );
 
-  const stepperCookieDecoded = stepperCookie?.value
-    ? await tokenVerify<{ value: { allowed: string; completed: string[] } }>(
-        stepperCookie.value,
-        secretStepper
-      )
-    : null;
+  const stepperCookieDecoded = await verifyStepper(
+    cookieStepper!,
+    AUTH.SECRET_STEPPER
+  );
 
   return (
     <SectionSuccess
