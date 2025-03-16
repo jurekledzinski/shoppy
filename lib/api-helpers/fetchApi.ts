@@ -1,31 +1,19 @@
-import { tryCatch } from '@/helpers';
 import { Brand, Order, Product, Review, UserRegister } from '@/models';
 import { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
+import { tryCatch } from '@/helpers';
 
 export const fetchOrder = tryCatch<Order>(
   async (url: string, headers?: ReadonlyHeaders) => {
-    const formattedHeaders = formatHeaders(headers);
-
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: formattedHeaders,
-      next: { tags: ['get_order'] },
-    });
-
+    const options = getOptions(['get_order'], headers);
+    const response = await fetch(url, options);
     return fetchResponse(response);
   }
 );
 
 export const fetchUser = tryCatch<Omit<UserRegister, 'password'>>(
   async (url: string, headers?: ReadonlyHeaders) => {
-    const formattedHeaders = formatHeaders(headers);
-
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: formattedHeaders,
-      next: { tags: ['get_user'] },
-    });
-
+    const options = getOptions(['get_user'], headers);
+    const response = await fetch(url, options);
     return fetchResponse(response);
   }
 );
@@ -35,53 +23,31 @@ export const fetchBrands = tryCatch<Brand[]>(async (url: string) => {
     cache: 'force-cache',
   });
 
-  if (!response.ok) {
-    throw new Error(response.statusText);
-  }
-
-  return await response.json();
+  return fetchResponse(response);
 });
 
 export const fetchProducts = tryCatch<Product[]>(async (url: string) => {
-  const response = await fetch(url, {
-    next: { tags: ['get_products'] },
-  });
-
+  const options = getOptions(['get_products']);
+  const response = await fetch(url, options);
   return fetchResponse(response);
 });
 
 export const fetchProductReviews = tryCatch<Review[]>(async (url: string) => {
-  const response = await fetch(url, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    next: { tags: ['get_product_reviews'] },
-  });
-
+  const options = getOptions(['get_product_reviews']);
+  const response = await fetch(url, options);
   return fetchResponse(response);
 });
 
 export const fetchDetailsProduct = tryCatch<Product>(async (url: string) => {
-  const response = await fetch(url, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    next: { tags: ['get_products'] },
-  });
-
+  const options = getOptions(['get_products']);
+  const response = await fetch(url, options);
   return fetchResponse(response);
 });
 
 export const fetchUserOrders = tryCatch<Order[]>(
   async (url: string, headers?: ReadonlyHeaders) => {
-    const formattedHeaders = formatHeaders(headers);
-
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: formattedHeaders,
-      next: { tags: ['get_user_orders'] },
-    });
-
+    const options = getOptions(['get_user_orders'], headers);
+    const response = await fetch(url, options);
     return fetchResponse(response);
   }
 );
@@ -102,8 +68,18 @@ async function fetchResponse(response: Response) {
   return await response.json();
 }
 
-// function getOptions(method: string = 'GET') {
-//   return {
-//     method,
-//   };
-// }
+function getOptions(tags?: string[], headers?: ReadonlyHeaders) {
+  const formattedHeaders = formatHeaders(headers);
+
+  const options = {
+    ...(tags && { next: { tags } }),
+    ...(formattedHeaders && { headers: formattedHeaders }),
+    ...(!formattedHeaders && {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }),
+  };
+
+  return options;
+}
