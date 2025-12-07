@@ -7,7 +7,8 @@
     "open-browser": "start http://localhost:3000",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
@@ -23,9 +24,9 @@
     "juice": "^11.0.0",
     "lodash": "^4.17.21",
     "mongodb": "^6.10.0",
-    "next": "15.0.3",
+    "next": "^15.0.5",
     "next-auth": "^5.0.0-beta.25",
-    "nodemailer": "^6.9.16",
+    "nodemailer": "^7.0.11",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.54.2",
