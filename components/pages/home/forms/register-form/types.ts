@@ -9,7 +9,7 @@ export type RegisterFormInputs = {
 };
 
 export type RegisterFormProps = {
-  methods: UseFormReturn<RegisterFormInputs, unknown, undefined>;
+  methods: UseFormReturn<RegisterFormInputs, unknown, RegisterFormInputs>;
   onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
   state: State;
   isPending: boolean;

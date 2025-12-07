@@ -11,7 +11,7 @@ export type ShippingFormInputs = {
 };
 
 export type ShippingFormProps = {
-  methods: UseFormReturn<ShippingFormInputs, unknown, undefined>;
+  methods: UseFormReturn<ShippingFormInputs, unknown, ShippingFormInputs>;
   onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
   state: State;
   isPending: boolean;

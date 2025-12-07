@@ -8,7 +8,7 @@ export type TermsConditionsFormInputs = {
 export type TermsConditionsFormProps = {
   isEmpty: boolean;
   isPending: boolean;
-  methods: UseFormReturn<TermsConditionsFormInputs, unknown, undefined>;
+  methods: UseFormReturn<TermsConditionsFormInputs, unknown, TermsConditionsFormInputs>;
   onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
   state: State;
   textSubmit: string;

@@ -7,7 +7,7 @@ export type PlaceOrderProps = {
   Controller: typeof Controller;
   cartData: Cart | null;
   dataOrder: Order | null;
-  methods: UseFormReturn<PlaceOrderFormInputs, unknown, undefined>;
+  methods: UseFormReturn<PlaceOrderFormInputs, unknown, PlaceOrderFormInputs>;
   onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
   state: State;
   isPending: boolean;

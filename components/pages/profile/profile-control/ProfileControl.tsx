@@ -21,9 +21,7 @@ export const ProfileControl = ({
 }: ProfileControlProps) => {
   return (
     <>
-      <header className={styles.headerUpdateProfile}>
-        Update profile user
-      </header>
+      <header className={styles.headerUpdateProfile}>Update profile user</header>
       <UpdateProfileForm
         isPending={actionProfile.isPending}
         methods={methodsUpdateProfile}
@@ -31,9 +29,7 @@ export const ProfileControl = ({
         state={actionProfile.state}
       />
 
-      <header className={styles.headerChangePassword}>
-        Change password user
-      </header>
+      <header className={styles.headerChangePassword}>Change password user</header>
       <ChangePasswordForm
         isPending={actionPassword.isPending}
         methods={methodsChangePassword}
@@ -41,9 +37,7 @@ export const ProfileControl = ({
         state={actionPassword.state}
       />
 
-      <header className={styles.headerDeleteAccount}>
-        Delete user account
-      </header>
+      <header className={styles.headerDeleteAccount}>Delete user account</header>
 
       <ModalDelete
         isPending={actionDelete.isPending}
@@ -67,17 +61,10 @@ export const ProfileControl = ({
           showToast(actionDelete.state.message);
 
           onRedirectSuccess();
-        }, [
-          actionDelete.state.message,
-          onClearCart,
-          onRedirectSuccess,
-          resetStateActionDelete,
-        ])}
+        }, [actionDelete.state.message, onClearCart, onRedirectSuccess, resetStateActionDelete])}
         textButton="Delete account"
       >
-        <p className={styles.modalDeleteText}>
-          Are you sure you want delete your account?
-        </p>
+        <p className={styles.modalDeleteText}>Are you sure you want delete your account?</p>
       </ModalDelete>
 
       {!actionDelete.state.success && actionDelete.state.message && (

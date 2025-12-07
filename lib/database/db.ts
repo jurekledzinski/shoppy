@@ -30,9 +30,7 @@ if (process.env.NODE_ENV === 'development') {
 
 const db = client.db(process.env.DB_NAME);
 
-const connectDB = (
-  fn: (req: NextRequest, res: NextResponse) => Promise<unknown> | Promise<void>
-) => {
+const connectDB = (fn: (req: NextRequest, res: NextResponse) => Promise<unknown> | Promise<void>) => {
   return async (req: NextRequest, res: NextResponse) => {
     try {
       await client.connect();
@@ -46,15 +44,9 @@ const connectDB = (
 };
 
 const connectDBAuth = (
-  fn: (
-    req: NextRequest,
-    ctx: { params?: Record<string, string | string[]> }
-  ) => ReturnType<AppRouteHandlerFn>
+  fn: (req: NextRequest, ctx: { params: Promise<unknown> }) => ReturnType<AppRouteHandlerFn>
 ) => {
-  return async (
-    req: NextRequest,
-    ctx: { params?: Record<string, string | string[]> }
-  ) => {
+  return async (req: NextRequest, ctx: { params: Promise<unknown> }) => {
     try {
       await client.connect();
       return await fn(req, ctx);
@@ -66,9 +58,7 @@ const connectDBAuth = (
   };
 };
 
-const connectDBAction = <T>(
-  fn: (prevState: unknown, formData: FormData) => Promise<State<T>>
-) => {
+const connectDBAction = <T>(fn: (prevState: unknown, formData: FormData) => Promise<State<T>>) => {
   return async (prevState: unknown, formData: FormData): Promise<State<T>> => {
     try {
       await client.connect();

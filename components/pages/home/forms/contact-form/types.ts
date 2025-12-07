@@ -8,7 +8,7 @@ export type ContactFormInputs = {
 };
 
 export type ContactFormProps = {
-  methods: UseFormReturn<ContactFormInputs, unknown, undefined>;
+  methods: UseFormReturn<ContactFormInputs, unknown, ContactFormInputs>;
   onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
   state: State;
   isPending: boolean;

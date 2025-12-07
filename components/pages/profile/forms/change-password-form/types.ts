@@ -7,7 +7,7 @@ export type ChangePasswordFormInputs = {
 };
 
 export type ChangePasswordFormProps = {
-  methods: UseFormReturn<ChangePasswordFormInputs, unknown, undefined>;
+  methods: UseFormReturn<ChangePasswordFormInputs, unknown, ChangePasswordFormInputs>;
   onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
   state: State;
   isPending: boolean;

@@ -11,7 +11,7 @@ export type PlaceOrderFormInputs = {
 
 export type PlaceOrderFormProps = {
   Controller: typeof Controller;
-  methods: UseFormReturn<PlaceOrderFormInputs, unknown, undefined>;
+  methods: UseFormReturn<PlaceOrderFormInputs, unknown, PlaceOrderFormInputs>;
   onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
   state: State;
   methodsPayment: string[];

@@ -5,7 +5,7 @@ import { FieldValues, UseFormReturn } from 'react-hook-form';
 type UseResetFormProps<T extends FieldValues> = {
   isPending: boolean;
   isSuccess: boolean;
-  methods: UseFormReturn<T, unknown, undefined>;
+  methods: UseFormReturn<T, unknown, T>;
   onSuccess: () => void;
   defaultValues?: T;
 };

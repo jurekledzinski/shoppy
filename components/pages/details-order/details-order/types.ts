@@ -6,7 +6,7 @@ import { UseFormReturn } from 'react-hook-form';
 export type DetailsOrderProps = {
   cartData: Cart | null;
   dataOrder: Order | null;
-  methods: UseFormReturn<TermsConditionsFormInputs, unknown, undefined>;
+  methods: UseFormReturn<TermsConditionsFormInputs, unknown, TermsConditionsFormInputs>;
   onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
   state: State;
   isPending: boolean;

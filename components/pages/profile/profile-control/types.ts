@@ -8,7 +8,7 @@ type Action = {
   isPending: boolean;
 };
 type CallbackSubmit = (e?: React.BaseSyntheticEvent) => Promise<void>;
-type Method<T extends FieldValues> = UseFormReturn<T, unknown, undefined>;
+type Method<T extends FieldValues> = UseFormReturn<T, unknown, T>;
 
 export type ProfileControlProps = {
   actionDelete: Action;
